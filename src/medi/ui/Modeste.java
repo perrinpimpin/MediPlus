@@ -5,21 +5,10 @@
  */
 package medi.ui;
 
-import java.sql.Date;
-import medi.nf.BD;
-import medi.nf.Patient;
-
 /**
  *
  * @author CRISTANTE
  */
-public class Main {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        BD connect = new BD();
-    }
+public class Modeste {
     
 }
