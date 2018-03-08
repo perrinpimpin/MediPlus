@@ -25,7 +25,6 @@ public abstract class User extends Object {
         this.nom=nom;
         this.prenom=prenom;
     }
-    
 
     /**
      * @return the id_user
@@ -75,4 +74,9 @@ public abstract class User extends Object {
     public int getRole() {
         return role;
     }
+    
+
+    /**
+     * @return the id_user
+     */
 }

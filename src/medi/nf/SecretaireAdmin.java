@@ -10,11 +10,11 @@ package medi.nf;
  * @author CRISTANTE
  */
 public class SecretaireAdmin extends User{
+    
     private String nom;
     private String prenom;
     private String id;
     private String mdp;
-    private String username = prenom + "." + nom;
     private int telephone;
     
     public SecretaireAdmin(String nom, String prenom, int id, String mdp, String username, int telephone){

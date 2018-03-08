@@ -85,8 +85,6 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel16 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -108,10 +106,6 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         rc = new javax.swing.JButton();
         rr = new javax.swing.JButton();
         centrePanel = new javax.swing.JPanel();
-        listePatients = new javax.swing.JPanel();
-        jLabel15 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        resultatsTable = new javax.swing.JTable();
         recherchePatient = new javax.swing.JPanel();
         nomField = new javax.swing.JTextField();
         prenomField = new javax.swing.JTextField();
@@ -156,6 +150,10 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         mailField = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         jButton12 = new javax.swing.JButton();
+        listePatients = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        resultatsTable = new javax.swing.JTable();
         jLabel21 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -169,41 +167,15 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         jPanel10 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Médi+");
         setMinimumSize(new java.awt.Dimension(959, 600));
-        setPreferredSize(new java.awt.Dimension(959, 600));
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 0));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBackground(new java.awt.Color(255, 153, 0));
-
-        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 26)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setText("Accueil");
-        jLabel16.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medi/ui/accueil-icone-8732-48.png"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(410, 410, 410)
-                .addComponent(jLabel22)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel16)
-                .addContainerGap(432, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jLabel22, javax.swing.GroupLayout.Alignment.TRAILING)
-        );
-
-        jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medi/ui/images/LogoLogicielPetit.png"))); // NOI18N
+        jPanel1.add(jLabel22, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
 
@@ -309,11 +281,11 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             .addGroup(accueilLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(aa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(as, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -503,50 +475,6 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         centrePanel.setPreferredSize(new java.awt.Dimension(626, 435));
         centrePanel.setLayout(new java.awt.CardLayout());
 
-        listePatients.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
-
-        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel15.setText("Liste patients");
-
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(100, 100));
-
-        resultatsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nom", "Prénom", "IPP", "Date de naissance", "Lieu de naissance", "Sexe"
-            }
-        ));
-        resultatsTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(resultatsTable);
-
-        javax.swing.GroupLayout listePatientsLayout = new javax.swing.GroupLayout(listePatients);
-        listePatients.setLayout(listePatientsLayout);
-        listePatientsLayout.setHorizontalGroup(
-            listePatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(listePatientsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(listePatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(listePatientsLayout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addGap(0, 529, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        listePatientsLayout.setVerticalGroup(
-            listePatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(listePatientsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel15)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        centrePanel.add(listePatients, "card2");
-
         recherchePatient.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         recherchePatient.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
 
@@ -652,7 +580,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ippField, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel5))
-                        .addGap(0, 85, Short.MAX_VALUE)))
+                        .addGap(0, 188, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         recherchePatientLayout.setVerticalGroup(
@@ -678,7 +606,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
                         .addGap(33, 33, 33)
                         .addComponent(jLabel8)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -918,7 +846,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
                             .addGroup(creerPatientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel20)
                                 .addComponent(paysField, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
         creerPatientLayout.setVerticalGroup(
             creerPatientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -996,6 +924,50 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         );
 
         centrePanel.add(creerPatient, "card4");
+
+        listePatients.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel15.setText("Liste patients");
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(100, 100));
+
+        resultatsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nom", "Prénom", "IPP", "Date de naissance", "Lieu de naissance", "Sexe"
+            }
+        ));
+        resultatsTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(resultatsTable);
+
+        javax.swing.GroupLayout listePatientsLayout = new javax.swing.GroupLayout(listePatients);
+        listePatients.setLayout(listePatientsLayout);
+        listePatientsLayout.setHorizontalGroup(
+            listePatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(listePatientsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(listePatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(listePatientsLayout.createSequentialGroup()
+                        .addComponent(jLabel15)
+                        .addGap(0, 632, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        listePatientsLayout.setVerticalGroup(
+            listePatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(listePatientsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        centrePanel.add(listePatients, "card2");
 
         jPanel4.add(centrePanel, java.awt.BorderLayout.CENTER);
         jPanel4.add(jLabel21, java.awt.BorderLayout.PAGE_END);
@@ -1093,7 +1065,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(331, Short.MAX_VALUE)
+                .addContainerGap(327, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
@@ -1114,7 +1086,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 439, Short.MAX_VALUE)
+            .addGap(0, 435, Short.MAX_VALUE)
         );
 
         jPanel7.add(jPanel10, "card2");
@@ -1208,11 +1180,8 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
                 resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
             }
         } else if (nomField.getText().isEmpty() && prenomField.getText().isEmpty() && !ippField.getText().isEmpty()) {
-            lp = connect.recherchePatientsIPP(Integer.parseInt(ippField.getText()));
-            for (int i = 0; i < lp.size(); i++) {
-                lp.get(i);
-                resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
-            }
+            p = connect.recherchePatientsIPP(Integer.parseInt(ippField.getText()));
+                resultRecherche.addRow(new Object[]{p.getNom(), p.getPrenom(), p.getIPP(), p.getDate(), p.getLieuNaissance(), p.getSexe(),});
         } else if (!nomField.getText().isEmpty() && !prenomField.getText().isEmpty() && !ippField.getText().isEmpty()) {
             lp = connect.recherchePatientsNomPrenomIPP(nomField.getText(), prenomField.getText(), Integer.parseInt(ippField.getText()));
             for (int i = 0; i < lp.size(); i++) {
@@ -1523,7 +1492,6 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1543,7 +1511,6 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;

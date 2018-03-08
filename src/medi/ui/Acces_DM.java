@@ -181,7 +181,7 @@ public class Acces_DM extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        DM dmbon = new DM();
+  /*      DM dmbon = new DM();
         ArrayList<DM> dms = new ArrayList();
         BD bd = new BD();
         dms = bd.getDM();
@@ -198,7 +198,7 @@ public class Acces_DM extends javax.swing.JFrame {
         
         
         AfficherDM aff = new AfficherDM(dmbon);
-        aff.setVisible(true);
+        aff.setVisible(true);*/
         
         
         

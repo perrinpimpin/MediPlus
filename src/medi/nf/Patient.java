@@ -93,9 +93,6 @@ public class Patient {
         return ipp;
     }
 
-    public void getIPP(int ipp) {
-        this.ipp = ipp;
-    }
 
     /**
      * @return the lieuNaissance

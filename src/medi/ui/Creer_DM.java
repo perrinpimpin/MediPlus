@@ -580,7 +580,7 @@ public class Creer_DM extends javax.swing.JFrame {
         }
 
         // création de l'objet DM
-        DM dm = new DM();
+ /*       DM dm = new DM();
         dm.ajouterObs(obs);
         dm.ajouterOpInf(inf);
         dm.ajouterPrescription(pres);
@@ -594,7 +594,7 @@ public class Creer_DM extends javax.swing.JFrame {
         BD bd = new BD();
 
         //Ajout du DM
-        bd.ajouterDM(dm);
+        bd.ajouterDM(dm);*/
 
 
     }//GEN-LAST:event_jButton9ActionPerformed

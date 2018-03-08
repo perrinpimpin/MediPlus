@@ -5,8 +5,10 @@
  */
 package medi.ui;
 
-import java.sql.Date;
+import java.util.Calendar;
 import medi.nf.BD;
+import medi.nf.DM;
+import medi.nf.Medecin;
 import medi.nf.Patient;
 
 /**
@@ -20,6 +22,10 @@ public class Main {
      */
     public static void main(String[] args) {
         BD connect = new BD();
+        Patient p = connect.recherchePatientsIPP(180000000);
+        Medecin m = connect.rechercheMedecin(123487);
+        DM d = new DM(p,m,"",connect.genererIDDM(),"Rechute","20mg Benzodiazépine","Crise d'épilepsie","Administration médicaments IV",new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+        connect.ajouterDM(d);
     }
     
 }
