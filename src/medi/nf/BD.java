@@ -264,6 +264,28 @@ public class BD {
         //System.out.println(ipp);
         return iddm;
     }
+    
+        public int genererIDPrescription(Patient p) {
+        int idp = 0;
+        p.getIPP();
+        DateFormat dateFormat = new SimpleDateFormat("yyMM");
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        String annee = dateFormat.format(date);
+        try {
+            String query = "select max(id_dm) from d_m where substring(id_dm,1,4)=" + Integer.parseInt(annee);
+            rs = st.executeQuery(query);
+            rs.next();
+            if (rs.getInt("max(id_dm)") != 0) {
+                idp = rs.getInt("max(id_dm)") + 1;
+            } else {
+                idp = Integer.parseInt(annee) * 100000;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        //System.out.println(ipp);
+        return idp;
+    }
 
     public ArrayList getDM(Medecin m) {
         int ipp = 0;
