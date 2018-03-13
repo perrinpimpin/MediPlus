@@ -183,6 +183,86 @@ public class BD {
         }
     }
 
+    public void ajouterPrescription(String id, int PH, String prescription, int iddm) {
+
+        String sql = "insert into prescriptions(id_prescription, PH, prescription, date, id_dm) values (?,?,?,?,?)";
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        try {
+            PreparedStatement pstm = con.prepareStatement(sql);
+
+            pstm.setString(1, id);
+            pstm.setInt(2, PH);
+            pstm.setString(3, prescription);
+            pstm.setDate(4, date);
+            pstm.setInt(5, iddm);
+
+            pstm.executeUpdate();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void ajouterOpeInf(String id, int PH, String op, int iddm) {
+
+        String sql = "insert into op_inf(id_op, date, id_dm, PH, op_inf) values (?,?,?,?,?)";
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        try {
+            PreparedStatement pstm = con.prepareStatement(sql);
+
+            pstm.setString(1, id);
+            pstm.setDate(2, date);
+            pstm.setInt(3, iddm);
+            pstm.setInt(4, PH);
+            pstm.setString(5, op);
+
+            pstm.executeUpdate();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void ajouterResultat(String id, int PH, String resultat, int iddm) {
+
+        String sql = "insert into resultats(id_res, date, id_dm, PH, resultat) values (?,?,?,?,?)";
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        try {
+            PreparedStatement pstm = con.prepareStatement(sql);
+
+            pstm.setString(1, id);
+            pstm.setDate(2, date);
+            pstm.setInt(3, iddm);
+            pstm.setInt(4, PH);
+            pstm.setString(5, resultat);
+
+            pstm.executeUpdate();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void ajouterObs(String id, int PH, String obs, int iddm) {
+
+        String sql = "insert into observations(id_obs, date, id_dm, PH, observation) values (?,?,?,?,?)";
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        try {
+            PreparedStatement pstm = con.prepareStatement(sql);
+
+            pstm.setString(1, id);
+            pstm.setDate(2, date);
+            pstm.setInt(3, iddm);
+            pstm.setInt(4, PH);
+            pstm.setString(5, obs);
+
+            pstm.executeUpdate();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     public void modifierPatient(Patient p) {
         PreparedStatement pstmt = null;
         String query = "update d_m_a set numeroVoie = ?, "
@@ -217,14 +297,10 @@ public class BD {
 
         int ipp = d.getP().getIPP();
         String let = d.getLet();
-        String res = d.getResultats();
-        String obs = d.getObservation();
-        String inf = d.getOpInf();
-        String pres = d.getPres();
         int idmed = d.getMedref().getId_user();
         Date date = d.getDate();
 
-        String sql = "insert into d_m(IPP, date, PH, lettre_Sortie, id_dm, observation, prescription, Resultat, opération_Infirmière) values (?,?,?,?,?,?,?,?,?)";
+        String sql = "insert into d_m(IPP, date, PH, lettre_Sortie, id_dm) values (?,?,?,?,?)";
         try {
             PreparedStatement pstm = con.prepareStatement(sql);
 
@@ -233,12 +309,9 @@ public class BD {
             pstm.setInt(3, idmed);
             pstm.setString(4, let);
             pstm.setInt(5, this.genererIDDM());
-            pstm.setString(6, obs);
-            pstm.setString(7, pres);
-            pstm.setString(8, res);
-            pstm.setString(9, inf);
             pstm.executeUpdate();
-
+            
+            javax.swing.JOptionPane.showMessageDialog(null, "Dossier Médical créé.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -261,29 +334,158 @@ public class BD {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        //System.out.println(ipp);
         return iddm;
     }
-    
-        public int genererIDPrescription(Patient p) {
-        int idp = 0;
-        p.getIPP();
-        DateFormat dateFormat = new SimpleDateFormat("yyMM");
-        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-        String annee = dateFormat.format(date);
+
+    public String genererIDPrescription(DM dm) {
+        String idp = null;
+        String iddm = String.valueOf(dm.getIddm());
         try {
-            String query = "select max(id_dm) from d_m where substring(id_dm,1,4)=" + Integer.parseInt(annee);
+            String query = "select max(substring(id_prescription,11,3)) from prescriptions where substring(id_prescription,1,9)=" + iddm;
             rs = st.executeQuery(query);
             rs.next();
-            if (rs.getInt("max(id_dm)") != 0) {
-                idp = rs.getInt("max(id_dm)") + 1;
+            if (rs.getInt("max(substring(id_prescription,11,3))") != 0) {
+                int id = rs.getInt("max(substring(id_prescription,11,3))") + 1;
+                idp = iddm + "P" + String.format("%03d", id);
             } else {
-                idp = Integer.parseInt(annee) * 100000;
+                idp = iddm + "P001";
             }
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        //System.out.println(ipp);
+        return idp;
+    }
+
+    public String genererIDObs(DM dm) {
+        String idp = null;
+        String iddm = String.valueOf(dm.getIddm());
+        try {
+            String query = "select max(substring(id_obs,11,3)) from observations where substring(id_obs,1,9)=" + iddm;
+            rs = st.executeQuery(query);
+            rs.next();
+            if (rs.getInt("max(substring(id_obs,11,3))") != 0) {
+                int id = rs.getInt("max(substring(id_obs,11,3))") + 1;
+                idp = iddm + "O" + String.format("%03d", id);
+            } else {
+                idp = iddm + "O001";
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return idp;
+    }
+
+    public String genererIDOpe(DM dm) {
+        String idp = null;
+        String iddm = String.valueOf(dm.getIddm());
+        try {
+            String query = "select max(substring(id_op,11,3)) from op_inf where substring(id_op,1,9)=" + iddm;
+            rs = st.executeQuery(query);
+            rs.next();
+            if (rs.getInt("max(substring(id_op,11,3))") != 0) {
+                int id = rs.getInt("max(substring(id_op,11,3))") + 1;
+                idp = iddm + "I" + String.format("%03d", id);
+            } else {
+                idp = iddm + "I001";
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return idp;
+    }
+
+    public String genererIDRes(DM dm) {
+        String idp = null;
+        String iddm = String.valueOf(dm.getIddm());
+        try {
+            String query = "select max(substring(id_res,11,3)) from resultats where substring(id_res,1,9)=" + iddm;
+            rs = st.executeQuery(query);
+            rs.next();
+            if (rs.getInt("max(substring(id_res,11,3))") != 0) {
+                int id = rs.getInt("max(substring(id_res,11,3))") + 1;
+                idp = iddm + "R" + String.format("%03d", id);
+            } else {
+                idp = iddm + "R001";
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return idp;
+    }
+
+    public String genererIDPrescription() {
+        String idp = null;
+        String iddm = String.valueOf(this.genererIDDM());
+        try {
+            String query = "select max(substring(id_prescription,11,3)) from prescriptions where substring(id_prescription,1,9)=" + iddm;
+            rs = st.executeQuery(query);
+            rs.next();
+            if (rs.getInt("max(substring(id_prescription,11,3))") != 0) {
+                int id = rs.getInt("max(substring(id_prescription,11,3))") + 1;
+                idp = iddm + "P" + String.format("%03d", id);
+            } else {
+                idp = iddm + "P001";
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return idp;
+    }
+
+    public String genererIDObs() {
+        String idp = null;
+        String iddm = String.valueOf(this.genererIDDM());
+        try {
+            String query = "select max(substring(id_obs,11,3)) from observations where substring(id_obs,1,9)=" + iddm;
+            rs = st.executeQuery(query);
+            rs.next();
+            if (rs.getInt("max(substring(id_obs,11,3))") != 0) {
+                int id = rs.getInt("max(substring(id_obs,11,3))") + 1;
+                idp = iddm + "O" + String.format("%03d", id);
+            } else {
+                idp = iddm + "O001";
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return idp;
+    }
+
+    public String genererIDOpe() {
+        String idp = null;
+        String iddm = String.valueOf(this.genererIDDM());
+        try {
+            String query = "select max(substring(id_op,11,3)) from op_inf where substring(id_op,1,9)=" + iddm;
+            rs = st.executeQuery(query);
+            rs.next();
+            if (rs.getInt("max(substring(id_op,11,3))") != 0) {
+                int id = rs.getInt("max(substring(id_op,11,3))") + 1;
+                idp = iddm + "I" + String.format("%03d", id);
+            } else {
+                idp = iddm + "I001";
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return idp;
+    }
+
+    public String genererIDRes() {
+        String idp = null;
+        String iddm = String.valueOf(this.genererIDDM());
+        try {
+            String query = "select max(substring(id_res,11,3)) from resultats where substring(id_res,1,9)=" + iddm;
+            rs = st.executeQuery(query);
+            rs.next();
+            if (rs.getInt("max(substring(id_res,11,3))") != 0) {
+                int id = rs.getInt("max(substring(id_res,11,3))") + 1;                
+                idp = iddm + "R" + String.format("%03", id);
+            } else {
+                idp = iddm + "R001";
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
         return idp;
     }
 
@@ -292,10 +494,6 @@ public class BD {
         int ph = 0;
         String lettre = null;
         int iddm = 0;
-        String obs = null;
-        String prescription = null;
-        String resultat = null;
-        String opeInf = null;
         String nom;
         String prenom;
         Date dateN;
@@ -326,10 +524,6 @@ public class BD {
                     date = rs.getDate("date");
                     lettre = rs.getString("lettre_Sortie");
                     iddm = rs.getInt("id_dm");
-                    obs = rs.getString("observation");
-                    prescription = rs.getString("prescription");
-                    resultat = rs.getString("Resultat");
-                    opeInf = rs.getString("opération_Infirmière");
 
                     String query2 = "select * from users WHERE ID_user = " + ph;
                     rs2 = st2.executeQuery(query2);
@@ -346,8 +540,7 @@ public class BD {
                         nom = rs1.getString("nom");
                         prenom = rs1.getString("prenom");
                         dateN = rs1.getDate("dateNaissance");
-                        p = new Patient(nom, prenom, dateN);
-                        DM dm = new DM(p, m, lettre, iddm, obs, prescription, resultat, opeInf, date);
+                        DM dm = new DM(new Patient(nom, prenom, dateN,ipp), m, lettre, iddm, date);
                         dms.add(dm);
                     }
 
@@ -397,10 +590,6 @@ public class BD {
                 date = rs.getDate("date");
                 lettre = rs.getString("lettre_Sortie");
                 iddm = rs.getInt("id_dm");
-                obs = rs.getString("observation");
-                prescription = rs.getString("prescription");
-                resultat = rs.getString("Resultat");
-                opeInf = rs.getString("opération_Infirmière");
 
                 query = "select * from praticien WHERE ID_user = " + ph;
                 rs1 = st1.executeQuery(query);
@@ -419,7 +608,7 @@ public class BD {
                         m = new Medecin(nom, prenom, ph, username, mdp, tel, spe, ser);
                     }
                 }
-                DM dm = new DM(p, m, lettre, iddm, obs, prescription, resultat, opeInf, date);
+                DM dm = new DM(p, m, lettre, iddm, date);
                 dms.add(dm);
             }
         } catch (Exception ex) {
@@ -439,14 +628,12 @@ public class BD {
             rs.next();
             if (rs.getInt("max(IPP)") != 0) {
                 ipp = rs.getInt("max(IPP)") + 1;
-                System.out.println(rs.getInt("max(IPP)"));
             } else {
                 ipp = Integer.parseInt(annee) * 10000000;
             }
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        //System.out.println(ipp);
         return ipp;
     }
 
@@ -564,7 +751,6 @@ public class BD {
         try {
             String query = "select * from bd.d_m_a where nom='" + name + "' AND prenom='" + surname + "'";
             rs = st.executeQuery(query);
-            System.out.println("contenu de la base de donnée");
             while (rs.next()) {
                 ipp = rs.getInt("IPP");// pour avoir accès a la colonne de ma table 
                 nom = rs.getString("nom");
@@ -586,7 +772,6 @@ public class BD {
         try {
             String query = "select * from bd.d_m_a where nom='" + name + "' AND prenom='" + surname + "' AND IPP='" + identifiant + "'";
             rs = st.executeQuery(query);
-            System.out.println("contenu de la base de donnée");
             while (rs.next()) {
                 ipp = rs.getInt("IPP");// pour avoir accès a la colonne de ma table 
                 nom = rs.getString("nom");
@@ -608,7 +793,6 @@ public class BD {
         try {
             String query = "select * from bd.d_m_a where nom='" + name + "' AND IPP='" + identifiant + "'";
             rs = st.executeQuery(query);
-            System.out.println("contenu de la base de donnée");
             while (rs.next()) {
                 ipp = rs.getInt("IPP");// pour avoir accès a la colonne de ma table 
                 nom = rs.getString("nom");
@@ -630,7 +814,6 @@ public class BD {
         try {
             String query = "select * from bd.d_m_a where prenom='" + surname + "' AND IPP='" + identifiant + "'";
             rs = st.executeQuery(query);
-            System.out.println("contenu de la base de donnée");
             while (rs.next()) {
                 ipp = rs.getInt("IPP");// pour avoir accès a la colonne de ma table 
                 nom = rs.getString("nom");
@@ -660,7 +843,9 @@ public class BD {
     public Patient recherchePatientsNomPrenomDate(String name, String surname, Date date) {
         p = new Patient(null, null, null);
         try {
-            String query = "select * from bd.d_m_a where nom='" + name + "' AND prenom='" + surname + "' AND dateNaissance='" + date.toString() + "'";
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String d = format.format(date);
+            String query = "select * from bd.d_m_a where nom='" + name + "' AND prenom='" + surname + "' AND dateNaissance='" + format.format(date) + "'";
             rs = st.executeQuery(query);
             while (rs.next()) {
                 ipp = rs.getInt("IPP");// pour avoir accès a la colonne de ma table 

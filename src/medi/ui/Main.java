@@ -24,7 +24,7 @@ public class Main {
         BD connect = new BD();
         Patient p = connect.recherchePatientsIPP(180000000);
         Medecin m = connect.rechercheMedecin(123487);
-        DM d = new DM(p,m,"",connect.genererIDDM(),"Rechute","20mg Benzodiazépine","Crise d'épilepsie","Administration médicaments IV",new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+        DM d = new DM(p,m,"",connect.genererIDDM(),new java.sql.Date(Calendar.getInstance().getTime().getTime()));
         connect.ajouterDM(d);
     }
     

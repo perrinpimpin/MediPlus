@@ -34,9 +34,9 @@ public class AfficherDM extends javax.swing.JFrame {
         dma = connect.getDMPatient(ipp);
         result = (DefaultTableModel) resultatsTable.getModel();
         if (p.getSexe().equals("Femme")) {
-            nomField.setText(p.getNom() + " " + p.getPrenom() + " - Née le " + format.format(p.getDate()).toString());
+            nomField.setText(p.getNom() + " " + p.getPrenom() + " - Née le " + format.format(p.getDate()));
         } else {
-            nomField.setText(p.getNom() + " " + p.getPrenom() + " - Né le " + format.format(p.getDate()).toString());
+            nomField.setText(p.getNom() + " " + p.getPrenom() + " - Né le " + format.format(p.getDate()));
         }
 
         for (int i = 0;

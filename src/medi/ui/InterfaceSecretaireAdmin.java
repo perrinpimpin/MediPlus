@@ -47,7 +47,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             lp.get(i);
             result.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
         }
-
+        
         resultatsTable.setModel(result);
         resultatsTable1.setModel(result);
         resultatsTable.repaint();
@@ -63,8 +63,8 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
                     }
                 }
             }
-
         });
+        
         menuPanel.add(accueil, "Accueil");
         menuPanel.add(creerDMA, "CreerDMA");
         menuPanel.add(rechercherDMA, "RechercherDMA");
@@ -527,7 +527,15 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             new String [] {
                 "Nom", "Prénom", "IPP", "Date de naissance", "Lieu de naissance", "Sexe"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(resultatsTable1);
 
         jButton9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N

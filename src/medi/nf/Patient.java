@@ -37,6 +37,13 @@ public class Patient {
         this.nom = nom;
         this.prenom = prenom;
     }
+        
+                public Patient(String nom, String prenom, Date date, int ipp) {
+        this.dateNaissance = date;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.ipp=ipp;
+    }
     
     public Patient(String nom, String prenom, int id, Date date, String lieuNaissance, String sexe) {
         this.dateNaissance = date;
