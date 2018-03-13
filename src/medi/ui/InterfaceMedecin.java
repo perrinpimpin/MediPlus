@@ -174,8 +174,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         lettre = new javax.swing.JTextArea();
         jScrollPane5 = new javax.swing.JScrollPane();
         resultat = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        actes = new javax.swing.JTextArea();
         prenomField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -188,7 +186,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         opinf = new javax.swing.JTextArea();
         jScrollPane7 = new javax.swing.JScrollPane();
         observation = new javax.swing.JTextArea();
-        jLabel11 = new javax.swing.JLabel();
         jButton20 = new javax.swing.JButton();
         jScrollPane10 = new javax.swing.JScrollPane();
         resultatsTable1 = new javax.swing.JTable();
@@ -260,7 +257,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         ac.setBackground(new java.awt.Color(255, 153, 0));
         ac.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         ac.setForeground(new java.awt.Color(102, 102, 102));
-        ac.setText("Créer un DMA");
+        ac.setText("Créer un DM");
         ac.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ac.setMaximumSize(new java.awt.Dimension(160, 25));
         ac.setMinimumSize(new java.awt.Dimension(160, 25));
@@ -274,7 +271,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         ar.setBackground(new java.awt.Color(255, 153, 0));
         ar.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         ar.setForeground(new java.awt.Color(102, 102, 102));
-        ar.setText("Rechercher un DMA");
+        ar.setText("Rechercher un DM");
         ar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ar.setMaximumSize(new java.awt.Dimension(160, 25));
         ar.setMinimumSize(new java.awt.Dimension(160, 25));
@@ -347,7 +344,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         cc.setBackground(new java.awt.Color(102, 102, 102));
         cc.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cc.setForeground(new java.awt.Color(255, 255, 255));
-        cc.setText("Créer un DMA");
+        cc.setText("Créer un DM");
         cc.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         cc.setMaximumSize(new java.awt.Dimension(160, 25));
         cc.setMinimumSize(new java.awt.Dimension(160, 25));
@@ -420,7 +417,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         rc.setBackground(new java.awt.Color(255, 153, 0));
         rc.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rc.setForeground(new java.awt.Color(102, 102, 102));
-        rc.setText("Créer un DMA");
+        rc.setText("Créer un DM");
         rc.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rc.setMaximumSize(new java.awt.Dimension(160, 25));
         rc.setMinimumSize(new java.awt.Dimension(160, 25));
@@ -434,7 +431,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         rr.setBackground(new java.awt.Color(102, 102, 102));
         rr.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         rr.setForeground(new java.awt.Color(255, 255, 255));
-        rr.setText("Rechercher un DMA");
+        rr.setText("Rechercher un DM");
         rr.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rr.setMaximumSize(new java.awt.Dimension(160, 25));
         rr.setMinimumSize(new java.awt.Dimension(160, 25));
@@ -483,7 +480,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 .addComponent(rc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addComponent(rr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(621, Short.MAX_VALUE))
+                .addContainerGap(529, Short.MAX_VALUE))
         );
 
         menuPanel.add(menuRechercherDM, "card2");
@@ -508,7 +505,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel2.setText("Unité :");
+        jLabel2.setText("Service :");
 
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
@@ -552,7 +549,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         listePatients.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         listePatients.setPreferredSize(new java.awt.Dimension(0, 0));
 
-        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(102, 102, 102));
         jLabel15.setText("Liste des patients présents dans le service :");
 
@@ -583,14 +580,13 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         listePatientsLayout.setHorizontalGroup(
             listePatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(listePatientsLayout.createSequentialGroup()
-                .addGroup(listePatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(listePatientsLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabel15))
-                    .addGroup(listePatientsLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 920, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(14, 14, 14)
+                .addComponent(jLabel15)
+                .addContainerGap(615, Short.MAX_VALUE))
+            .addGroup(listePatientsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         listePatientsLayout.setVerticalGroup(
             listePatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -598,8 +594,8 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 538, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         centrePanel.add(listePatients, "card2");
@@ -772,22 +768,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2)
                     .addGroup(rechercheDMLayout.createSequentialGroup()
-                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(41, 41, 41)
-                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(39, 39, 39)
-                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)))
-                    .addGroup(rechercheDMLayout.createSequentialGroup()
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton10)
@@ -819,7 +799,26 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                         .addComponent(jButton18)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1)
-                        .addGap(54, 54, 54)))
+                        .addGap(54, 54, 54))
+                    .addGroup(rechercheDMLayout.createSequentialGroup()
+                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(41, 41, 41)
+                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(rechercheDMLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(113, 113, 113)
+                                .addComponent(jLabel6)
+                                .addGap(95, 95, 95))
+                            .addGroup(rechercheDMLayout.createSequentialGroup()
+                                .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         rechercheDMLayout.setVerticalGroup(
@@ -831,13 +830,13 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(jLabel5)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 357, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 276, Short.MAX_VALUE)
                 .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton9)
                     .addComponent(jButton10)
@@ -892,10 +891,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         resultat.setRows(5);
         jScrollPane5.setViewportView(resultat);
 
-        actes.setColumns(20);
-        actes.setRows(5);
-        jScrollPane3.setViewportView(actes);
-
         jLabel9.setText("Date de naissance");
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -923,10 +918,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         observation.setColumns(20);
         observation.setRows(5);
         jScrollPane7.setViewportView(observation);
-
-        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel11.setText("Actes");
 
         jButton20.setText("Rechercher");
         jButton20.addActionListener(new java.awt.event.ActionListener() {
@@ -977,14 +968,12 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(creer))
                     .addComponent(jScrollPane4)
-                    .addComponent(jScrollPane3)
                     .addComponent(jScrollPane5)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel19)
                     .addComponent(jLabel10)
-                    .addComponent(jLabel11)
                     .addComponent(jLabel12)
                     .addComponent(jLabel13)
                     .addComponent(jLabel16)
@@ -1033,10 +1022,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel11)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1054,7 +1039,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(creer)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         creerDM.add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -1110,7 +1095,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(670, Short.MAX_VALUE)
+                .addContainerGap(578, Short.MAX_VALUE)
                 .addComponent(jButton8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton4)
@@ -1410,7 +1395,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aa;
     private javax.swing.JButton ac;
-    private javax.swing.JTextArea actes;
     private javax.swing.JButton ar;
     private javax.swing.JButton as;
     private javax.swing.JButton ca;
@@ -1441,7 +1425,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -1466,7 +1449,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
