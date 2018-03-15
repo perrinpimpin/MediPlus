@@ -5,8 +5,11 @@
  */
 package medi.ui;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import medi.nf.BD;
 import medi.nf.DM;
@@ -16,19 +19,22 @@ import medi.nf.Patient;
  *
  * @author victor
  */
-public class AfficherDM extends javax.swing.JFrame {
+public class AfficherListeDMPatient extends javax.swing.JFrame {
 
     private BD connect;
     private ArrayList<DM> dma;
     DefaultTableModel result;
+    Patient p;
+    DM dm;
 
     /**
      * Creates new form Ajouterpres
      */
-    public AfficherDM(Patient p) {
+    public AfficherListeDMPatient(Patient pdm) {
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         connect = new BD();
         initComponents();
+        this.p = pdm;
         int ipp = p.getIPP();
         String sejterm;
         dma = connect.getDMPatient(ipp);
@@ -39,9 +45,7 @@ public class AfficherDM extends javax.swing.JFrame {
             nomField.setText(p.getNom() + " " + p.getPrenom() + " - Né le " + format.format(p.getDate()));
         }
 
-        for (int i = 0;
-                i < dma.size();
-                i++) {
+        for (int i = 0;i < dma.size();i++) {
             if(dma.get(i).getLet()==null){
                 sejterm="Non";
             } else {
@@ -54,17 +58,18 @@ public class AfficherDM extends javax.swing.JFrame {
 
         resultatsTable.repaint();
 
-        /*       resultatsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        resultatsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
                 if (resultatsTable.getSelectedRow() > -1) {
                     if (event.getValueIsAdjusting() == false) {
-                        p = connect.recherchePatientsNomPrenomDate(resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 0).toString(), resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 1).toString(), dm.get(resultatsTable.getSelectedRow()).getP().getDate());
+                        int iddm = (int) resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 0);
+                        dm = connect.getDM(iddm);
+                        //p = connect.recherchePatientsNomPrenomDate(resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 0).toString(), resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 1).toString(), (Date) resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 2));
                     }
                 }
             }
-
-        });*/
+        });
     }
 
     /**
@@ -82,6 +87,7 @@ public class AfficherDM extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
+        consulterDM = new javax.swing.JButton();
         listePatients = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -131,12 +137,21 @@ public class AfficherDM extends javax.swing.JFrame {
             }
         });
 
+        consulterDM.setText("Consulter le DM sélectionné");
+        consulterDM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consulterDMActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(667, Short.MAX_VALUE)
+                .addContainerGap(464, Short.MAX_VALUE)
+                .addComponent(consulterDM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
                 .addContainerGap())
         );
@@ -144,7 +159,9 @@ public class AfficherDM extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton2)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(consulterDM))
                 .addContainerGap())
         );
 
@@ -227,6 +244,11 @@ public class AfficherDM extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void consulterDMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consulterDMActionPerformed
+        AfficherDetailDM addm = new AfficherDetailDM(dm);
+        addm.setVisible(true);
+    }//GEN-LAST:event_consulterDMActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -273,6 +295,7 @@ public class AfficherDM extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton consulterDM;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel14;

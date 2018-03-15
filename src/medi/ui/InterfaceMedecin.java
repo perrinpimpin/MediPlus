@@ -33,7 +33,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
      */
     BD connect;
     Medecin m;
-    ArrayList<DM> dm;
+    ArrayList<DM> ldm;
     Patient p;
     Patient pc;
     DefaultTableModel result;
@@ -52,14 +52,14 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         serviceLabel.setText(m.getService());
         result = (DefaultTableModel) resultatsTable.getModel();
         result1 = (DefaultTableModel) resultatsTable.getModel();
-        dm = connect.getDM(m);
+        ldm = connect.getDM(m);
         dmencours = new ArrayList();
         lp = connect.getPatients();
 
-        for (int i = 0; i < dm.size(); i++) {
-            if (dm.get(i).getLet() == null) {
-                dmencours.add(dm.get(i));
-                result.addRow(new Object[]{dm.get(i).getP().getNom(), dm.get(i).getP().getPrenom(), dm.get(i).getP().getDate(), dm.get(i).getDate()});
+        for (int i = 0; i < ldm.size(); i++) {
+            if (ldm.get(i).getLet() == null) {
+                dmencours.add(ldm.get(i));
+                result.addRow(new Object[]{ldm.get(i).getP().getNom(), ldm.get(i).getP().getPrenom(), ldm.get(i).getP().getDate(), ldm.get(i).getDate()});
             }
         }
 
@@ -1127,7 +1127,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        AfficherDM adm = new AfficherDM(p);
+        AfficherListeDMPatient adm = new AfficherListeDMPatient(p);
         adm.setVisible(true);
     }//GEN-LAST:event_jButton8ActionPerformed
 
@@ -1276,14 +1276,14 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         DM dm = new DM(pc, m, let, iddm, date);
         connect.ajouterDM(dm);
 
-        this.dm = connect.getDM(m);
+        this.ldm = connect.getDM(m);
         dmencours = new ArrayList();
         lp = connect.getPatients();
         result.setRowCount(0);
-        for (int i = 0; i < this.dm.size(); i++) {
-            if (this.dm.get(i).getLet() == null) {
-                dmencours.add(this.dm.get(i));
-                result.addRow(new Object[]{this.dm.get(i).getP().getNom(), this.dm.get(i).getP().getPrenom(), this.dm.get(i).getP().getDate(), this.dm.get(i).getDate()});
+        for (int i = 0; i < this.ldm.size(); i++) {
+            if (this.ldm.get(i).getLet() == null) {
+                dmencours.add(this.ldm.get(i));
+                result.addRow(new Object[]{this.ldm.get(i).getP().getNom(), this.ldm.get(i).getP().getPrenom(), this.ldm.get(i).getP().getDate(), this.ldm.get(i).getDate()});
             }
         }
 

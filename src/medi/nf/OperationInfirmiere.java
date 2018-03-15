@@ -11,17 +11,17 @@ import java.sql.Date;
  *
  * @author victor
  */
-public class Prescription {
+public class OperationInfirmiere {
     private Date date;
     private Medecin prescripteur;
     private int iddm;
-    private String prescription;
+    private String opinf;
     
-    public Prescription(Date d, Medecin m, int iddm, String prescription){
+    public OperationInfirmiere(Date d, Medecin m, int iddm, String opinf){
         this.date = d;
         this.iddm = iddm;
         this.prescripteur = m;
-        this.prescription = prescription;
+        this.opinf = opinf;
     }
 
     public Date getDate() {
@@ -40,18 +40,18 @@ public class Prescription {
         this.prescripteur = prescripteur;
     }
 
-    public String getPrescription() {
-        return prescription;
+    public String getOperationInfirmiere() {
+        return opinf;
     }
 
-    public void setPrescription(String prescription) {
-        this.prescription = prescription;
+    public void setOperationInfirmiere(String obs) {
+        this.opinf = obs;
     }
     
     // ajouter une prescription
     
     public void rajouterPres(String p){
-        this.prescription += p;
+        this.opinf += p;
     }
     
     public int getIddm() {

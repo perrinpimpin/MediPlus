@@ -92,6 +92,7 @@ public class BD {
                     user = new SecretaireAdmin(rs.getString("nom"), rs.getString("prenom"), i, u, p, rs.getInt("telephone"));
                 }
             }
+            rs.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -604,6 +605,7 @@ public class BD {
                         m = new Medecin(nom, prenom, ph, username, mdp, tel, spe, ser);
 
                     }
+                    rs2.close();
 
                     query = "select * from d_m_a WHERE IPP = " + ipp;
                     rs1 = st1.executeQuery(query);
@@ -618,10 +620,162 @@ public class BD {
                 }
 
             }
+            rs.close();
+            rs1.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
         return dms;
+    }
+
+    public DM getDM(int iddm) {
+
+        int ph = 0;
+        int ipp = 0;
+        String lettre = null;
+
+        String nom;
+        String prenom;
+        Date dateN;
+        Date date;
+        DM dm = null;
+
+        try {
+            Statement st1 = con.createStatement();
+            ResultSet rs1;
+            Statement st2 = con.createStatement();
+            ResultSet rs2;
+
+            String query = "select * from d_m where id_dm = " + iddm;
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                ipp = rs.getInt("IPP");
+                ph = rs.getInt("PH");
+                date = rs.getDate("date");
+                lettre = rs.getString("lettre_Sortie");
+                iddm = rs.getInt("id_dm");
+
+                query = "select * from praticien WHERE ID_user = " + ph;
+                rs1 = st1.executeQuery(query);
+                while (rs1.next()) {
+                    nom = rs1.getString("nom");
+                    prenom = rs1.getString("prenom");
+                    int tel = rs1.getInt("telephone");
+                    String spe = rs1.getString("specialite");
+                    String ser = rs1.getString("service");
+
+                    String query2 = "select * from users WHERE ID_user = " + ph;
+                    rs2 = st2.executeQuery(query2);
+                    while (rs2.next()) {
+                        String username = rs2.getString("username");
+                        String mdp = rs2.getString("password");
+                        m = new Medecin(nom, prenom, ph, username, mdp, tel, spe, ser);
+                    }
+                }
+                p = this.recherchePatientsIPP(ipp);
+
+                dm = new DM(p, m, lettre, iddm, date);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return dm;
+    }
+
+    public ArrayList<Prescription> getPrescription(int iddm) {
+        ArrayList<Prescription> prescription = new ArrayList<>();
+        int ph = 0;
+        String pres = null;
+        Date date = null;
+        String query = "select * from prescriptions where id_dm = " + iddm;
+
+        try {
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                ph = rs.getInt("PH");
+                date = rs.getDate("date");
+                pres = rs.getString("prescription");
+                m = this.rechercheMedecin(ph);
+                Prescription pr = new Prescription(date, m, iddm, pres);
+                prescription.add(pr);
+            }
+            rs.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return prescription;
+    }
+
+    public ArrayList<Observation> getObservation(int iddm) {
+        ArrayList<Observation> obs = new ArrayList<>();
+        int ph = 0;
+        String observation = null;
+        Date date = null;
+        try {
+            String query = "select * from observations where id_dm = " + iddm;
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                ph = rs.getInt("PH");
+                date = rs.getDate("date");
+                iddm = rs.getInt("id_dm");
+                observation = rs.getString("observations");
+                Medecin m = this.rechercheMedecin(ph);
+                obs.add(new Observation(date, m, iddm, observation));
+            }
+            rs.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return obs;
+    }
+
+    public ArrayList<Resultat> getResultat(int iddm) {
+        ArrayList<Resultat> res = new ArrayList<>();
+        int ph = 0;
+        String resultat = null;
+        Date date = null;
+        try {
+            String query = "select * from resultats where id_dm = " + iddm;
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                ph = rs.getInt("PH");
+                date = rs.getDate("date");
+                iddm = rs.getInt("id_dm");
+                resultat = rs.getString("resultat");
+                Medecin m = this.rechercheMedecin(ph);
+                res.add(new Resultat(date, m, iddm, resultat));
+            }
+            rs.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return res;
+    }
+
+    public ArrayList<OperationInfirmiere> getOperationInfirmiere(int iddm) {
+        ArrayList<OperationInfirmiere> opinf = new ArrayList<>();
+        int ph = 0;
+        String operation = null;
+        Date date = null;
+        try {
+            String query = "select * from resultats where id_dm = " + iddm;
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                ph = rs.getInt("PH");
+                date = rs.getDate("date");
+                iddm = rs.getInt("id_dm");
+                operation = rs.getString("resultat");
+                Medecin m = this.rechercheMedecin(ph);
+                opinf.add(new OperationInfirmiere(date, m, iddm, operation));
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return opinf;
     }
 
     public ArrayList<DM> getDMPatient(int ipp) {
@@ -730,26 +884,30 @@ public class BD {
     }
 
     public Medecin rechercheMedecin(int id) {
+        String username = null;
+        String mdp = null;
+        int tel = 0;
+        String spe = null;
+        String ser = null;
         try {
             String query = "select * from praticien where ID_user='" + id + "'";
-            rs = st.executeQuery(query);
-            query = "select * from praticien WHERE ID_user = " + id;
             rs = st.executeQuery(query);
             while (rs.next()) {
                 nom = rs.getString("nom");
                 prenom = rs.getString("prenom");
-                int tel = rs.getInt("telephone");
-                String spe = rs.getString("specialite");
-                String ser = rs.getString("service");
-
-                String query2 = "select * from users WHERE ID_user = " + id;
-                rs = st.executeQuery(query2);
-                while (rs.next()) {
-                    String username = rs.getString("username");
-                    String mdp = rs.getString("password");
-                    m = new Medecin(nom, prenom, id, username, mdp, tel, spe, ser);
-                }
+                tel = rs.getInt("telephone");
+                spe = rs.getString("specialite");
+                ser = rs.getString("service");
             }
+
+            query = "select * from users WHERE ID_user = " + id;
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                username = rs.getString("username");
+                mdp = rs.getString("password");
+            }
+
+            m = new Medecin(nom, prenom, id, username, mdp, tel, spe, ser);
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -798,7 +956,8 @@ public class BD {
         return lp;
     }
 
-    public Patient recherchePatientsIPP(int identifiant) {
+    public Patient recherchePatientsIPP(int id) {
+        int identifiant = id;
         try {
             String query = "select * from d_m_a where IPP='" + identifiant + "'";
             rs = st.executeQuery(query);
