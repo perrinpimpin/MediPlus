@@ -222,7 +222,7 @@ public class BD {
             javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     public void ajouterResultat(String id, int PH, String resultat, int iddm) {
 
         String sql = "insert into resultats(id_res, date, id_dm, PH, resultat) values (?,?,?,?,?)";
@@ -242,7 +242,7 @@ public class BD {
             javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     public void ajouterObs(String id, int PH, String obs, int iddm) {
 
         String sql = "insert into observations(id_obs, date, id_dm, PH, observation) values (?,?,?,?,?)";
@@ -293,6 +293,77 @@ public class BD {
         }
     }
 
+    public void archiverPatient(Patient p, Date d, String obs) {
+        PreparedStatement pstm = null;
+        PreparedStatement pstmt2 = null;
+        String sql = "insert into archive_dma(IPP, nom, prenom, dateNaissance, lieuNaissance, sexe, numeroVoie, typeVoie, complement, codePostal, ville, pays, portable, fixe, mail, dateDeces, observation) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String query = "delete from d_m_a where IPP = " + p.getIPP();
+        try {
+            pstm = con.prepareStatement(sql);
+            pstmt2 = con.prepareStatement(query);
+            pstm.setInt(1, p.getIPP());
+            pstm.setString(2, p.getNom());
+            pstm.setString(3, p.getPrenom());
+            pstm.setDate(4, p.getDate());
+            pstm.setString(5, p.getLieuNaissance());
+            pstm.setString(6, p.getSexe());
+            pstm.setInt(7, p.getNumeroVoie());
+            pstm.setString(8, p.getTypeVoie());
+            pstm.setString(9, p.getComplement());
+            pstm.setInt(10, p.getCodePostal());
+            pstm.setString(11, p.getVille());
+            pstm.setString(12, p.getPays());
+            pstm.setInt(13, p.getTel());
+            pstm.setInt(14, p.getFixe());
+            pstm.setString(15, p.getMail());
+            pstm.setDate(16, d);
+            pstm.setString(17, obs);
+            pstm.executeUpdate();
+            pstmt2.executeUpdate();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public ArrayList<DM> sejoursEnCours() {
+        int ipp = 0;
+        int ph = 0;
+        String lettre = null;
+        int iddm = 0;
+        String nom;
+        String prenom;
+        Date dateN;
+        Date date = null;
+        ArrayList<DM> dms = new ArrayList();
+
+        ResultSet rs1;
+
+        try {
+            Statement st1 = con.createStatement();
+            String query = "select * from d_m where lettre_Sortie IS NULL";
+            rs1 = st1.executeQuery(query);
+            while (rs1.next()) {
+                ipp = rs1.getInt("IPP");
+                ph = rs1.getInt("PH");
+                date = rs1.getDate("date");
+                lettre = rs1.getString("lettre_Sortie");
+                iddm = rs1.getInt("id_dm");
+
+                Patient pc = this.recherchePatientsIPP(ipp);
+
+                DM dm = new DM(pc, m, lettre, iddm, date);
+                dms.add(dm);
+
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return dms;
+
+    }
+
     public void ajouterDM(DM d) {
 
         int ipp = d.getP().getIPP();
@@ -310,7 +381,7 @@ public class BD {
             pstm.setString(4, let);
             pstm.setInt(5, this.genererIDDM());
             pstm.executeUpdate();
-            
+
             javax.swing.JOptionPane.showMessageDialog(null, "Dossier Médical créé.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             System.out.println(ex);
@@ -478,7 +549,7 @@ public class BD {
             rs = st.executeQuery(query);
             rs.next();
             if (rs.getInt("max(substring(id_res,11,3))") != 0) {
-                int id = rs.getInt("max(substring(id_res,11,3))") + 1;                
+                int id = rs.getInt("max(substring(id_res,11,3))") + 1;
                 idp = iddm + "R" + String.format("%03", id);
             } else {
                 idp = iddm + "R001";
@@ -540,7 +611,7 @@ public class BD {
                         nom = rs1.getString("nom");
                         prenom = rs1.getString("prenom");
                         dateN = rs1.getDate("dateNaissance");
-                        DM dm = new DM(new Patient(nom, prenom, dateN,ipp), m, lettre, iddm, date);
+                        DM dm = new DM(new Patient(nom, prenom, dateN, ipp), m, lettre, iddm, date);
                         dms.add(dm);
                     }
 
@@ -838,7 +909,6 @@ public class BD {
         }
         return lp;
     }
-//date.getYear() + "-" + date.getMonth() + "-" + date.getDate() + "'"
 
     public Patient recherchePatientsNomPrenomDate(String name, String surname, Date date) {
         p = new Patient(null, null, null);

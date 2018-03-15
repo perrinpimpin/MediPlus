@@ -36,7 +36,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     ArrayList<DM> dm;
     Patient p;
     Patient pc;
-    DefaultTableModel result;    
+    DefaultTableModel result;
     DefaultTableModel result1;
     private Connection con;
     private Statement st;
@@ -62,8 +62,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 result.addRow(new Object[]{dm.get(i).getP().getNom(), dm.get(i).getP().getPrenom(), dm.get(i).getP().getDate(), dm.get(i).getDate()});
             }
         }
-        
-
 
         resultatsTable.setModel(result);
         resultatsTable.repaint();
@@ -73,20 +71,19 @@ public class InterfaceMedecin extends javax.swing.JFrame {
             public void valueChanged(ListSelectionEvent event) {
                 if (resultatsTable.getSelectedRow() > -1) {
                     if (event.getValueIsAdjusting() == false) {
-                        p = connect.recherchePatientsNomPrenomDate(resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 0).toString(), resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 1).toString(), dmencours.get(resultatsTable.getSelectedRow()).getP().getDate());
+                        p = connect.recherchePatientsNomPrenomDate(resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 0).toString(), resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 1).toString(), (Date) resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 2));
                     }
                 }
             }
         });
 
-        
-        
         resultatsTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
                 if (resultatsTable1.getSelectedRow() > -1) {
                     if (event.getValueIsAdjusting() == false) {
-                        pc = connect.recherchePatientsNomPrenomDate(resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 0).toString(), resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 1).toString(), lp.get(resultatsTable1.getSelectedRow()).getDate());
+                        String s = resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 3).toString();
+                        pc = connect.recherchePatientsNomPrenomDate(resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 0).toString(), resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 1).toString(), (Date) resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 3));
                     }
                 }
             }
@@ -1228,6 +1225,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     private void creerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creerActionPerformed
         int ph = m.getId_user();
         int iddm = connect.genererIDDM();
+        String let = null;
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         if (observation.getText().length() != 0) {
             ArrayList<String> obs = new ArrayList<String>();
@@ -1268,9 +1266,29 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 connect.ajouterOpeInf(connect.genererIDOpe(), ph, op.get(i), iddm);
             }
         }
-        
-        DM dm = new DM(pc, m, lettre.getText(), iddm, date);
+
+        if (lettre.getText().length() == 0) {
+            let = null;
+        } else {
+            let = lettre.getText();
+        }
+
+        DM dm = new DM(pc, m, let, iddm, date);
         connect.ajouterDM(dm);
+
+        this.dm = connect.getDM(m);
+        dmencours = new ArrayList();
+        lp = connect.getPatients();
+        result.setRowCount(0);
+        for (int i = 0; i < this.dm.size(); i++) {
+            if (this.dm.get(i).getLet() == null) {
+                dmencours.add(this.dm.get(i));
+                result.addRow(new Object[]{this.dm.get(i).getP().getNom(), this.dm.get(i).getP().getPrenom(), this.dm.get(i).getP().getDate(), this.dm.get(i).getDate()});
+            }
+        }
+
+        resultatsTable.setModel(result);
+        resultatsTable.repaint();
     }//GEN-LAST:event_creerActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

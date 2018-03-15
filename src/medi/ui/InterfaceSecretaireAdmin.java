@@ -14,6 +14,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import medi.nf.BD;
+import medi.nf.DM;
 import medi.nf.Patient;
 import medi.nf.SecretaireAdmin;
 
@@ -28,11 +29,14 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
      */
     BD connect;
     ArrayList<Patient> lp;
+    ArrayList<DM> dm;
     Patient p;
+    Patient p2;
     boolean res = false;
     SecretaireAdmin sa;
     Informations_patient ip;
     DefaultTableModel result;
+    DefaultTableModel result2;
 
     public InterfaceSecretaireAdmin(SecretaireAdmin sa) {
         initComponents();
@@ -41,13 +45,15 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);//centrer
         connect = new BD();
         result = (DefaultTableModel) resultatsTable.getModel();
+        result2 = (DefaultTableModel) resultatsTable2.getModel();
         lp = connect.getPatients();
+        dm = connect.sejoursEnCours();
 
         for (int i = 0; i < lp.size(); i++) {
             lp.get(i);
             result.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
         }
-        
+
         resultatsTable.setModel(result);
         resultatsTable1.setModel(result);
         resultatsTable.repaint();
@@ -58,19 +64,39 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             public void valueChanged(ListSelectionEvent event) {
                 if (resultatsTable.getSelectedRow() > -1) {
                     if (event.getValueIsAdjusting() == false) {
-                        p = connect.recherchePatientsNomPrenomDate(resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 0).toString(), resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 1).toString(), lp.get(resultatsTable.getSelectedRow()).getDate());
+                        p = connect.recherchePatientsNomPrenomDate(resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 0).toString(), resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 1).toString(), (Date) resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 3));
 
                     }
                 }
             }
         });
-        
+
+        resultatsTable2.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent event) {
+                if (resultatsTable2.getSelectedRow() > -1) {
+                    if (event.getValueIsAdjusting() == false) {
+                        p2 = connect.recherchePatientsNomPrenomDate(resultatsTable2.getValueAt(resultatsTable2.getSelectedRow(), 0).toString(), resultatsTable2.getValueAt(resultatsTable2.getSelectedRow(), 1).toString(), (Date) resultatsTable2.getValueAt(resultatsTable2.getSelectedRow(), 3));
+
+                    }
+                }
+            }
+        });
+
+        for (int i = 0; i < dm.size(); i++) {
+            result2.addRow(new Object[]{dm.get(i).getP().getNom(), dm.get(i).getP().getPrenom(), dm.get(i).getP().getIPP(), dm.get(i).getP().getDate(), dm.get(i).getP().getLieuNaissance(), dm.get(i).getP().getSexe(),});
+        }
+        resultatsTable2.setModel(result2);
+        resultatsTable2.repaint();
+
         menuPanel.add(accueil, "Accueil");
         menuPanel.add(creerDMA, "CreerDMA");
         menuPanel.add(rechercherDMA, "RechercherDMA");
+        menuPanel.add(menuSejour, "Sejours");
         centrePanel.add(listePatients, "Accueil");
         centrePanel.add(recherchePatient, "RechercherDMA");
         centrePanel.add(creerPatient, "CreerDMA");
+        centrePanel.add(sejours, "Sejours");
         jPanel7.add(jPanel9, "BoutonsDMA");
         jPanel7.add(jPanel10, "Vide");
     }
@@ -105,6 +131,11 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         rs = new javax.swing.JButton();
         rc = new javax.swing.JButton();
         rr = new javax.swing.JButton();
+        menuSejour = new javax.swing.JPanel();
+        sma = new javax.swing.JButton();
+        sms = new javax.swing.JButton();
+        smc = new javax.swing.JButton();
+        smr = new javax.swing.JButton();
         centrePanel = new javax.swing.JPanel();
         recherchePatient = new javax.swing.JPanel();
         nomField = new javax.swing.JTextField();
@@ -154,6 +185,10 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         resultatsTable = new javax.swing.JTable();
+        sejours = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        resultatsTable2 = new javax.swing.JTable();
         jLabel21 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -164,6 +199,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        archiver = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -287,7 +323,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
                 .addComponent(ac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(276, 276, 276))
         );
 
         menuPanel.add(accueil, "card2");
@@ -465,6 +501,93 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         );
 
         menuPanel.add(rechercherDMA, "card2");
+
+        menuSejour.setBackground(new java.awt.Color(255, 255, 255));
+
+        sma.setBackground(new java.awt.Color(255, 153, 0));
+        sma.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        sma.setForeground(new java.awt.Color(102, 102, 102));
+        sma.setText("Accueil");
+        sma.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sma.setMaximumSize(new java.awt.Dimension(160, 25));
+        sma.setMinimumSize(new java.awt.Dimension(160, 25));
+        sma.setPreferredSize(new java.awt.Dimension(160, 25));
+        sma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                smaActionPerformed(evt);
+            }
+        });
+
+        sms.setBackground(new java.awt.Color(102, 102, 102));
+        sms.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        sms.setForeground(new java.awt.Color(255, 255, 255));
+        sms.setText("Séjours en cours");
+        sms.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sms.setMaximumSize(new java.awt.Dimension(160, 25));
+        sms.setMinimumSize(new java.awt.Dimension(160, 25));
+        sms.setPreferredSize(new java.awt.Dimension(160, 25));
+        sms.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                smsActionPerformed(evt);
+            }
+        });
+
+        smc.setBackground(new java.awt.Color(255, 153, 0));
+        smc.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        smc.setForeground(new java.awt.Color(102, 102, 102));
+        smc.setText("Créer un DMA");
+        smc.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        smc.setMaximumSize(new java.awt.Dimension(160, 25));
+        smc.setMinimumSize(new java.awt.Dimension(160, 25));
+        smc.setPreferredSize(new java.awt.Dimension(160, 25));
+        smc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                smcActionPerformed(evt);
+            }
+        });
+
+        smr.setBackground(new java.awt.Color(255, 153, 0));
+        smr.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        smr.setForeground(new java.awt.Color(102, 102, 102));
+        smr.setText("Rechercher un DMA");
+        smr.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        smr.setMaximumSize(new java.awt.Dimension(160, 25));
+        smr.setMinimumSize(new java.awt.Dimension(160, 25));
+        smr.setPreferredSize(new java.awt.Dimension(160, 25));
+        smr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                smrActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout menuSejourLayout = new javax.swing.GroupLayout(menuSejour);
+        menuSejour.setLayout(menuSejourLayout);
+        menuSejourLayout.setHorizontalGroup(
+            menuSejourLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuSejourLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(menuSejourLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sms, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(smc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(smr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        menuSejourLayout.setVerticalGroup(
+            menuSejourLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuSejourLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(sma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sms, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(smc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(smr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(276, 276, 276))
+        );
+
+        menuPanel.add(menuSejour, "card2");
 
         jPanel3.add(menuPanel, java.awt.BorderLayout.CENTER);
 
@@ -977,6 +1100,50 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
 
         centrePanel.add(listePatients, "card2");
 
+        sejours.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel16.setText("Séjours en cours");
+
+        jScrollPane3.setPreferredSize(new java.awt.Dimension(100, 100));
+
+        resultatsTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nom", "Prénom", "IPP", "Date de naissance", "Lieu de naissance", "Sexe"
+            }
+        ));
+        resultatsTable2.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(resultatsTable2);
+
+        javax.swing.GroupLayout sejoursLayout = new javax.swing.GroupLayout(sejours);
+        sejours.setLayout(sejoursLayout);
+        sejoursLayout.setHorizontalGroup(
+            sejoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sejoursLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(sejoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(sejoursLayout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addGap(0, 614, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        sejoursLayout.setVerticalGroup(
+            sejoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(sejoursLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        centrePanel.add(sejours, "card2");
+
         jPanel4.add(centrePanel, java.awt.BorderLayout.CENTER);
         jPanel4.add(jLabel21, java.awt.BorderLayout.PAGE_END);
 
@@ -1058,6 +1225,16 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             }
         });
 
+        archiver.setBackground(new java.awt.Color(255, 153, 0));
+        archiver.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        archiver.setForeground(new java.awt.Color(102, 102, 102));
+        archiver.setText("Archiver le DMA");
+        archiver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                archiverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
@@ -1065,18 +1242,21 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(archiver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(327, Short.MAX_VALUE)
+                .addContainerGap(291, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(archiver)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1117,7 +1297,12 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void asActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asActionPerformed
-        // TODO add your handling code here:
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Sejours");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Sejours");
+        CardLayout card2 = (CardLayout) jPanel7.getLayout();
+        card2.show(jPanel7, "BoutonsDMA");
     }//GEN-LAST:event_asActionPerformed
 
     private void acActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acActionPerformed
@@ -1189,7 +1374,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             }
         } else if (nomField.getText().isEmpty() && prenomField.getText().isEmpty() && !ippField.getText().isEmpty()) {
             p = connect.recherchePatientsIPP(Integer.parseInt(ippField.getText()));
-                resultRecherche.addRow(new Object[]{p.getNom(), p.getPrenom(), p.getIPP(), p.getDate(), p.getLieuNaissance(), p.getSexe(),});
+            resultRecherche.addRow(new Object[]{p.getNom(), p.getPrenom(), p.getIPP(), p.getDate(), p.getLieuNaissance(), p.getSexe(),});
         } else if (!nomField.getText().isEmpty() && !prenomField.getText().isEmpty() && !ippField.getText().isEmpty()) {
             lp = connect.recherchePatientsNomPrenomIPP(nomField.getText(), prenomField.getText(), Integer.parseInt(ippField.getText()));
             for (int i = 0; i < lp.size(); i++) {
@@ -1229,7 +1414,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
                 lp.get(i);
                 result.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
             }
-            
+
             resultatsTable1.setModel(result);
             resultatsTable1.repaint();
         }
@@ -1237,7 +1422,12 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void csActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_csActionPerformed
-        // TODO add your handling code here:
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Sejours");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Sejours");
+        CardLayout card2 = (CardLayout) jPanel7.getLayout();
+        card2.show(jPanel7, "BoutonsDMA");
     }//GEN-LAST:event_csActionPerformed
 
     private void ccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ccActionPerformed
@@ -1259,7 +1449,12 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_crActionPerformed
 
     private void rsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rsActionPerformed
-        // TODO add your handling code here:
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Sejours");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Sejours");
+        CardLayout card2 = (CardLayout) jPanel7.getLayout();
+        card2.show(jPanel7, "BoutonsDMA");
     }//GEN-LAST:event_rsActionPerformed
 
     private void rcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rcActionPerformed
@@ -1285,6 +1480,8 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Accueil");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
+        CardLayout card2 = (CardLayout) jPanel7.getLayout();
+        card2.show(jPanel7, "BoutonsDMA");
     }//GEN-LAST:event_caActionPerformed
 
     private void aaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aaActionPerformed
@@ -1292,6 +1489,8 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Accueil");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
+        CardLayout card2 = (CardLayout) jPanel7.getLayout();
+        card2.show(jPanel7, "BoutonsDMA");
     }//GEN-LAST:event_aaActionPerformed
 
     private void raActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_raActionPerformed
@@ -1299,6 +1498,8 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Accueil");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
+        CardLayout card2 = (CardLayout) jPanel7.getLayout();
+        card2.show(jPanel7, "BoutonsDMA");
     }//GEN-LAST:event_raActionPerformed
 
     private void prenomField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prenomField1ActionPerformed
@@ -1342,15 +1543,15 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         int portable;
         int fixe;
         try {
-            if (nomField.getText().isEmpty()) {
+            if (nomField1.getText().isEmpty()) {
                 nom = null;
             } else {
-                nom = nomField.getText();
+                nom = nomField1.getText();
             }
-            if (prenomField.getText().isEmpty()) {
+            if (prenomField1.getText().isEmpty()) {
                 prenom = null;
             } else {
-                prenom = prenomField.getText();
+                prenom = prenomField1.getText();
             }
             if (lieuField.getText().isEmpty()) {
                 lieu = null;
@@ -1388,13 +1589,25 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             } else {
                 mail = mailField.getText();
             }
-            if (connect.recherchePatientsNomPrenomDate(nom, sexe, date).equals(new Patient(null, null, null))) {
-                //connect.ajouterDMA(nom, prenom, date, lieu, sexe, numeroVoie, typeVoie, complement, (int) codePostal, ville, pays, portable, fixe, mail);
-                System.out.println(connect.recherchePatientsNomPrenomDate(nom, sexe, date).getNom());
+            Patient patient = connect.recherchePatientsNomPrenomDate(nom, sexe, date);
+            if (patient.getNom() == null && patient.getPrenom() == null && patient.getDate() == null) {
+                connect.ajouterDMA(nom.toUpperCase(), prenom, date, lieu.toUpperCase(), sexe, numeroVoie, typeVoie, complement, (int) codePostal, ville.toUpperCase(), pays.toUpperCase(), portable, fixe, mail);
+                
+                lp = connect.getPatients();
+                for (int i = 0; i < lp.size(); i++) {
+                    lp.get(i);
+                    result.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+
+                resultatsTable.setModel(result);
+                resultatsTable1.setModel(result);
+                resultatsTable.repaint();
+                resultatsTable1.repaint();
             } else {
                 javax.swing.JOptionPane.showMessageDialog(null, "Ce patient est déjà présent dans la base de données.", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
+            System.out.println(ex);
             javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton10ActionPerformed
@@ -1431,6 +1644,48 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             mailField.setText(null);
         }
     }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void archiverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archiverActionPerformed
+
+        Archivage_DP adp = new Archivage_DP(p);
+        adp.setVisible(true);
+    }//GEN-LAST:event_archiverActionPerformed
+
+    private void smaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smaActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Accueil");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Accueil");
+        CardLayout card2 = (CardLayout) jPanel7.getLayout();
+        card2.show(jPanel7, "BoutonsDMA");
+    }//GEN-LAST:event_smaActionPerformed
+
+    private void smsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smsActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Sejours");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Sejours");
+        CardLayout card2 = (CardLayout) jPanel7.getLayout();
+        card2.show(jPanel7, "BoutonsDMA");
+    }//GEN-LAST:event_smsActionPerformed
+
+    private void smcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smcActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "CreerDMA");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "CreerDMA");
+        CardLayout card2 = (CardLayout) jPanel7.getLayout();
+        card2.show(jPanel7, "Vide");
+    }//GEN-LAST:event_smcActionPerformed
+
+    private void smrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smrActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "RechercherDMA");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "RechercherDMA");
+        CardLayout card2 = (CardLayout) jPanel7.getLayout();
+        card2.show(jPanel7, "BoutonsDMA");
+    }//GEN-LAST:event_smrActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1472,6 +1727,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     private javax.swing.JButton ac;
     private javax.swing.JPanel accueil;
     private javax.swing.JButton ar;
+    private javax.swing.JButton archiver;
     private javax.swing.JButton as;
     private javax.swing.JButton ca;
     private javax.swing.JButton cc;
@@ -1500,6 +1756,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1526,10 +1783,12 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField lieuField;
     private javax.swing.JPanel listePatients;
     private javax.swing.JTextField mailField;
     private javax.swing.JPanel menuPanel;
+    private javax.swing.JPanel menuSejour;
     private javax.swing.JTextField nomField;
     private javax.swing.JTextField nomField1;
     private javax.swing.JLabel nomLabel;
@@ -1543,9 +1802,15 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel rechercherDMA;
     private javax.swing.JTable resultatsTable;
     private javax.swing.JTable resultatsTable1;
+    private javax.swing.JTable resultatsTable2;
     private javax.swing.JButton rr;
     private javax.swing.JButton rs;
+    private javax.swing.JPanel sejours;
     private javax.swing.JComboBox<String> sexeBox;
+    private javax.swing.JButton sma;
+    private javax.swing.JButton smc;
+    private javax.swing.JButton smr;
+    private javax.swing.JButton sms;
     private javax.swing.JTextField villeField;
     private javax.swing.JComboBox<String> voieBox;
     private javax.swing.JTextField voieField;
