@@ -65,7 +65,6 @@ public class AfficherListeDMPatient extends javax.swing.JFrame {
                     if (event.getValueIsAdjusting() == false) {
                         int iddm = (int) resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 0);
                         dm = connect.getDM(iddm);
-                        //p = connect.recherchePatientsNomPrenomDate(resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 0).toString(), resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 1).toString(), (Date) resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 2));
                     }
                 }
             }
