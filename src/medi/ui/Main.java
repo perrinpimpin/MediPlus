@@ -24,8 +24,8 @@ public class Main {
         BD connect = new BD();
         Patient p = connect.recherchePatientsIPP(180000000);
         Medecin m = connect.rechercheMedecin(123487);
-        DM d = new DM(p,m,"",connect.genererIDDM(),new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-        connect.ajouterDM(d);
+        //DM d = new DM(p,m,"",connect.genererIDDM(),new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+        //connect.ajouterDM(d);
     }
     
 }

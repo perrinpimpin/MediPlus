@@ -22,16 +22,18 @@ public class DM {
     private String lettre;
     private Date date;
     private Patient p;
+ private Lit l;
 
     //nb correspond au nombre de DM qu'il y a dans le DPI, il devra etre
     // entré en paramètre par le length de la liste contenue dans DPI 
-    public DM(Patient p, Medecin medref, String lettre, int iddm, Date date) {
+    public DM(Patient p, Medecin medref, String lettre, int iddm, Date date,Lit l) {
         this.p = p;
         this.medref = medref;
         this.lettre = lettre;
         this.iddm = iddm;
         this.date = date;
-
+        this.l = l;
+        
     }
     public void setDate(Date date) {
         this.date = date;
@@ -80,5 +82,15 @@ public class DM {
     public Date getDate() {
         return date;
     }
+    
+      public Lit getLit() {
+        return l;
+    }
+
+    public void setLit(Lit l) {
+        this.l = l;
+    }
+    
+
 
 }

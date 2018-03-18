@@ -5,16 +5,10 @@
         <group>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/AfficherListeDMPatient.java</file>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/BD.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/OperationInfirmiere.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/AfficherDetailDM.java</file>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/Medecin.java</file>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/InterfaceMedecin.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/User.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/Observation.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/Resultat.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/Patient.java</file>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/DM.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/Prescription.java</file>
+            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/EditerDM.java</file>
         </group>
     </open-files>
 </project-private>

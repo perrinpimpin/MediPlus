@@ -9,16 +9,20 @@ import java.awt.CardLayout;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import medi.nf.BD;
 import medi.nf.DM;
+import medi.nf.Lit;
 import medi.nf.Medecin;
 import medi.nf.Patient;
 
@@ -45,7 +49,8 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     ArrayList<DM> dmencours;
     ArrayList<Medecin> lm;
     DM dm;
-    
+    ArrayList<Lit> lit = new ArrayList();
+
     public InterfaceMedecin(Medecin m) {
         initComponents();
         connect = new BD();
@@ -58,17 +63,36 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         dmencours = new ArrayList();
         lp = connect.getPatients();
         lm = connect.getMedecins();
-        
+        try {
+            lit = connect.rechercheLitVacant();
+        } catch (SQLException ex) {
+            Logger.getLogger(InterfaceMedecin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (Lit l : lit) {
+            litBox.addItem(String.valueOf(l.getNum()));
+        }
+
+        try {
+            lit = connect.litDesDms();
+        } catch (SQLException ex) {
+            Logger.getLogger(InterfaceMedecin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        for (Lit l : lit) {
+            litOccupeBox.addItem(String.valueOf(l.getNum()));
+        }
+
         for (int i = 0; i < ldm.size(); i++) {
             if (ldm.get(i).getLet() == null) {
                 dmencours.add(ldm.get(i));
-                result.addRow(new Object[]{ldm.get(i).getP().getNom(), ldm.get(i).getP().getPrenom(), ldm.get(i).getP().getDate(), ldm.get(i).getDate()});
+                result.addRow(new Object[]{ldm.get(i).getP().getNom(), ldm.get(i).getP().getPrenom(), ldm.get(i).getP().getDate(), ldm.get(i).getDate(), ldm.get(i).getLit().getNum()});
             }
         }
-        
+
         resultatsTable.setModel(result);
         resultatsTable.repaint();
-        
+
         resultatsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
@@ -79,7 +103,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 }
             }
         });
-        
+
         resultatsTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
@@ -91,28 +115,33 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 }
             }
         });
-        
+
         rechercheTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
                 if (rechercheTable.getSelectedRow() > -1) {
                     if (event.getValueIsAdjusting() == false) {
-                        int iddm = (int) rechercheTable.getValueAt(rechercheTable.getSelectedRow(), 0);
+                        int iddm = (int) rechercheTable.getValueAt(rechercheTable.getSelectedRow(), 3);
                         dm = connect.getDM(iddm);
                     }
                 }
             }
         });
-        
+
         centrePanel.add(listePatients, "Accueil");
         centrePanel.add(rechercheDM, "RechercherDM");
         centrePanel.add(creerDM, "CreerDM");
         menuPanel.add(menuAccueil, "Accueil");
         menuPanel.add(menuCreerDM, "CreerDM");
         menuPanel.add(menuRechercherDM, "RechercherDM");
-        
-        
-        for (int i = 0;i<lm.size();i++){
+        jPanel2.add(patient, "Patient");
+        jPanel2.add(medrefPanel, "Medref");
+        jPanel2.add(litPanel, "Lit");
+        jPanel2.add(iddmPanel, "Sejour");
+        CardLayout card = (CardLayout) jPanel2.getLayout();
+        card.show(jPanel2, "Patient");
+
+        for (int i = 0; i < lm.size(); i++) {
             medBox.addItem(lm.get(i).getNom() + " " + lm.get(i).getPrenom() + " - " + lm.get(i).getSpecialite());
         }
     }
@@ -153,26 +182,35 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         resultatsTable = new javax.swing.JTable();
         rechercheDM = new javax.swing.JPanel();
-        nomF = new javax.swing.JTextField();
-        prenomF = new javax.swing.JTextField();
-        sejourF = new javax.swing.JTextField();
-        litF = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        dateF = new com.toedter.calendar.JDateChooser();
-        jButton15 = new javax.swing.JButton();
         jButton16 = new javax.swing.JButton();
         jButton17 = new javax.swing.JButton();
         jButton18 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         rechercheTable = new javax.swing.JTable();
-        serviceF = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
-        medBox = new javax.swing.JComboBox<>();
+        jButton19 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        patient = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        nomF = new javax.swing.JTextField();
+        prenomF = new javax.swing.JTextField();
+        dateF = new com.toedter.calendar.JDateChooser();
+        jLabel14 = new javax.swing.JLabel();
+        jButton15 = new javax.swing.JButton();
+        litPanel = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jButton21 = new javax.swing.JButton();
+        litOccupeBox = new javax.swing.JComboBox<>();
+        iddmPanel = new javax.swing.JPanel();
+        sejourF = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jButton22 = new javax.swing.JButton();
+        medrefPanel = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
+        medBox = new javax.swing.JComboBox<>();
+        jButton24 = new javax.swing.JButton();
+        jLabel21 = new javax.swing.JLabel();
+        rechercheBox = new javax.swing.JComboBox<>();
         creerDM = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
@@ -201,9 +239,10 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         resultatsTable1 = new javax.swing.JTable();
         jLabel19 = new javax.swing.JLabel();
         creer = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        litBox = new javax.swing.JComboBox<>();
         jPanel9 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
@@ -520,11 +559,11 @@ public class InterfaceMedecin extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nom", "Prénom", "Date de naissance", "Date du DM"
+                "Nom", "Prénom", "Date de naissance", "Date du DM", "Lit"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -561,63 +600,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
 
         rechercheDM.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        nomF.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        nomF.setForeground(new java.awt.Color(51, 51, 51));
-
-        prenomF.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        prenomF.setForeground(new java.awt.Color(51, 51, 51));
-        prenomF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                prenomFActionPerformed(evt);
-            }
-        });
-
-        sejourF.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        sejourF.setForeground(new java.awt.Color(51, 51, 51));
-        sejourF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sejourFActionPerformed(evt);
-            }
-        });
-
-        litF.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        litF.setForeground(new java.awt.Color(51, 51, 51));
-        litF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                litFActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel3.setText("Nom patient");
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel4.setText("Prénom patient");
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel5.setText("Lit");
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel6.setText("N° séjour");
-
-        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel14.setText("Date de naissance");
-
-        jButton15.setBackground(new java.awt.Color(255, 153, 0));
-        jButton15.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButton15.setForeground(new java.awt.Color(102, 102, 102));
-        jButton15.setText("Rechercher");
-        jButton15.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton15ActionPerformed(evt);
-            }
-        });
-
         jButton16.setBackground(new java.awt.Color(255, 153, 0));
         jButton16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton16.setForeground(new java.awt.Color(102, 102, 102));
@@ -630,7 +612,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
 
         jButton17.setBackground(new java.awt.Color(255, 153, 0));
         jButton17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton17.setForeground(new java.awt.Color(255, 153, 0));
+        jButton17.setForeground(new java.awt.Color(102, 102, 102));
         jButton17.setText("Lettre de sortie");
         jButton17.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -640,7 +622,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
 
         jButton18.setBackground(new java.awt.Color(255, 153, 0));
         jButton18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton18.setForeground(new java.awt.Color(255, 153, 0));
+        jButton18.setForeground(new java.awt.Color(102, 102, 102));
         jButton18.setText("Imprimer");
         jButton18.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -656,11 +638,11 @@ public class InterfaceMedecin extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID du DM", "Date du DM", "Praticien référent", "Service de séjour"
+                "Nom", "Prénom", "Date de naissance", "ID du DM", "Date du DM", "Praticien référent", "Service de séjour", "Lit"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                true, true, true, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -670,28 +652,247 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         rechercheTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(rechercheTable);
 
-        serviceF.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        serviceF.setForeground(new java.awt.Color(51, 51, 51));
-        serviceF.addActionListener(new java.awt.event.ActionListener() {
+        jButton19.setBackground(new java.awt.Color(255, 153, 0));
+        jButton19.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton19.setForeground(new java.awt.Color(102, 102, 102));
+        jButton19.setText("Éditer le DM");
+        jButton19.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                serviceFActionPerformed(evt);
+                jButton19ActionPerformed(evt);
             }
         });
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel11.setText("Service");
+        jPanel2.setLayout(new java.awt.CardLayout());
 
-        medBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel4.setText("Prénom patient");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel3.setText("Nom patient");
+
+        nomF.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        nomF.setForeground(new java.awt.Color(51, 51, 51));
+
+        prenomF.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        prenomF.setForeground(new java.awt.Color(51, 51, 51));
+        prenomF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prenomFActionPerformed(evt);
+            }
+        });
+
+        dateF.setDateFormatString("yyyy-MM-dd");
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel14.setText("Date de naissance");
+
+        jButton15.setBackground(new java.awt.Color(255, 153, 0));
+        jButton15.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton15.setForeground(new java.awt.Color(102, 102, 102));
+        jButton15.setText("Rechercher");
+        jButton15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout patientLayout = new javax.swing.GroupLayout(patient);
+        patient.setLayout(patientLayout);
+        patientLayout.setHorizontalGroup(
+            patientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(patientLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(patientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(nomF, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
+                .addGroup(patientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel4)
+                    .addComponent(prenomF))
+                .addGap(43, 43, 43)
+                .addGroup(patientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14)
+                    .addGroup(patientLayout.createSequentialGroup()
+                        .addComponent(dateF, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(370, Short.MAX_VALUE))
+        );
+        patientLayout.setVerticalGroup(
+            patientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, patientLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(patientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel14))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(patientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(patientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(nomF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(prenomF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dateF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton15))
+                .addContainerGap())
+        );
+
+        jPanel2.add(patient, "card3");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel5.setText("Lit");
+
+        jButton21.setBackground(new java.awt.Color(255, 153, 0));
+        jButton21.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton21.setForeground(new java.awt.Color(102, 102, 102));
+        jButton21.setText("Rechercher");
+        jButton21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton21ActionPerformed(evt);
+            }
+        });
+
+        litOccupeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+
+        javax.swing.GroupLayout litPanelLayout = new javax.swing.GroupLayout(litPanel);
+        litPanel.setLayout(litPanelLayout);
+        litPanelLayout.setHorizontalGroup(
+            litPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(litPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(litPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(litOccupeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton21, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        litPanelLayout.setVerticalGroup(
+            litPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(litPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(litPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton21)
+                    .addComponent(litOccupeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jPanel2.add(litPanel, "card4");
+
+        sejourF.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        sejourF.setForeground(new java.awt.Color(51, 51, 51));
+        sejourF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sejourFActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel6.setText("N° séjour");
+
+        jButton22.setBackground(new java.awt.Color(255, 153, 0));
+        jButton22.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton22.setForeground(new java.awt.Color(102, 102, 102));
+        jButton22.setText("Rechercher");
+        jButton22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton22ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout iddmPanelLayout = new javax.swing.GroupLayout(iddmPanel);
+        iddmPanel.setLayout(iddmPanelLayout);
+        iddmPanelLayout.setHorizontalGroup(
+            iddmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(iddmPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(iddmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(iddmPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(95, 95, 95))
+                    .addComponent(sejourF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(670, Short.MAX_VALUE))
+        );
+        iddmPanelLayout.setVerticalGroup(
+            iddmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(iddmPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(iddmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sejourF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton22))
+                .addContainerGap())
+        );
+
+        jPanel2.add(iddmPanel, "card5");
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(102, 102, 102));
         jLabel20.setText("Médecin référent");
 
+        medBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+
+        jButton24.setBackground(new java.awt.Color(255, 153, 0));
+        jButton24.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton24.setForeground(new java.awt.Color(102, 102, 102));
+        jButton24.setText("Rechercher");
+        jButton24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton24ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout medrefPanelLayout = new javax.swing.GroupLayout(medrefPanel);
+        medrefPanel.setLayout(medrefPanelLayout);
+        medrefPanelLayout.setHorizontalGroup(
+            medrefPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(medrefPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(medrefPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel20)
+                    .addGroup(medrefPanelLayout.createSequentialGroup()
+                        .addComponent(medBox, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton24, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(502, Short.MAX_VALUE))
+        );
+        medrefPanelLayout.setVerticalGroup(
+            medrefPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(medrefPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel20)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(medrefPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(medBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton24))
+                .addContainerGap())
+        );
+
+        jPanel2.add(medrefPanel, "card7");
+
+        jLabel21.setText("Rechercher par :");
+
+        rechercheBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nom-Prénom-Date de naissance", "Lit", "Numéro de séjour", "Médecin référent" }));
+        rechercheBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rechercheBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout rechercheDMLayout = new javax.swing.GroupLayout(rechercheDM);
         rechercheDM.setLayout(rechercheDMLayout);
         rechercheDMLayout.setHorizontalGroup(
             rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(rechercheDMLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -705,84 +906,32 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                     .addGroup(rechercheDMLayout.createSequentialGroup()
                         .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(rechercheDMLayout.createSequentialGroup()
-                                .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(nomF, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(rechercheDMLayout.createSequentialGroup()
-                                            .addComponent(jLabel11)
-                                            .addGap(95, 95, 95))
-                                        .addComponent(serviceF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(41, 41, 41)
-                                .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel20)
-                                    .addComponent(jLabel4)
-                                    .addComponent(prenomF, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-                                    .addComponent(medBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(43, 43, 43)
-                                .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton15)
-                                    .addGroup(rechercheDMLayout.createSequentialGroup()
-                                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel14)
-                                            .addComponent(dateF, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(46, 46, 46)
-                                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel5)
-                                            .addComponent(litF, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(48, 48, 48)
-                                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(rechercheDMLayout.createSequentialGroup()
-                                                .addComponent(jLabel6)
-                                                .addGap(95, 95, 95))
-                                            .addComponent(sejourF, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                            .addComponent(jButton16))
-                        .addGap(0, 119, Short.MAX_VALUE)))
+                                .addComponent(jButton16)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton19))
+                            .addGroup(rechercheDMLayout.createSequentialGroup()
+                                .addComponent(jLabel21)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rechercheBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         rechercheDMLayout.setVerticalGroup(
             rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(rechercheDMLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(rechercheDMLayout.createSequentialGroup()
-                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel14))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(nomF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(prenomF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(dateF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(rechercheDMLayout.createSequentialGroup()
-                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(rechercheDMLayout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(litF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(rechercheDMLayout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(sejourF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(rechercheDMLayout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(serviceF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(rechercheDMLayout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(medBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton15))))
-                .addGap(23, 23, 23)
+                .addGap(19, 19, 19)
+                .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(rechercheBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton16)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 290, Short.MAX_VALUE)
+                .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton16)
+                    .addComponent(jButton19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 261, Short.MAX_VALUE)
                 .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -876,6 +1025,15 @@ public class InterfaceMedecin extends javax.swing.JFrame {
             }
         });
 
+        jLabel17.setText("Lits disponibles");
+
+        litBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        litBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                litBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -885,19 +1043,16 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel17)
+                        .addGap(18, 18, 18)
+                        .addComponent(litBox, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(creer))
                     .addComponent(jScrollPane4)
                     .addComponent(jScrollPane5)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel19)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel12)
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel16)
-                    .addComponent(jLabel18)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
@@ -914,7 +1069,16 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 301, Short.MAX_VALUE)
-                                .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel19)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel18))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -957,8 +1121,15 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 .addComponent(jLabel18)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(creer)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(creer))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel17)
+                            .addComponent(litBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -980,16 +1151,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(255, 153, 0));
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(102, 102, 102));
-        jButton4.setText("Éditer le DM");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
         jButton8.setBackground(new java.awt.Color(255, 153, 0));
         jButton8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jButton8.setForeground(new java.awt.Color(102, 102, 102));
@@ -1006,19 +1167,16 @@ public class InterfaceMedecin extends javax.swing.JFrame {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(578, Short.MAX_VALUE)
+                .addContainerGap(614, Short.MAX_VALUE)
                 .addComponent(jButton8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1044,13 +1202,8 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Informations_patient_modif ipm = new Informations_patient_modif(p);
-        ipm.setVisible(true);
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        AfficherListeDMPatient adm = new AfficherListeDMPatient(p);
+        AfficherListeDMPatient adm = new AfficherListeDMPatient(p, m);
         adm.setVisible(true);
     }//GEN-LAST:event_jButton8ActionPerformed
 
@@ -1062,12 +1215,64 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_sejourFActionPerformed
 
-    private void litFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_litFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_litFActionPerformed
-
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-        // TODO add your handling code here:
+
+        result = (DefaultTableModel) rechercheTable.getModel();
+        result.setRowCount(0);
+        if (!nomF.getText().isEmpty() && !prenomF.getText().isEmpty() && dateF.getDate() != null) {
+            ArrayList<DM> ldm = new ArrayList<>();
+            java.util.Date utilDate = dateF.getDate();
+            java.sql.Date d = new java.sql.Date(utilDate.getTime());
+
+            Patient p = connect.recherchePatientsNomPrenomDate(nomF.getText(), prenomF.getText(), d);
+            ldm = connect.getDMPatient(p.getIPP());
+            for (int i = 0; i < ldm.size(); i++) {
+                result.addRow(new Object[]{ldm.get(i).getP().getNom(), ldm.get(i).getP().getPrenom(), ldm.get(i).getP().getDate(), ldm.get(i).getIddm(), ldm.get(i).getDate(), ldm.get(i).getMedref().getNom() + " " + ldm.get(i).getMedref().getPrenom(), ldm.get(i).getMedref().getService(), ldm.get(i).getLit().getNum()});
+            }
+
+            rechercheTable.setModel(result);
+            rechercheTable.repaint();
+
+        } else if (!nomF.getText().isEmpty() && !prenomF.getText().isEmpty() && dateF.getDate() == null) {
+            ArrayList<DM> ldm = new ArrayList<>();
+            ArrayList<Patient> lp = connect.recherchePatientsNomPrenom(nomF.getText(), prenomF.getText());
+            for (int i = 0; i < lp.size(); i++) {
+                ldm = connect.getDMPatient(lp.get(i).getIPP());
+                for (int j = 0; j < ldm.size(); j++) {
+                    result.addRow(new Object[]{ldm.get(j).getP().getNom(), ldm.get(j).getP().getPrenom(), ldm.get(j).getP().getDate(), ldm.get(j).getIddm(), ldm.get(j).getDate(), ldm.get(j).getMedref().getNom() + " " + ldm.get(j).getMedref().getPrenom(), ldm.get(j).getMedref().getService(), ldm.get(j).getLit().getNum()});
+                }
+            }
+
+            rechercheTable.setModel(result);
+            rechercheTable.repaint();
+        } else if (!nomF.getText().isEmpty() && prenomF.getText().isEmpty() && dateF.getDate() == null) {
+            ArrayList<DM> ldm = new ArrayList<>();
+            ArrayList<Patient> lp = connect.recherchePatientsNom(nomF.getText());
+            for (int i = 0; i < lp.size(); i++) {
+                ldm = connect.getDMPatient(lp.get(i).getIPP());
+                for (int j = 0; j < ldm.size(); j++) {
+                    result.addRow(new Object[]{ldm.get(j).getP().getNom(), ldm.get(j).getP().getPrenom(), ldm.get(j).getP().getDate(), ldm.get(j).getIddm(), ldm.get(j).getDate(), ldm.get(j).getMedref().getNom() + " " + ldm.get(j).getMedref().getPrenom(), ldm.get(j).getMedref().getService(), ldm.get(j).getLit().getNum()});
+                }
+            }
+
+            rechercheTable.setModel(result);
+            rechercheTable.repaint();
+        } else if (nomF.getText().isEmpty() && !prenomF.getText().isEmpty() && dateF.getDate() == null) {
+            ArrayList<DM> ldm = new ArrayList<>();
+            ArrayList<Patient> lp = connect.recherchePatientsPrenom(prenomF.getText());
+            for (int i = 0; i < lp.size(); i++) {
+                ldm = connect.getDMPatient(lp.get(i).getIPP());
+                for (int j = 0; j < ldm.size(); j++) {
+                    result.addRow(new Object[]{ldm.get(j).getP().getNom(), ldm.get(j).getP().getPrenom(), ldm.get(j).getP().getDate(), ldm.get(j).getIddm(), ldm.get(j).getDate(), ldm.get(j).getMedref().getNom() + " " + ldm.get(j).getMedref().getPrenom(), ldm.get(j).getMedref().getService(), ldm.get(j).getLit().getNum()});
+                }
+            }
+
+            rechercheTable.setModel(result);
+            rechercheTable.repaint();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "Veuillez renseigner tous les champs.", "Confirmation", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
@@ -1083,7 +1288,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         ArrayList<Patient> lp = null;
         resultRecherche.setRowCount(0);
         Date d = (Date) dateField.getDate();
-        
+
         if (!nomField.getText().isEmpty() && prenomField.getText().isEmpty() && dateField.getDate() == null) {
             lp = connect.recherchePatientsNom(nomField.getText());
             for (int i = 0; i < lp.size(); i++) {
@@ -1110,10 +1315,10 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         } else if (nomField.getText().isEmpty() && prenomField.getText().isEmpty() && dateField.getDate() == null) {
             javax.swing.JOptionPane.showMessageDialog(null, "Aucun champ de recherche renseigné.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
-        
+
         resultatsTable1.setModel(resultRecherche);
         resultatsTable1.repaint();
-        
+
 
     }//GEN-LAST:event_jButton20ActionPerformed
 
@@ -1121,6 +1326,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         int ph = m.getId_user();
         int iddm = connect.genererIDDM();
         String let = null;
+        Lit l = null;
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         if (observation.getText().length() != 0) {
             ArrayList<String> obs = new ArrayList<String>();
@@ -1141,7 +1347,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 connect.ajouterPrescription(connect.genererIDPrescription(), ph, presc.get(i), iddm);
             }
         }
-        
+
         if (resultat.getText().length() != 0) {
             ArrayList<String> res = new ArrayList<String>();
             for (String s : resultat.getText().split("\n")) {
@@ -1151,7 +1357,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 connect.ajouterResultat(connect.genererIDRes(), ph, res.get(i), iddm);
             }
         }
-        
+
         if (opinf.getText().length() != 0) {
             ArrayList<String> op = new ArrayList<String>();
             for (String s : opinf.getText().split("\n")) {
@@ -1161,16 +1367,16 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 connect.ajouterOpeInf(connect.genererIDOpe(), ph, op.get(i), iddm);
             }
         }
-        
+
         if (lettre.getText().length() == 0) {
             let = null;
         } else {
             let = lettre.getText();
         }
-        
-        DM dm = new DM(pc, m, let, iddm, date);
+        l = connect.rechercherLit(litBox.getSelectedItem().toString());
+        DM dm = new DM(pc, m, let, iddm, date, l);
         connect.ajouterDM(dm);
-        
+
         this.ldm = connect.getDM(m);
         dmencours = new ArrayList();
         lp = connect.getPatients();
@@ -1181,7 +1387,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 result.addRow(new Object[]{this.ldm.get(i).getP().getNom(), this.ldm.get(i).getP().getPrenom(), this.ldm.get(i).getP().getDate(), this.ldm.get(i).getDate()});
             }
         }
-        
+
         resultatsTable.setModel(result);
         resultatsTable.repaint();
     }//GEN-LAST:event_creerActionPerformed
@@ -1260,12 +1466,69 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_rrActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        // TODO add your handling code here:
+        AfficherDetailDM addm = new AfficherDetailDM(dm);
+        addm.setVisible(true);
     }//GEN-LAST:event_jButton16ActionPerformed
 
-    private void serviceFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serviceFActionPerformed
+    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+        EditerDM edm = new EditerDM(dm, m);
+        edm.setVisible(true);
+    }//GEN-LAST:event_jButton19ActionPerformed
+
+    private void litBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_litBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_serviceFActionPerformed
+    }//GEN-LAST:event_litBoxActionPerformed
+
+    private void rechercheBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheBoxActionPerformed
+        if (rechercheBox.getSelectedItem().toString() == "Nom-Prénom-Date de naissance") {
+            CardLayout card = (CardLayout) jPanel2.getLayout();
+            card.show(jPanel2, "Patient");
+        } else if (rechercheBox.getSelectedItem().toString() == "Lit") {
+            CardLayout card = (CardLayout) jPanel2.getLayout();
+            card.show(jPanel2, "Lit");
+        } else if (rechercheBox.getSelectedItem().toString() == "Numéro de séjour") {
+            CardLayout card = (CardLayout) jPanel2.getLayout();
+            card.show(jPanel2, "Sejour");
+        } else if (rechercheBox.getSelectedItem().toString() == "Médecin référent") {
+            CardLayout card = (CardLayout) jPanel2.getLayout();
+            card.show(jPanel2, "Medref");
+        }
+    }//GEN-LAST:event_rechercheBoxActionPerformed
+
+    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+        result = (DefaultTableModel) rechercheTable.getModel();
+        result.setRowCount(0);
+        try {
+            DM dm = connect.GetDMLit(litOccupeBox.getSelectedItem().toString());
+            result.addRow(new Object[]{dm.getP().getNom(), dm.getP().getPrenom(), dm.getP().getDate(), dm.getIddm(), dm.getDate(), dm.getMedref().getNom() + " " + dm.getMedref().getPrenom(), dm.getMedref().getService(), dm.getLit().getNum()});
+        } catch (SQLException ex) {
+            Logger.getLogger(InterfaceMedecin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        rechercheTable.setModel(result);
+        rechercheTable.repaint();
+    }//GEN-LAST:event_jButton21ActionPerformed
+
+    private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
+        result = (DefaultTableModel) rechercheTable.getModel();
+        result.setRowCount(0);
+        DM dm = connect.getDM(Integer.parseInt(sejourF.getText()));
+        result.addRow(new Object[]{dm.getP().getNom(), dm.getP().getPrenom(), dm.getP().getDate(), dm.getIddm(), dm.getDate(), dm.getMedref().getNom() + " " + dm.getMedref().getPrenom(), dm.getMedref().getService(), dm.getLit().getNum()});
+        rechercheTable.setModel(result);
+        rechercheTable.repaint();
+    }//GEN-LAST:event_jButton22ActionPerformed
+
+    private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
+
+        result = (DefaultTableModel) rechercheTable.getModel();
+        ArrayList<DM> ldm = new ArrayList();
+        ldm = connect.getDM(lm.get(medBox.getSelectedIndex() - 1));
+        result.setRowCount(0);
+        for (int i = 0; i < ldm.size(); i++) {
+                result.addRow(new Object[]{ldm.get(i).getP().getNom(), ldm.get(i).getP().getPrenom(), ldm.get(i).getP().getDate(), ldm.get(i).getIddm(), ldm.get(i).getDate(), ldm.get(i).getMedref().getNom() + " " + ldm.get(i).getMedref().getPrenom(), ldm.get(i).getMedref().getService(), ldm.get(i).getLit().getNum()});
+            }
+        rechercheTable.setModel(result);
+        rechercheTable.repaint();
+    }//GEN-LAST:event_jButton24ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1314,27 +1577,32 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser dateF;
     private com.toedter.calendar.JDateChooser dateField;
     private javax.swing.JPanel header;
+    private javax.swing.JPanel iddmPanel;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
+    private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton20;
+    private javax.swing.JButton jButton21;
+    private javax.swing.JButton jButton22;
+    private javax.swing.JButton jButton24;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1344,6 +1612,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel9;
@@ -1357,8 +1626,11 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTextArea lettre;
     private javax.swing.JPanel listePatients;
-    private javax.swing.JTextField litF;
+    private javax.swing.JComboBox<String> litBox;
+    private javax.swing.JComboBox<String> litOccupeBox;
+    private javax.swing.JPanel litPanel;
     private javax.swing.JComboBox<String> medBox;
+    private javax.swing.JPanel medrefPanel;
     private javax.swing.JPanel menu;
     private javax.swing.JPanel menuAccueil;
     private javax.swing.JPanel menuCreerDM;
@@ -1369,11 +1641,13 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     private javax.swing.JLabel nomLabel;
     private javax.swing.JTextArea observation;
     private javax.swing.JTextArea opinf;
+    private javax.swing.JPanel patient;
     private javax.swing.JTextField prenomF;
     private javax.swing.JTextField prenomField;
     private javax.swing.JTextArea prescriptions;
     private javax.swing.JButton ra;
     private javax.swing.JButton rc;
+    private javax.swing.JComboBox<String> rechercheBox;
     private javax.swing.JPanel rechercheDM;
     private javax.swing.JTable rechercheTable;
     private javax.swing.JTextArea resultat;
@@ -1381,7 +1655,6 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     private javax.swing.JTable resultatsTable1;
     private javax.swing.JButton rr;
     private javax.swing.JTextField sejourF;
-    private javax.swing.JTextField serviceF;
     private javax.swing.JLabel serviceLabel;
     // End of variables declaration//GEN-END:variables
 }

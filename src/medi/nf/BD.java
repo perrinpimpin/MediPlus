@@ -39,13 +39,16 @@ public class BD {
     private String mail;
     private ArrayList<DM> dm;
     private Medecin m;
+    private int lit;
+    private int chambre;
+    private boolean fenetre;
 
     public BD() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/bd", "root", "");
-           
+
         } catch (Exception ex) {
             System.out.println("error : " + ex);
 
@@ -62,7 +65,7 @@ public class BD {
         String p = null;
         String r = null;
         try {
-            
+
             Statement st = con.createStatement();
             String query = "SELECT * FROM `users` WHERE `username` = '" + username + " ' ";
             rsConnection = st.executeQuery(query);
@@ -94,6 +97,7 @@ public class BD {
                 }
             }
             rsConnection.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -113,7 +117,6 @@ public class BD {
             pstmAjouterLogin.setInt(4, role);
             pstmAjouterLogin.executeUpdate();
             pstmAjouterLogin.close();
-
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -225,6 +228,22 @@ public class BD {
 
             pstmAJouterOpeInf.executeUpdate();
             pstmAJouterOpeInf.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+            javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void ajouterLettreSortie(String lettre, int iddm) {
+
+        String sql = "update d_m set lettre_Sortie= ? where id_dm = ?";
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        try {
+            PreparedStatement pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, lettre);
+            pstmt.setInt(2, iddm);
+            pstmt.executeUpdate();
+            
         } catch (Exception ex) {
             System.out.println(ex);
             javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -348,6 +367,8 @@ public class BD {
         Date dateN;
         Date date = null;
         ArrayList<DM> dms = new ArrayList();
+        String l;
+        Lit lit;
 
         ResultSet rsSejourEnCours;
 
@@ -361,14 +382,17 @@ public class BD {
                 date = rsSejourEnCours.getDate("date");
                 lettre = rsSejourEnCours.getString("lettre_Sortie");
                 iddm = rsSejourEnCours.getInt("id_dm");
+                l = rsSejourEnCours.getString("lit");
+                lit = this.rechercherLit(l);
 
                 Patient pc = this.recherchePatientsIPP(ipp);
 
-                DM dm = new DM(pc, m, lettre, iddm, date);
+                DM dm = new DM(pc, m, lettre, iddm, date, lit);
                 dms.add(dm);
 
             }
             rsSejourEnCours.close();
+            st1.close();
 
         } catch (Exception ex) {
             System.out.println(ex);
@@ -419,6 +443,7 @@ public class BD {
                 iddm = Integer.parseInt(annee) * 100000;
             }
             rsGenererIDDM.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -441,6 +466,7 @@ public class BD {
                 idp = iddm + "P001";
             }
             rsGenererIDPrescription.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -463,6 +489,7 @@ public class BD {
                 idp = iddm + "O001";
             }
             rsGenererIDObs.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -485,6 +512,7 @@ public class BD {
                 idp = iddm + "I001";
             }
             rsGenererIDOpe.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -508,6 +536,7 @@ public class BD {
             }
 
             rsGenererIDRes.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -530,6 +559,7 @@ public class BD {
                 idp = iddm + "P001";
             }
             rsGenererIDPrescription.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -552,6 +582,7 @@ public class BD {
                 idp = iddm + "O001";
             }
             rsGenererIDObs.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -574,6 +605,7 @@ public class BD {
                 idp = iddm + "I001";
             }
             rsGenererIDOpe.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -596,6 +628,7 @@ public class BD {
                 idp = iddm + "R001";
             }
             rsGenererIDRes.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -603,7 +636,7 @@ public class BD {
     }
 
     public ArrayList getDM(Medecin m) {
-        ResultSet rsGetDMMedecin = null, rs1, rs2;
+        ResultSet rsGetDMMedecin = null, rs1, rs2 = null;
         int ipp = 0;
         int ph = 0;
         String lettre = null;
@@ -614,6 +647,8 @@ public class BD {
         Date date = null;
         ArrayList<DM> dms = new ArrayList();
         String ser = m.getService();
+        Lit l;
+        String lit;
 
         try {
             Statement st = con.createStatement();
@@ -632,11 +667,13 @@ public class BD {
                 query = "select * from d_m where PH = " + id;
                 rsGetDMMedecin = st.executeQuery(query);
                 while (rsGetDMMedecin.next()) {
-                    ipp = rsGetDMMedecin.getInt("IPP");// pour avoir accÃ¨s a la colonne de ma table 
+                    ipp = rsGetDMMedecin.getInt("IPP");
                     ph = rsGetDMMedecin.getInt("PH");
                     date = rsGetDMMedecin.getDate("date");
                     lettre = rsGetDMMedecin.getString("lettre_Sortie");
                     iddm = rsGetDMMedecin.getInt("id_dm");
+                    lit = rsGetDMMedecin.getString("lit");
+                    l = this.rechercherLit(lit);
 
                     String query2 = "select * from users WHERE ID_user = " + ph;
                     rs2 = st2.executeQuery(query2);
@@ -648,21 +685,27 @@ public class BD {
                     }
                     rs2.close();
 
-                    query = "select * from d_m_a WHERE IPP = " + ipp;
+                    p = this.recherchePatientsIPP(ipp);
+                    DM dm = new DM(p, m, lettre, iddm, date, l);
+                    dms.add(dm);
+                    /*query = "select * from d_m_a WHERE IPP = " + ipp;
                     rs1 = st1.executeQuery(query);
                     while (rs1.next()) {
                         nom = rs1.getString("nom");
                         prenom = rs1.getString("prenom");
                         dateN = rs1.getDate("dateNaissance");
-                        DM dm = new DM(new Patient(nom, prenom, dateN, ipp), m, lettre, iddm, date);
+                        DM dm = new DM(new Patient(nom, prenom, dateN, ipp), m, lettre, iddm, date, l);
                         dms.add(dm);
-                    }
+                    }*/
 
                 }
 
             }
             rsGetDMMedecin.close();
+            st.close();
             rs1.close();
+            st1.close();
+            st2.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -680,6 +723,8 @@ public class BD {
         Date dateN;
         Date date;
         DM dm = null;
+        String l;
+        Lit lit;
 
         try {
             Statement st = con.createStatement();
@@ -694,6 +739,8 @@ public class BD {
                 date = rsGetDMIDDM.getDate("date");
                 lettre = rsGetDMIDDM.getString("lettre_Sortie");
                 iddm = rsGetDMIDDM.getInt("id_dm");
+                l = rsGetDMIDDM.getString("lit");
+                lit = this.rechercherLit(l);
 
                 query = "select * from praticien WHERE ID_user = " + ph;
                 rs1 = st1.executeQuery(query);
@@ -714,11 +761,14 @@ public class BD {
                 }
                 p = this.recherchePatientsIPP(ipp);
 
-                dm = new DM(p, m, lettre, iddm, date);
+                dm = new DM(p, m, lettre, iddm, date, lit);
             }
             rsGetDMIDDM.close();
             rs1.close();
             rs2.close();
+            st1.close();
+            st2.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -734,17 +784,18 @@ public class BD {
             String query = "select * from prescriptions where id_dm = " + Integer.toString(iddm);
             Statement statement = con.createStatement();
             ResultSet prescriptionsSet = statement.executeQuery(query);
-            
+
             while (prescriptionsSet.next()) {
-                    ph = prescriptionsSet.getInt("PH");
-                    date = prescriptionsSet.getDate("date");
-                    pres = prescriptionsSet.getString("prescription");
-                    m = this.rechercheMedecin(ph);
-                    Prescription pr = new Prescription(date, m, iddm, pres);
-                    prescription.add(pr);
-                }
-            
+                ph = prescriptionsSet.getInt("PH");
+                date = prescriptionsSet.getDate("date");
+                pres = prescriptionsSet.getString("prescription");
+                m = this.rechercheMedecin(ph);
+                Prescription pr = new Prescription(date, m, iddm, pres);
+                prescription.add(pr);
+            }
+
             prescriptionsSet.close();
+            statement.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -771,6 +822,7 @@ public class BD {
                 obs.add(new Observation(date, m, iddm, observation));
             }
             rsGetObservationiddm.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -797,6 +849,7 @@ public class BD {
                 res.add(new Resultat(date, m, iddm, resultat));
             }
             rsGetResultatiddm.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -812,17 +865,18 @@ public class BD {
         Date date = null;
         try {
             Statement st = con.createStatement();
-            String query = "select * from resultats where id_dm = " + iddm;
+            String query = "select * from op_inf where id_dm = " + iddm;
             rsGetOperationInfirmiereiddm = st.executeQuery(query);
             while (rsGetOperationInfirmiereiddm.next()) {
                 ph = rsGetOperationInfirmiereiddm.getInt("PH");
                 date = rsGetOperationInfirmiereiddm.getDate("date");
                 iddm = rsGetOperationInfirmiereiddm.getInt("id_dm");
-                operation = rsGetOperationInfirmiereiddm.getString("resultat");
+                operation = rsGetOperationInfirmiereiddm.getString("op_inf");
                 Medecin m = this.rechercheMedecin(ph);
                 opinf.add(new OperationInfirmiere(date, m, iddm, operation));
             }
             rsGetOperationInfirmiereiddm.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -845,6 +899,7 @@ public class BD {
         Date dateN;
         Date date;
         ArrayList<DM> dms = new ArrayList();
+        String l;
 
         try {
             Statement st = con.createStatement();
@@ -869,6 +924,8 @@ public class BD {
                 date = rsGetDMPatientipp.getDate("date");
                 lettre = rsGetDMPatientipp.getString("lettre_Sortie");
                 iddm = rsGetDMPatientipp.getInt("id_dm");
+                l = rsGetDMPatientipp.getString("lit");
+                Lit lit = this.rechercherLit(l);
 
                 query = "select * from praticien WHERE ID_user = " + ph;
                 rs1 = st1.executeQuery(query);
@@ -888,11 +945,13 @@ public class BD {
                     }
                     rs2.close();
                 }
-                DM dm = new DM(p, m, lettre, iddm, date);
+                DM dm = new DM(p, m, lettre, iddm, date, lit);
                 dms.add(dm);
             }
             rsGetDMPatientipp.close();
+            st.close();
             rs1.close();
+            st1.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -916,6 +975,7 @@ public class BD {
                 ipp = Integer.parseInt(annee) * 10000000;
             }
             rsGenererIPP.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -940,6 +1000,7 @@ public class BD {
                 lp.add(p);
             }
             rsGetPatients.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -974,6 +1035,7 @@ public class BD {
 
             m = new Medecin(nom, prenom, id, username, mdp, tel, spe, ser);
             rsRechercheMedecinID.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -981,7 +1043,7 @@ public class BD {
     }
 
     public ArrayList<Medecin> getMedecins() {
-        ResultSet rsGetMedecins, rsGetMedecins2;
+        ResultSet rsGetMedecins, rsGetMedecins2 = null;
         String username = null;
         String mdp = null;
         int tel = 0;
@@ -992,7 +1054,7 @@ public class BD {
         String ser = null;
         Medecin m1 = null;
         ArrayList<Medecin> lm = new ArrayList<>();
-        
+
         try {
             Statement st = con.createStatement();
             Statement st2 = con.createStatement();
@@ -1012,12 +1074,14 @@ public class BD {
                     username = rsGetMedecins2.getString("username");
                     mdp = rsGetMedecins2.getString("password");
                     m1 = new Medecin(name, surname, id, username, mdp, tel, spe, ser);
+                    lm.add(m1);
                 }
-                rsGetMedecins2.close();
-                rsGetMedecins.close();
-                lm.add(m1);
             }
 
+            rsGetMedecins2.close();
+            rsGetMedecins.close();
+            st.close();
+            st2.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -1042,6 +1106,7 @@ public class BD {
                 lp.add(p);
             }
             rsRecherchePatientsNom.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -1066,6 +1131,7 @@ public class BD {
                 lp.add(p);
             }
             rsRecherchePatientsPrenom.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -1089,6 +1155,7 @@ public class BD {
                 p = new Patient(nom, prenom, ipp, dateNaissance, lieuNaissance, sexe);
             }
             rsRecherchePAtientIPP.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -1113,6 +1180,7 @@ public class BD {
                 lp.add(p);
             }
             rsrecherchePatientsNomPrenom.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -1137,7 +1205,8 @@ public class BD {
                 lp.add(p);
             }
             rsrecherchePatientsNomPrenomIPP.close();
-            
+            st.close();
+
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -1162,7 +1231,8 @@ public class BD {
                 lp.add(p);
             }
             rsrecherchePatientsNomIPP.close();
-            
+            st.close();
+
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -1196,6 +1266,7 @@ public class BD {
                 lp.add(p);
             }
             rsrecherchePatientsPrenomIPP.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -1230,10 +1301,258 @@ public class BD {
                 p = new Patient(nom, prenom, ipp, dateNaissance, lieuNaissance, sexe, numeroVoie, typeVoie, complement, codePostal, ville, pays, portable, fixe, mail);
             }
             rsrecherchePatientsNomPrenomDate.close();
+            st.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
         return p;
+    }
+
+    public Lit rechercherLit(String l) {
+        int chambre;
+        boolean f;
+        Lit lit = null;
+
+        try {
+            ResultSet rs1;
+            Statement st1 = con.createStatement();
+
+            String query = "select * from lit where lit='" + l + "'";
+
+            rs1 = st1.executeQuery(query);
+            while (rs1.next()) {
+
+                chambre = rs1.getInt("chambre");
+                f = rs1.getBoolean("fenetre");
+
+                lit = new Lit(l, chambre, f);
+
+            }
+            rs1.close();
+            st1.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return lit;
+    }
+
+    public ArrayList<Lit> getLits() {
+        String num;
+        ArrayList<Lit> lits = new ArrayList();
+        int chambre;
+        boolean f;
+        Lit lit = null;
+
+        try {
+            ResultSet rs1;
+            Statement st1 = con.createStatement();
+
+            String query = "select * from Lit";
+
+            rs1 = st1.executeQuery(query);
+            while (rs1.next()) {
+                num = rs1.getString("lit");
+                chambre = rs1.getInt("chambre");
+                f = rs1.getBoolean("fenetre");
+
+                lit = new Lit(num, chambre, f);
+                lits.add(lit);
+            }
+            rs1.close();
+            st1.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return lits;
+
+    }
+
+    public void ajouterLit(int num, int chambre, boolean f) {
+        this.lit = num;
+        this.chambre = chambre;
+        this.fenetre = f;
+        String sql = "insert into Lit(lit, chambre, fenetre) values (?,?,?)";
+        try {
+            PreparedStatement pstm = con.prepareStatement(sql);
+
+            pstm.setInt(1, lit);
+            pstm.setInt(2, this.chambre);
+            pstm.setBoolean(3, this.fenetre);
+            pstm.executeUpdate();
+
+            pstm.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public ArrayList<Lit> rechercherChambre(int chambre) {
+        ArrayList<Lit> lits = new ArrayList();
+        String l;
+        boolean f;
+        Lit lit;
+
+        try {
+            ResultSet rs1;
+            Statement st1 = con.createStatement();
+
+            String query = "select * from Lit where chambre=" + chambre;
+
+            rs1 = st1.executeQuery(query);
+            while (rs1.next()) {
+
+                l = rs1.getString("lit");
+                f = rs1.getBoolean("fenetre");
+
+                lit = new Lit(l, chambre, f);
+                lits.add(lit);
+            }
+            rs1.close();
+            st1.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return lits;
+    }
+
+    public void insererLitDeManiereFurtive(int num, int iddm) {
+        this.lit = num;
+
+        String sql = "update d_m set lit =" + num + "  where id_dm=" + iddm;
+        try {
+
+            Statement stm = con.createStatement();
+            boolean re;
+            re = stm.execute(sql);
+
+            stm.close();
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public ArrayList<Lit> litDesDms() throws SQLException {
+        ArrayList<DM> dms = new ArrayList();
+        ArrayList<Lit> lits = new ArrayList();
+        dms = this.getDmEnCours();
+
+        for (DM d : dms) {
+            lits.add(d.getLit());
+        }
+
+        return lits;
+
+    }
+
+    public ArrayList<Lit> rechercheLitVacant() throws SQLException {
+        ArrayList<Lit> lits = new ArrayList();
+        ArrayList<Lit> litDM = new ArrayList();
+        ArrayList<Lit> litVacant = new ArrayList();
+
+        litDM = this.litDesDms();
+        lits = this.getLits();
+        int cpt = 0;
+        for (Lit l1 : lits) {
+            for (Lit l2 : litDM) {
+                if (l1.getNum().equals(l2.getNum())) {
+                    cpt++;
+                }
+            }
+
+            if (cpt == 0) {
+                litVacant.add(l1);
+            } else {
+                cpt = 0;
+            }
+        }
+        return litVacant;
+
+    }
+
+    public ArrayList<Lit> rechercheLitOccupe() throws SQLException {
+        ArrayList<Lit> lits = new ArrayList();
+        ArrayList<Lit> litDM = new ArrayList();
+        ArrayList<Lit> litPris = new ArrayList();
+
+        litDM = this.litDesDms();
+        lits = this.getLits();
+        int cpt = 0;
+        for (Lit l1 : lits) {
+            for (Lit l2 : litDM) {
+                if (!l1.getNum().equals(l2.getNum())) {
+                    cpt++;
+                }
+            }
+
+            if (cpt == 0) {
+                litPris.add(l1);
+            } else {
+                cpt = 0;
+            }
+        }
+        return litPris;
+
+    }
+
+    public ArrayList<DM> getDmEnCours() throws SQLException {
+
+        int iddm;
+        String let;
+        Date date;
+        int ph;
+        int ipp;
+        String l;
+
+        ArrayList<DM> dms = new ArrayList();
+
+        try {
+            ResultSet rs1;
+            Statement st1 = con.createStatement();
+            String query = "select * from d_m";
+            rs1 = st1.executeQuery(query);
+            while (rs1.next()) {
+
+                iddm = rs1.getInt("id_dm");
+                let = rs1.getString("lettre_Sortie");
+                date = rs1.getDate("date");
+                ipp = rs1.getInt("IPP");
+                ph = rs1.getInt("PH");
+                l = rs1.getString("lit");
+
+                Patient pa = this.recherchePatientsIPP(ipp);
+                Medecin me = this.rechercheMedecin(ph);
+                Lit lit = this.rechercherLit(l);
+
+                DM dem = new DM(pa, me, let, iddm, date, lit);
+                if (let == null) {
+                    dms.add(dem);
+                }
+
+            }
+            rs1.close();
+            st1.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return dms;
+    }
+
+    public DM GetDMLit(String lit) throws SQLException {
+
+        ArrayList<DM> dms = new ArrayList();
+        DM DmTheGoodOne = null;
+        dms = this.getDmEnCours();
+
+        for (DM dm : dms) {
+            if (dm.getLit().getNum().equals(lit)) {
+                DmTheGoodOne = dm;
+            }
+        }
+
+        return DmTheGoodOne;
+
     }
 
 }
