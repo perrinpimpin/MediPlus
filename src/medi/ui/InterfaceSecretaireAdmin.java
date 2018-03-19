@@ -32,9 +32,9 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     ArrayList<DM> dm;
     Patient p;
     Patient p2;
+    Patient p3;
     boolean res = false;
     SecretaireAdmin sa;
-    Informations_patient ip;
     DefaultTableModel result;
     DefaultTableModel result2;
 
@@ -49,6 +49,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         lp = connect.getPatients();
         dm = connect.sejoursEnCours();
 
+        //Liste des patients de l'hôpital
         for (int i = 0; i < lp.size(); i++) {
             lp.get(i);
             result.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
@@ -59,6 +60,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         resultatsTable.repaint();
         resultatsTable1.repaint();
 
+        //On ajoute un listener pour surveiller le patient sélectionné dans la liste des patients sur la page d'accueil
         resultatsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
@@ -71,6 +73,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             }
         });
 
+        //On ajoute un listener pour surveiller le patient sélectionné dans la liste des patients sur la page des séjours en cours
         resultatsTable2.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
@@ -83,6 +86,19 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             }
         });
 
+        resultatsTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent event) {
+                if (resultatsTable1.getSelectedRow() > -1) {
+                    if (event.getValueIsAdjusting() == false) {
+                        p3 = connect.recherchePatientsNomPrenomDate(resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 0).toString(), resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 1).toString(), (Date) resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 3));
+
+                    }
+                }
+            }
+        });
+
+        //On affiche les séjours en cours dans un tableau
         for (int i = 0; i < dm.size(); i++) {
             result2.addRow(new Object[]{dm.get(i).getP().getNom(), dm.get(i).getP().getPrenom(), dm.get(i).getP().getIPP(), dm.get(i).getP().getDate(), dm.get(i).getP().getLieuNaissance(), dm.get(i).getP().getSexe(),});
         }
@@ -97,8 +113,10 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         centrePanel.add(recherchePatient, "RechercherDMA");
         centrePanel.add(creerPatient, "CreerDMA");
         centrePanel.add(sejours, "Sejours");
-        jPanel7.add(jPanel9, "BoutonsDMA");
-        jPanel7.add(jPanel10, "Vide");
+        jPanel7.add(boutonsAccueil, "BoutonsAccueil");
+        jPanel7.add(boutonsVide, "Vide");        
+        jPanel7.add(boutonsSejours, "BoutonsSejours");
+        jPanel7.add(boutonsRecherche, "BoutonsRecherche");
     }
 
     /**
@@ -195,12 +213,22 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         nomLabel = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
+        boutonsAccueil = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         archiver = new javax.swing.JButton();
-        jPanel10 = new javax.swing.JPanel();
+        boutonsVide = new javax.swing.JPanel();
+        boutonsRecherche = new javax.swing.JPanel();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        archiver1 = new javax.swing.JButton();
+        boutonsSejours = new javax.swing.JPanel();
+        jButton8 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
+        jButton14 = new javax.swing.JButton();
+        archiver2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Médi+");
@@ -1193,7 +1221,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         jPanel7.setPreferredSize(new java.awt.Dimension(170, 147));
         jPanel7.setLayout(new java.awt.CardLayout());
 
-        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+        boutonsAccueil.setBackground(new java.awt.Color(255, 255, 255));
 
         jButton3.setBackground(new java.awt.Color(255, 153, 0));
         jButton3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -1235,22 +1263,22 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
+        javax.swing.GroupLayout boutonsAccueilLayout = new javax.swing.GroupLayout(boutonsAccueil);
+        boutonsAccueil.setLayout(boutonsAccueilLayout);
+        boutonsAccueilLayout.setHorizontalGroup(
+            boutonsAccueilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(boutonsAccueilLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(boutonsAccueilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(archiver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+        boutonsAccueilLayout.setVerticalGroup(
+            boutonsAccueilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, boutonsAccueilLayout.createSequentialGroup()
                 .addContainerGap(291, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1262,22 +1290,164 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel7.add(jPanel9, "card2");
+        jPanel7.add(boutonsAccueil, "card2");
 
-        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        boutonsVide.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout boutonsVideLayout = new javax.swing.GroupLayout(boutonsVide);
+        boutonsVide.setLayout(boutonsVideLayout);
+        boutonsVideLayout.setHorizontalGroup(
+            boutonsVideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 170, Short.MAX_VALUE)
         );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        boutonsVideLayout.setVerticalGroup(
+            boutonsVideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 435, Short.MAX_VALUE)
         );
 
-        jPanel7.add(jPanel10, "card2");
+        jPanel7.add(boutonsVide, "card2");
+
+        boutonsRecherche.setBackground(new java.awt.Color(255, 255, 255));
+
+        jButton5.setBackground(new java.awt.Color(255, 153, 0));
+        jButton5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(102, 102, 102));
+        jButton5.setText("Envoi par HL7");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jButton6.setBackground(new java.awt.Color(255, 153, 0));
+        jButton6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(102, 102, 102));
+        jButton6.setText("Éditer le DMA");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setBackground(new java.awt.Color(255, 153, 0));
+        jButton7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton7.setForeground(new java.awt.Color(102, 102, 102));
+        jButton7.setText("Consulter le DMA");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        archiver1.setBackground(new java.awt.Color(255, 153, 0));
+        archiver1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        archiver1.setForeground(new java.awt.Color(102, 102, 102));
+        archiver1.setText("Archiver le DMA");
+        archiver1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                archiver1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout boutonsRechercheLayout = new javax.swing.GroupLayout(boutonsRecherche);
+        boutonsRecherche.setLayout(boutonsRechercheLayout);
+        boutonsRechercheLayout.setHorizontalGroup(
+            boutonsRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(boutonsRechercheLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(boutonsRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(archiver1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        boutonsRechercheLayout.setVerticalGroup(
+            boutonsRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, boutonsRechercheLayout.createSequentialGroup()
+                .addContainerGap(291, Short.MAX_VALUE)
+                .addComponent(jButton7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(archiver1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel7.add(boutonsRecherche, "card2");
+
+        boutonsSejours.setBackground(new java.awt.Color(255, 255, 255));
+
+        jButton8.setBackground(new java.awt.Color(255, 153, 0));
+        jButton8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton8.setForeground(new java.awt.Color(102, 102, 102));
+        jButton8.setText("Envoi par HL7");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jButton13.setBackground(new java.awt.Color(255, 153, 0));
+        jButton13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton13.setForeground(new java.awt.Color(102, 102, 102));
+        jButton13.setText("Éditer le DMA");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
+
+        jButton14.setBackground(new java.awt.Color(255, 153, 0));
+        jButton14.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton14.setForeground(new java.awt.Color(102, 102, 102));
+        jButton14.setText("Consulter le DMA");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+
+        archiver2.setBackground(new java.awt.Color(255, 153, 0));
+        archiver2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        archiver2.setForeground(new java.awt.Color(102, 102, 102));
+        archiver2.setText("Archiver le DMA");
+        archiver2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                archiver2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout boutonsSejoursLayout = new javax.swing.GroupLayout(boutonsSejours);
+        boutonsSejours.setLayout(boutonsSejoursLayout);
+        boutonsSejoursLayout.setHorizontalGroup(
+            boutonsSejoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(boutonsSejoursLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(boutonsSejoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(archiver2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        boutonsSejoursLayout.setVerticalGroup(
+            boutonsSejoursLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, boutonsSejoursLayout.createSequentialGroup()
+                .addContainerGap(291, Short.MAX_VALUE)
+                .addComponent(jButton14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton13)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(archiver2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel7.add(boutonsSejours, "card2");
 
         jPanel4.add(jPanel7, java.awt.BorderLayout.EAST);
 
@@ -1302,7 +1472,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Sejours");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsSejours");
     }//GEN-LAST:event_asActionPerformed
 
     private void acActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acActionPerformed
@@ -1320,17 +1490,16 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "RechercherDMA");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsRecherche");
     }//GEN-LAST:event_arActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Informations_patient ip = new Informations_patient(p);
-        ip.setVisible(true);
-        ip.requestFocusInWindow();
+        AfficherInformationsPatient aip = new AfficherInformationsPatient(p);
+        aip.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Informations_patient_modif ipm = new Informations_patient_modif(p);
+        EditerInformationsPatient ipm = new EditerInformationsPatient(p);
         ipm.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -1427,7 +1596,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Sejours");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsSejours");
     }//GEN-LAST:event_csActionPerformed
 
     private void ccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ccActionPerformed
@@ -1445,7 +1614,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "RechercherDMA");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsRecherche");
     }//GEN-LAST:event_crActionPerformed
 
     private void rsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rsActionPerformed
@@ -1454,7 +1623,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Sejours");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsSejours");
     }//GEN-LAST:event_rsActionPerformed
 
     private void rcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rcActionPerformed
@@ -1472,7 +1641,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "RechercherDMA");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsRecherche");
     }//GEN-LAST:event_rrActionPerformed
 
     private void caActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caActionPerformed
@@ -1481,7 +1650,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsAccueil");
     }//GEN-LAST:event_caActionPerformed
 
     private void aaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aaActionPerformed
@@ -1490,7 +1659,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsAccueil");
     }//GEN-LAST:event_aaActionPerformed
 
     private void raActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_raActionPerformed
@@ -1499,7 +1668,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsAccueil");
     }//GEN-LAST:event_raActionPerformed
 
     private void prenomField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prenomField1ActionPerformed
@@ -1592,7 +1761,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             Patient patient = connect.recherchePatientsNomPrenomDate(nom, sexe, date);
             if (patient.getNom() == null && patient.getPrenom() == null && patient.getDate() == null) {
                 connect.ajouterDMA(nom.toUpperCase(), prenom, date, lieu.toUpperCase(), sexe, numeroVoie, typeVoie, complement, (int) codePostal, ville.toUpperCase(), pays.toUpperCase(), portable, fixe, mail);
-                
+
                 lp = connect.getPatients();
                 for (int i = 0; i < lp.size(); i++) {
                     lp.get(i);
@@ -1646,7 +1815,6 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void archiverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archiverActionPerformed
-
         Archivage_DP adp = new Archivage_DP(p);
         adp.setVisible(true);
     }//GEN-LAST:event_archiverActionPerformed
@@ -1657,7 +1825,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsAccueil");
     }//GEN-LAST:event_smaActionPerformed
 
     private void smsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smsActionPerformed
@@ -1666,7 +1834,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Sejours");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsSejours");
     }//GEN-LAST:event_smsActionPerformed
 
     private void smcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smcActionPerformed
@@ -1684,8 +1852,46 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "RechercherDMA");
         CardLayout card2 = (CardLayout) jPanel7.getLayout();
-        card2.show(jPanel7, "BoutonsDMA");
+        card2.show(jPanel7, "BoutonsRecherche");
     }//GEN-LAST:event_smrActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        EditerInformationsPatient ipm = new EditerInformationsPatient(p3);
+        ipm.setVisible(true);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        AfficherInformationsPatient aip = new AfficherInformationsPatient(p3);
+        aip.setVisible(true);
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void archiver1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archiver1ActionPerformed
+        Archivage_DP adp = new Archivage_DP(p3);
+        adp.setVisible(true);
+    }//GEN-LAST:event_archiver1ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        EditerInformationsPatient ipm = new EditerInformationsPatient(p2);
+        ipm.setVisible(true);
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        AfficherInformationsPatient aip = new AfficherInformationsPatient(p2);
+        aip.setVisible(true);
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void archiver2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archiver2ActionPerformed
+        Archivage_DP adp = new Archivage_DP(p2);
+        adp.setVisible(true);
+    }//GEN-LAST:event_archiver2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1728,7 +1934,13 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel accueil;
     private javax.swing.JButton ar;
     private javax.swing.JButton archiver;
+    private javax.swing.JButton archiver1;
+    private javax.swing.JButton archiver2;
     private javax.swing.JButton as;
+    private javax.swing.JPanel boutonsAccueil;
+    private javax.swing.JPanel boutonsRecherche;
+    private javax.swing.JPanel boutonsSejours;
+    private javax.swing.JPanel boutonsVide;
     private javax.swing.JButton ca;
     private javax.swing.JButton cc;
     private javax.swing.JPanel centrePanel;
@@ -1745,9 +1957,15 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1775,12 +1993,10 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

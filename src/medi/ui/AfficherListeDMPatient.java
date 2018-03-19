@@ -33,21 +33,33 @@ public class AfficherListeDMPatient extends javax.swing.JFrame {
      * Creates new form Ajouterpres
      */
     public AfficherListeDMPatient(Patient pdm, Medecin m) {
+        
+        //Initialisation des variables
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         this.m=m;
+        
+        //Connection a la bdd
         connect = new BD();
         initComponents();
+        
         this.p = pdm;
         int ipp = p.getIPP();
         String sejterm;
+        
+        //Recuperation du dma en fonction de l'ipp du patient
         dma = connect.getDMPatient(ipp);
         result = (DefaultTableModel) resultatsTable.getModel();
+        
+        //Affichage des donnÃ©es sous forme de tableau et diffÃ©renciation orthographique
+        //en fonction du sexe
         if (p.getSexe().equals("Femme")) {
-            nomField.setText(p.getNom() + " " + p.getPrenom() + " - Née le " + format.format(p.getDate()));
+            nomField.setText(p.getNom() + " " + p.getPrenom() + " - NÃ©e le " + format.format(p.getDate()));
         } else {
-            nomField.setText(p.getNom() + " " + p.getPrenom() + " - Né le " + format.format(p.getDate()));
+            nomField.setText(p.getNom() + " " + p.getPrenom() + " - NÃ© le " + format.format(p.getDate()));
         }
 
+        
+        //Si la lettre de sortie n'est pas Ã©ditÃ©e le sÃ©jour est toujours en cours
         for (int i = 0;i < dma.size();i++) {
             if(dma.get(i).getLet()==null){
                 sejterm="Non";
@@ -258,13 +270,13 @@ public class AfficherListeDMPatient extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void consulterDMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consulterDMActionPerformed
-        AfficherDetailDM addm = new AfficherDetailDM(dm);
+        AfficherDMClinique addm = new AfficherDMClinique(dm);
         addm.setVisible(true);
     }//GEN-LAST:event_consulterDMActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if(dm.getLet()==null){
-        EditerDM edm = new EditerDM(dm,m);
+        EditerDMClinique edm = new EditerDMClinique(dm,m);
         edm.setVisible(true);}else{
             javax.swing.JOptionPane.showMessageDialog(null, "Ce DM ne peut pas être édité car le séjour associé est terminé.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }

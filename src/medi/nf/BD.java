@@ -43,6 +43,7 @@ public class BD {
     private int chambre;
     private boolean fenetre;
 
+    // connexion a la base de donnÃ©es
     public BD() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -56,6 +57,7 @@ public class BD {
 
     }
 
+    //connexion sur le logiciel en fonction du mdp et de l'id, retourne l'utilisateur qui se connecte
     public User connection(String username, String password) {
         int res_co = 0;
         ResultSet rsConnection;
@@ -67,6 +69,7 @@ public class BD {
         try {
 
             Statement st = con.createStatement();
+            //on récupère les informations liés à l'identifiant de connection
             String query = "SELECT * FROM `users` WHERE `username` = '" + username + " ' ";
             rsConnection = st.executeQuery(query);
             while (rsConnection.next()) {
@@ -74,6 +77,7 @@ public class BD {
                 p = rsConnection.getString("password");
                 r = rsConnection.getString("role");
                 i = rsConnection.getInt("ID_user");
+                //On regarde si l'user est un médecin ou une secrétaire médicale
                 if (!username.isEmpty() && p.equals(password) && r.equals("1")) {
                     res_co = 1;
                 } else if (!username.isEmpty() && p.equals(password) && r.equals("2")) {
@@ -83,6 +87,7 @@ public class BD {
                 }
             }
             if (res_co == 1) {
+                //On récupère les informations du médecin
                 query = "SELECT * FROM `praticien` WHERE ID_user = " + i;
                 ResultSet qs = st.executeQuery(query);
                 while (qs.next()) {
@@ -90,6 +95,7 @@ public class BD {
                 }
                 qs.close();
             } else if (res_co == 2) {
+                //On récupère les informations de la secrétaire
                 query = "SELECT * FROM `secretaire` WHERE ID_user = " + i;
                 rsConnection = st.executeQuery(query);
                 while (rsConnection.next()) {
@@ -104,6 +110,7 @@ public class BD {
         return user;
     }
 
+    // Fonction d'ajout d'utilisateur du logiciel pour qu'il puisse se connecter (doit être utilisé en parallèle avec la fonction "ajouterMedecin" ou "ajouterSA"
     public void ajouterLogin(int id_user, String username, String password, int role) {
         //roles : 1=medecin, 2=SA
         String sql = "insert into users(id_user,username,password,role) values (?,?,?,?)";
@@ -122,6 +129,7 @@ public class BD {
         }
     }
 
+    //On crée un nouveau médecin dans la BD
     public void ajouterMedecin(int ID_user, String nom, String prenom, int telephone, String specialite, String service) {
         String sql = "insert into praticien(ID_user,nom,prenom,telephone,specialite,service) values (?,?,?,?,?,?)";
 
@@ -142,6 +150,7 @@ public class BD {
         }
     }
 
+    // Ajout d'une sercrétaire administrative dans la base de données
     public void ajouterSA(int ID_user, String nom, String prenom, int telephone) {
         String sql = "insert into secretaire(ID_user,nom,prenom,telephone) values (?,?,?,?)";
 
@@ -160,6 +169,7 @@ public class BD {
         }
     }
 
+    // Ajout d'un DMA dans la bdd, paramètres étant les mêmes que pour un objet DMA
     public void ajouterDMA(String nom, String prenom, Date dateNaissance, String lieuNaissance, String sexe, int numeroVoie, String typeVoie, String complement, int codePostal, String ville, String pays, int portable, int fixe, String mail) {
 
         String sql = "insert into d_m_a(IPP, nom, prenom, dateNaissance, lieuNaissance, sexe, numeroVoie, typeVoie, complement, codePostal, ville, pays, portable, fixe, mail) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -185,13 +195,14 @@ public class BD {
 
             pstmAjouterDMA.executeUpdate();
             pstmAjouterDMA.close();
-            javax.swing.JOptionPane.showMessageDialog(null, "Dossier Médico-Administratif ajouté à la base de données", "Patient ajouté", JOptionPane.INFORMATION_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(null, "Dossier MÃ©dico-Administratif ajoutÃ© à  la base de donnÃ©es", "Patient ajoutÃ©", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             System.out.println(ex);
             javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    //Méthode d'ajout d'une prescrtpion à  la bdd
     public void ajouterPrescription(String id, int PH, String prescription, int iddm) {
 
         String sql = "insert into prescriptions(id_prescription, PH, prescription, date, id_dm) values (?,?,?,?,?)";
@@ -213,6 +224,8 @@ public class BD {
         }
     }
 
+    //MÃ©thode d'ajout d'une opÃ©ration infirmiÃ¨re à  la base de donnÃ©es, prend en 
+    //paramÃ¨tre les mÃªmes paramÃ¨tres que l'obet op Infirmière
     public void ajouterOpeInf(String id, int PH, String op, int iddm) {
 
         String sql = "insert into op_inf(id_op, date, id_dm, PH, op_inf) values (?,?,?,?,?)";
@@ -234,6 +247,7 @@ public class BD {
         }
     }
 
+    //Méthode d'ajout d'une lettre de sortie sur le DM d'id : iddm, dans la bdd
     public void ajouterLettreSortie(String lettre, int iddm) {
 
         String sql = "update d_m set lettre_Sortie= ? where id_dm = ?";
@@ -243,13 +257,14 @@ public class BD {
             pstmt.setString(1, lettre);
             pstmt.setInt(2, iddm);
             pstmt.executeUpdate();
-            
+
         } catch (Exception ex) {
             System.out.println(ex);
             javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    //Méthode d'ajout d'un résultat dans un DM d'id : iddm 
     public void ajouterResultat(String id, int PH, String resultat, int iddm) {
 
         String sql = "insert into resultats(id_res, date, id_dm, PH, resultat) values (?,?,?,?,?)";
@@ -271,6 +286,7 @@ public class BD {
         }
     }
 
+    //MÃ©thode d'ajout d'une observatin pour un DM d'id : iddm    
     public void ajouterObs(String id, int PH, String obs, int iddm) {
 
         String sql = "insert into observations(id_obs, date, id_dm, PH, observation) values (?,?,?,?,?)";
@@ -292,6 +308,7 @@ public class BD {
         }
     }
 
+    //Méthode de modification des infos patients dans la bdd    
     public void modifierPatient(Patient p) {
         PreparedStatement pstmModifierPatient = null;
         String query = "update d_m_a set numeroVoie = ?, "
@@ -323,6 +340,9 @@ public class BD {
         }
     }
 
+    
+    //Méthode d'archivage du patient
+    //Retrait de la table d_m_a pour transférer le dossier dans la table archive_dma 
     public void archiverPatient(Patient p, Date d, String obs) {
         PreparedStatement pstmArchiverPatient = null;
         PreparedStatement pstmArchiverPatient2 = null;
@@ -356,7 +376,10 @@ public class BD {
             System.out.println(ex);
         }
     }
-
+    
+    
+    //Méthode retournant la liste des DM qui n'ont pas de lettre de sortie
+    //et qui sont donc encore en cours
     public ArrayList<DM> sejoursEnCours() {
         int ipp = 0;
         int ph = 0;
@@ -401,6 +424,8 @@ public class BD {
         return dms;
 
     }
+    
+    //Méthode permettant d'ajouter un DM dans la base de données à partir d'un objet DM
 
     public void ajouterDM(DM d) {
 
@@ -419,12 +444,15 @@ public class BD {
             pstmAjouterDM.setString(4, let);
             pstmAjouterDM.setInt(5, this.genererIDDM());
             pstmAjouterDM.executeUpdate();
-            javax.swing.JOptionPane.showMessageDialog(null, "Dossier Médical créé.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(null, "Dossier MÃ©dical crÃ©à©.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             pstmAjouterDM.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
     }
+    
+    //Méthode permettant de générer automatiquement un IDDM en 
+    //fonction des IDDM déjà présent dans la bdd
 
     public int genererIDDM() {
         ResultSet rsGenererIDDM;
@@ -450,6 +478,8 @@ public class BD {
         return iddm;
     }
 
+    //Méthode permettannt de générer un id de prescription automatiquement
+    //en fonction des ID déjà présents dans la bdd selon le modèle : iddmPxxx avec xxx un compteur sur 3 positions
     public String genererIDPrescription(DM dm) {
         ResultSet rsGenererIDPrescription;
         String idp = null;
@@ -472,7 +502,8 @@ public class BD {
         }
         return idp;
     }
-
+    
+    //méthode permettant de générer les ID des observations automatiquement pour un DM donné selon le modèle : iddmOxxx avec xxx un compteur sur 3 positions
     public String genererIDObs(DM dm) {
         ResultSet rsGenererIDObs;
         String idp = null;
@@ -496,6 +527,7 @@ public class BD {
         return idp;
     }
 
+    //MÃ©thode gÃ©nÃ©rant les ID automatiquement des opÃ©rations infirmiÃ¨res pour un DM donnÃ©e selon le modèle : iddmIxxx avec xxx un compteur sur 3 positions
     public String genererIDOpe(DM dm) {
         ResultSet rsGenererIDOpe;
         String idp = null;
@@ -519,6 +551,7 @@ public class BD {
         return idp;
     }
 
+    //Méthode permettant de générer les ID des resultats de manière automatique pour un DM donné selon le modèle : iddmRxxx avec xxx un compteur sur 3 positions
     public String genererIDRes(DM dm) {
         ResultSet rsGenererIDRes;
         String idp = null;
@@ -543,6 +576,7 @@ public class BD {
         return idp;
     }
 
+    //Méthode générant les ID des prescription de manière automatique pendant la création d'un DM
     public String genererIDPrescription() {
         ResultSet rsGenererIDPrescription;
         String idp = null;
@@ -566,6 +600,8 @@ public class BD {
         return idp;
     }
 
+    
+    //méthode permettant de générer les ID des observations automatiquement pendant la création d'un DM
     public String genererIDObs() {
         ResultSet rsGenererIDObs;
         String idp = null;
@@ -589,6 +625,7 @@ public class BD {
         return idp;
     }
 
+    //mÃ©thode permettant de gÃ©nÃ©rer les ID des opÃ©rations infirmiÃ¨res automatiquement pendant la création d'un DM
     public String genererIDOpe() {
         ResultSet rsGenererIDOpe;
         String idp = null;
@@ -611,7 +648,9 @@ public class BD {
         }
         return idp;
     }
-
+    
+    
+    //mÃ©thode permettant de gÃ©nÃ©rer les ID des rÃ©sultats automatiquement pendant la création d'un DM
     public String genererIDRes() {
         ResultSet rsGenererIDRes;
         String idp = null;
@@ -635,6 +674,8 @@ public class BD {
         return idp;
     }
 
+    
+    //MÃ©thode retournant tout les DM ayant pour mÃ©decin refÃ©rent le mÃ©decin entrÃ© en paramÃ¨tre
     public ArrayList getDM(Medecin m) {
         ResultSet rsGetDMMedecin = null, rs1, rs2 = null;
         int ipp = 0;
@@ -712,6 +753,8 @@ public class BD {
         return dms;
     }
 
+    
+    //MÃ©thode retournant le DM dont l'iddm est celui entrÃ© en paramÃ¨tre
     public DM getDM(int iddm) {
         ResultSet rsGetDMIDDM = null, rs1 = null, rs2 = null;
         int ph = 0;
@@ -775,6 +818,7 @@ public class BD {
         return dm;
     }
 
+    //MÃ©thode retournant toutes les prescriptions associées au DM dont l'iddm est entrÃ© en paramÃ¨tre 
     public ArrayList<Prescription> getPrescription(int iddm) {
         ArrayList<Prescription> prescription = new ArrayList<>();
         int ph = 0;
@@ -803,6 +847,8 @@ public class BD {
         return prescription;
     }
 
+    
+    //MÃ©thode retournant toutes les observations du DM dont l'iddm est entrÃ© en paramÃ¨tre
     public ArrayList<Observation> getObservation(int iddm) {
         ResultSet rsGetObservationiddm;
         ArrayList<Observation> obs = new ArrayList<>();
@@ -830,6 +876,8 @@ public class BD {
         return obs;
     }
 
+    
+    //MÃ©thode retournant tous les resultats du DM dont l'iddm est entrÃ© en paramÃ¨tre
     public ArrayList<Resultat> getResultat(int iddm) {
         ResultSet rsGetResultatiddm;
         ArrayList<Resultat> res = new ArrayList<>();
@@ -857,6 +905,8 @@ public class BD {
         return res;
     }
 
+    
+    //MÃ©thode retournant toutes les opérations InfirmiÃ¨res du DM dont l'iddm est entrÃ© en paramÃ¨tre
     public ArrayList<OperationInfirmiere> getOperationInfirmiere(int iddm) {
         ResultSet rsGetOperationInfirmiereiddm;
         ArrayList<OperationInfirmiere> opinf = new ArrayList<>();
@@ -884,6 +934,7 @@ public class BD {
         return opinf;
     }
 
+    //MÃ©thode retournant tous les DM du patient dont l'ipp est entrÃ© en paramÃ¨tre
     public ArrayList<DM> getDMPatient(int ipp) {
         ResultSet rsGetDMPatientipp;
 
@@ -907,7 +958,8 @@ public class BD {
             ResultSet rs1;
             Statement st2 = con.createStatement();
             ResultSet rs2;
-
+            
+            //On cherche les informations sur le patient
             String query = "select * from d_m_a WHERE IPP = " + ipp;
             rs1 = st1.executeQuery(query);
             while (rs1.next()) {
@@ -916,7 +968,8 @@ public class BD {
                 dateN = rs1.getDate("dateNaissance");
                 p = new Patient(nom, prenom, dateN);
             }
-
+            
+            //On cherche les DM associés à ce patient
             query = "select * from d_m where IPP = " + ipp;
             rsGetDMPatientipp = st.executeQuery(query);
             while (rsGetDMPatientipp.next()) {
@@ -927,6 +980,7 @@ public class BD {
                 l = rsGetDMPatientipp.getString("lit");
                 Lit lit = this.rechercherLit(l);
 
+                //On retourne le médecin référent pour chaque DM
                 query = "select * from praticien WHERE ID_user = " + ph;
                 rs1 = st1.executeQuery(query);
                 while (rs1.next()) {
@@ -936,6 +990,7 @@ public class BD {
                     String spe = rs1.getString("specialite");
                     String ser = rs1.getString("service");
 
+                    //On retourne les informations d'utilisateur du médecin référent pour chaque DM
                     String query2 = "select * from users WHERE ID_user = " + ph;
                     rs2 = st2.executeQuery(query2);
                     while (rs2.next()) {
@@ -958,6 +1013,7 @@ public class BD {
         return dms;
     }
 
+    // MÃ©thode permettant de gÃ©nÃ©rer automatiquement un IPP patient
     public int genererIPP() {
         ResultSet rsGenererIPP;
         int ipp = 0;
@@ -982,6 +1038,7 @@ public class BD {
         return ipp;
     }
 
+    //MÃ©thode retournant tout les patients ayant un d_m_a dans la base de donnÃ©es
     public ArrayList<Patient> getPatients() {
         ResultSet rsGetPatients;
         lp = new ArrayList<Patient>();
@@ -990,7 +1047,7 @@ public class BD {
             String query = "select * from bd.d_m_a";
             rsGetPatients = st.executeQuery(query);
             while (rsGetPatients.next()) {
-                ipp = rsGetPatients.getInt("IPP");// pour avoir accès a la colonne de ma table 
+                ipp = rsGetPatients.getInt("IPP");// pour avoir accÃ¨s a la colonne de ma table 
                 nom = rsGetPatients.getString("nom");
                 prenom = rsGetPatients.getString("prenom");
                 dateNaissance = rsGetPatients.getDate("dateNaissance");
@@ -1006,6 +1063,8 @@ public class BD {
         }
         return lp;
     }
+    
+    //MÃ©thode retournant le mÃ©decin dont l'id est entrÃ© en paramÃ¨tre
 
     public Medecin rechercheMedecin(int id) {
         ResultSet rsRechercheMedecinID;
@@ -1015,6 +1074,7 @@ public class BD {
         String spe = null;
         String ser = null;
         try {
+            //On recherche les informations sur le médecin
             Statement st = con.createStatement();
             String query = "select * from praticien where ID_user='" + id + "'";
             rsRechercheMedecinID = st.executeQuery(query);
@@ -1026,6 +1086,7 @@ public class BD {
                 ser = rsRechercheMedecinID.getString("service");
             }
 
+            //On recherche les informations de connection du médecin
             query = "select * from users WHERE ID_user = " + id;
             rsRechercheMedecinID = st.executeQuery(query);
             while (rsRechercheMedecinID.next()) {
@@ -1042,6 +1103,7 @@ public class BD {
         return m;
     }
 
+    //MÃ©thode retournant tout les mÃ©decins enregistrÃ©s dans la bdd
     public ArrayList<Medecin> getMedecins() {
         ResultSet rsGetMedecins, rsGetMedecins2 = null;
         String username = null;
@@ -1087,7 +1149,8 @@ public class BD {
         }
         return lm;
     }
-
+    
+    //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom
     public ArrayList<Patient> recherchePatientsNom(String name) {
         ResultSet rsRecherchePatientsNom;
         lp = new ArrayList<Patient>();
@@ -1096,7 +1159,7 @@ public class BD {
             String query = "select * from bd.d_m_a where nom='" + name + "'";
             rsRecherchePatientsNom = st.executeQuery(query);
             while (rsRecherchePatientsNom.next()) {
-                ipp = rsRecherchePatientsNom.getInt("IPP");// pour avoir accès a la colonne de ma table 
+                ipp = rsRecherchePatientsNom.getInt("IPP");// pour avoir accÃ¨s a la colonne de ma table 
                 nom = rsRecherchePatientsNom.getString("nom");
                 prenom = rsRecherchePatientsNom.getString("prenom");
                 dateNaissance = rsRecherchePatientsNom.getDate("dateNaissance");
@@ -1113,6 +1176,7 @@ public class BD {
         return lp;
     }
 
+      //Methode retrouvant un patient enregistrÃ© dans la bdd par son prÃ©nom
     public ArrayList<Patient> recherchePatientsPrenom(String surname) {
         ResultSet rsRecherchePatientsPrenom;
         lp = new ArrayList<Patient>();
@@ -1121,7 +1185,7 @@ public class BD {
             String query = "select * from bd.d_m_a where prenom='" + surname + "'";
             rsRecherchePatientsPrenom = st.executeQuery(query);
             while (rsRecherchePatientsPrenom.next()) {
-                ipp = rsRecherchePatientsPrenom.getInt("IPP");// pour avoir accès a la colonne de ma table 
+                ipp = rsRecherchePatientsPrenom.getInt("IPP");// pour avoir accÃ¨s a la colonne de ma table 
                 nom = rsRecherchePatientsPrenom.getString("nom");
                 prenom = rsRecherchePatientsPrenom.getString("prenom");
                 dateNaissance = rsRecherchePatientsPrenom.getDate("dateNaissance");
@@ -1138,6 +1202,7 @@ public class BD {
         return lp;
     }
 
+      //Methode retrouvant un patient enregistrÃ© dans la bdd par son ipp
     public Patient recherchePatientsIPP(int id) {
         ResultSet rsRecherchePAtientIPP;
         int identifiant = id;
@@ -1146,7 +1211,7 @@ public class BD {
             String query = "select * from d_m_a where IPP='" + identifiant + "'";
             rsRecherchePAtientIPP = st.executeQuery(query);
             while (rsRecherchePAtientIPP.next()) {
-                ipp = rsRecherchePAtientIPP.getInt("IPP");// pour avoir accès a la colonne de ma table 
+                ipp = rsRecherchePAtientIPP.getInt("IPP");// pour avoir accÃ¨s a la colonne de ma table 
                 nom = rsRecherchePAtientIPP.getString("nom");
                 prenom = rsRecherchePAtientIPP.getString("prenom");
                 dateNaissance = rsRecherchePAtientIPP.getDate("dateNaissance");
@@ -1162,6 +1227,7 @@ public class BD {
         return p;
     }
 
+      //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom et son prÃ©nom
     public ArrayList<Patient> recherchePatientsNomPrenom(String name, String surname) {
         ResultSet rsrecherchePatientsNomPrenom;
         lp = new ArrayList<Patient>();
@@ -1170,7 +1236,7 @@ public class BD {
             String query = "select * from bd.d_m_a where nom='" + name + "' AND prenom='" + surname + "'";
             rsrecherchePatientsNomPrenom = st.executeQuery(query);
             while (rsrecherchePatientsNomPrenom.next()) {
-                ipp = rsrecherchePatientsNomPrenom.getInt("IPP");// pour avoir accès a la colonne de ma table 
+                ipp = rsrecherchePatientsNomPrenom.getInt("IPP");// pour avoir accÃ¨s a la colonne de ma table 
                 nom = rsrecherchePatientsNomPrenom.getString("nom");
                 prenom = rsrecherchePatientsNomPrenom.getString("prenom");
                 dateNaissance = rsrecherchePatientsNomPrenom.getDate("dateNaissance");
@@ -1187,6 +1253,7 @@ public class BD {
         return lp;
     }
 
+      //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom, son prÃ©nom et son ipp
     public ArrayList<Patient> recherchePatientsNomPrenomIPP(String name, String surname, int identifiant) {
         ResultSet rsrecherchePatientsNomPrenomIPP;
         lp = new ArrayList<Patient>();
@@ -1195,7 +1262,7 @@ public class BD {
             String query = "select * from bd.d_m_a where nom='" + name + "' AND prenom='" + surname + "' AND IPP='" + identifiant + "'";
             rsrecherchePatientsNomPrenomIPP = st.executeQuery(query);
             while (rsrecherchePatientsNomPrenomIPP.next()) {
-                ipp = rsrecherchePatientsNomPrenomIPP.getInt("IPP");// pour avoir accès a la colonne de ma table 
+                ipp = rsrecherchePatientsNomPrenomIPP.getInt("IPP");// pour avoir accÃ¨s a la colonne de ma table 
                 nom = rsrecherchePatientsNomPrenomIPP.getString("nom");
                 prenom = rsrecherchePatientsNomPrenomIPP.getString("prenom");
                 dateNaissance = rsrecherchePatientsNomPrenomIPP.getDate("dateNaissance");
@@ -1213,6 +1280,7 @@ public class BD {
         return lp;
     }
 
+      //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom et son ipp
     public ArrayList<Patient> recherchePatientsNomIPP(String name, int identifiant) {
         ResultSet rsrecherchePatientsNomIPP;
         lp = new ArrayList<Patient>();
@@ -1221,7 +1289,7 @@ public class BD {
             String query = "select * from bd.d_m_a where nom='" + name + "' AND IPP='" + identifiant + "'";
             rsrecherchePatientsNomIPP = st.executeQuery(query);
             while (rsrecherchePatientsNomIPP.next()) {
-                ipp = rsrecherchePatientsNomIPP.getInt("IPP");// pour avoir accès a la colonne de ma table 
+                ipp = rsrecherchePatientsNomIPP.getInt("IPP");// pour avoir accÃ¨s a la colonne de ma table 
                 nom = rsrecherchePatientsNomIPP.getString("nom");
                 prenom = rsrecherchePatientsNomIPP.getString("prenom");
                 dateNaissance = rsrecherchePatientsNomIPP.getDate("dateNaissance");
@@ -1239,6 +1307,7 @@ public class BD {
         return lp;
     }
 
+      //Methode retrouvant un patient enregistrÃ© dans la bdd par son prÃ©nom et son ipp
     public ArrayList<Patient> recherchePatientsPrenomIPP(String surname, int identifiant) {
         ResultSet rsrecherchePatientsPrenomIPP;
         lp = new ArrayList<Patient>();
@@ -1247,7 +1316,7 @@ public class BD {
             String query = "select * from bd.d_m_a where prenom='" + surname + "' AND IPP='" + identifiant + "'";
             rsrecherchePatientsPrenomIPP = st.executeQuery(query);
             while (rsrecherchePatientsPrenomIPP.next()) {
-                ipp = rsrecherchePatientsPrenomIPP.getInt("IPP");// pour avoir accès a la colonne de ma table 
+                ipp = rsrecherchePatientsPrenomIPP.getInt("IPP");// pour avoir accÃ¨s a la colonne de ma table 
                 nom = rsrecherchePatientsPrenomIPP.getString("nom");
                 prenom = rsrecherchePatientsPrenomIPP.getString("prenom");
                 dateNaissance = rsrecherchePatientsPrenomIPP.getDate("dateNaissance");
@@ -1272,7 +1341,9 @@ public class BD {
         }
         return lp;
     }
-
+    
+    
+      //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom, son prÃ©nom et sa date de naissance
     public Patient recherchePatientsNomPrenomDate(String name, String surname, Date date) {
         ResultSet rsrecherchePatientsNomPrenomDate;
         p = new Patient(null, null, null);
@@ -1283,7 +1354,7 @@ public class BD {
             String query = "select * from bd.d_m_a where nom='" + name + "' AND prenom='" + surname + "' AND dateNaissance='" + format.format(date) + "'";
             rsrecherchePatientsNomPrenomDate = st.executeQuery(query);
             while (rsrecherchePatientsNomPrenomDate.next()) {
-                ipp = rsrecherchePatientsNomPrenomDate.getInt("IPP");// pour avoir accès a la colonne de ma table 
+                ipp = rsrecherchePatientsNomPrenomDate.getInt("IPP");// pour avoir accÃ¨s a la colonne de ma table 
                 nom = rsrecherchePatientsNomPrenomDate.getString("nom");
                 prenom = rsrecherchePatientsNomPrenomDate.getString("prenom");
                 dateNaissance = rsrecherchePatientsNomPrenomDate.getDate("dateNaissance");
@@ -1308,6 +1379,7 @@ public class BD {
         return p;
     }
 
+    //MÃ©thode retournant le lit dont le numÃ©ro de lit est entrÃ© en paramÃ¨tre
     public Lit rechercherLit(String l) {
         int chambre;
         boolean f;
@@ -1337,6 +1409,7 @@ public class BD {
         return lit;
     }
 
+    //MÃ©thode retournant tout les lits de l'hopital
     public ArrayList<Lit> getLits() {
         String num;
         ArrayList<Lit> lits = new ArrayList();
@@ -1368,6 +1441,7 @@ public class BD {
 
     }
 
+    //MÃ©thode ajoutant un lit à  l'hopital
     public void ajouterLit(int num, int chambre, boolean f) {
         this.lit = num;
         this.chambre = chambre;
@@ -1387,6 +1461,7 @@ public class BD {
         }
     }
 
+    //mÃ©thode retournant les lits de la chambre dont le numÃ©ro est entrÃ© en paramÃ¨tre
     public ArrayList<Lit> rechercherChambre(int chambre) {
         ArrayList<Lit> lits = new ArrayList();
         String l;
@@ -1416,6 +1491,7 @@ public class BD {
         return lits;
     }
 
+    //MÃ©thode permettant de modifier le lit d'un DM pour un patient
     public void insererLitDeManiereFurtive(int num, int iddm) {
         this.lit = num;
 
@@ -1433,6 +1509,8 @@ public class BD {
         }
     }
 
+    
+    //MÃ©thode retournant tout les lits d'un DM en cours
     public ArrayList<Lit> litDesDms() throws SQLException {
         ArrayList<DM> dms = new ArrayList();
         ArrayList<Lit> lits = new ArrayList();
@@ -1446,6 +1524,7 @@ public class BD {
 
     }
 
+    //MÃ©thode retournant tous les lits vacants
     public ArrayList<Lit> rechercheLitVacant() throws SQLException {
         ArrayList<Lit> lits = new ArrayList();
         ArrayList<Lit> litDM = new ArrayList();
@@ -1471,6 +1550,7 @@ public class BD {
 
     }
 
+    //MÃ©thode retournant tout les lits occupÃ©s
     public ArrayList<Lit> rechercheLitOccupe() throws SQLException {
         ArrayList<Lit> lits = new ArrayList();
         ArrayList<Lit> litDM = new ArrayList();
@@ -1496,6 +1576,7 @@ public class BD {
 
     }
 
+    //MÃ©thode retournant tous les DM n'ayant pas de lettre de sortie, soit tous les dm en cours
     public ArrayList<DM> getDmEnCours() throws SQLException {
 
         int iddm;
@@ -1539,6 +1620,7 @@ public class BD {
         return dms;
     }
 
+    //MÃ©thode retournant le DM dont le patient utilise le lit dont le numÃ©ro est entrÃ© en paramÃ¨tre
     public DM GetDMLit(String lit) throws SQLException {
 
         ArrayList<DM> dms = new ArrayList();

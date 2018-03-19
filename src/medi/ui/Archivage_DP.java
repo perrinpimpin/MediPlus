@@ -29,6 +29,7 @@ public class Archivage_DP extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);//centrer
         connect = new BD();
         this.p = p;
+        //Affichage de l'identité du patient sur l'interface
         if (p.getSexe().equals("Femme")) {
             idpatient.setText(p.getNom() + " " + p.getPrenom() + " - Née le " + format.format(p.getDate()));
         } else {
@@ -252,18 +253,21 @@ public class Archivage_DP extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        //VÃ©rification que le temps d'archivage demandÃ© est conforme, soit 20 soit 50 ans
         if (Integer.parseInt(tpsarch.getText()) >= 20 && Integer.parseInt(tpsarch.getText()) <= 50 && dateField.getDate() != null) {
-            int retour = JOptionPane.showConfirmDialog(null, "Tout archivage est définitif. Êtes-vous sûr de vouloir archiver ce dossier patient ?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+            //Message d'alerte de la notion definitive de l'action
+            int retour = JOptionPane.showConfirmDialog(null, "Tout archivage est dÃ©finitif. ÃŠtes-vous sÃ»r de vouloir archiver ce dossier patient ?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
             if (retour == JOptionPane.OK_OPTION) {
+                //Archivage
                 Date date = new Date(dateField.getDate().getYear(), dateField.getDate().getMonth(), dateField.getDate().getDate());
                 connect.archiverPatient(p, date, obsField.getText());
-                javax.swing.JOptionPane.showMessageDialog(null, "Dossier archivé.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+                javax.swing.JOptionPane.showMessageDialog(null, "Dossier archivÃ©.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
             }
         } else if (Integer.parseInt(tpsarch.getText()) < 20 || Integer.parseInt(tpsarch.getText()) > 50) {
             javax.swing.JOptionPane.showMessageDialog(null, "Temps d'archivage non valide.\nVeuillez entrer un temps d'archivage compris entre 20 et 50 ans.", "Erreur", JOptionPane.ERROR_MESSAGE);
         } else if (dateField.getDate() == null) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Veuillez entrer la date de décès du patient.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(null, "Veuillez entrer la date de dÃ©cÃ¨s du patient.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

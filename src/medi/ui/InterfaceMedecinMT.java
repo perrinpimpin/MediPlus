@@ -30,7 +30,7 @@ import medi.nf.Patient;
  *
  * @author CRISTANTE
  */
-public class InterfaceMedecin extends javax.swing.JFrame {
+public class InterfaceMedecinMT extends javax.swing.JFrame {
 
     /**
      * Creates new form InterfaceMedecin
@@ -51,7 +51,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     DM dm;
     ArrayList<Lit> lit = new ArrayList();
 
-    public InterfaceMedecin(Medecin m) {
+    public InterfaceMedecinMT(Medecin m) {
         initComponents();
         connect = new BD();
         this.m = m;
@@ -63,26 +63,29 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         dmencours = new ArrayList();
         lp = connect.getPatients();
         lm = connect.getMedecins();
+        //On récupère les lits vacants pour l'attribution des lits lors de la création des DM
         try {
             lit = connect.rechercheLitVacant();
         } catch (SQLException ex) {
-            Logger.getLogger(InterfaceMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InterfaceMedecinMT.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         for (Lit l : lit) {
             litBox.addItem(String.valueOf(l.getNum()));
         }
 
+        //On récupère les lits occupés pourla recherche par lit lors de la création de DM
         try {
             lit = connect.litDesDms();
         } catch (SQLException ex) {
-            Logger.getLogger(InterfaceMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InterfaceMedecinMT.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         for (Lit l : lit) {
             litOccupeBox.addItem(String.valueOf(l.getNum()));
         }
 
+        //On affiche les patients présents dans le service sur la page d'accueil
         for (int i = 0; i < ldm.size(); i++) {
             if (ldm.get(i).getLet() == null) {
                 dmencours.add(ldm.get(i));
@@ -93,6 +96,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
         resultatsTable.setModel(result);
         resultatsTable.repaint();
 
+        //On ajoute un listener pour surveiller le patient sélectionné dans la liste des patients sur la page d'accueil
         resultatsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
@@ -104,6 +108,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
             }
         });
 
+        //On ajoute un listener pour surveiller le patient sélectionné dans la liste des patients sur la page de création de DM
         resultatsTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
@@ -116,6 +121,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
             }
         });
 
+        //On ajoute un listener pour surveiller le patient sélectionné dans la liste des patients sur la page de recherche de DM
         rechercheTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent event) {
@@ -1216,7 +1222,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_sejourFActionPerformed
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-
+        //On utilise les différentes méthodes de la classe BD pour rechercher la liste des DM d'un patient à partir des champs renseignés
         result = (DefaultTableModel) rechercheTable.getModel();
         result.setRowCount(0);
         if (!nomF.getText().isEmpty() && !prenomF.getText().isEmpty() && dateF.getDate() != null) {
@@ -1284,6 +1290,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton18ActionPerformed
 
     private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
+        //On utilise les différentes méthodes de la classe BD pour rechercher un patient à partir des champs renseignés
         DefaultTableModel resultRecherche = (DefaultTableModel) resultatsTable1.getModel();
         ArrayList<Patient> lp = null;
         resultRecherche.setRowCount(0);
@@ -1323,6 +1330,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton20ActionPerformed
 
     private void creerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creerActionPerformed
+        //Création de DM
         int ph = m.getId_user();
         int iddm = connect.genererIDDM();
         String let = null;
@@ -1393,6 +1401,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_creerActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        //Déconnection de la session ouverte
         JOptionPane d = new JOptionPane();
         int retour = d.showConfirmDialog(null, "Êtes-vous sûr de vouloir vous déconnecter ?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
         if (retour == JOptionPane.OK_OPTION) {
@@ -1466,12 +1475,12 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_rrActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        AfficherDetailDM addm = new AfficherDetailDM(dm);
+        AfficherDMMT addm = new AfficherDMMT(dm);
         addm.setVisible(true);
     }//GEN-LAST:event_jButton16ActionPerformed
 
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
-        EditerDM edm = new EditerDM(dm, m);
+        EditerDMMT edm = new EditerDMMT(dm, m);
         edm.setVisible(true);
     }//GEN-LAST:event_jButton19ActionPerformed
 
@@ -1480,6 +1489,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_litBoxActionPerformed
 
     private void rechercheBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheBoxActionPerformed
+        //Afficher différentes interfaces en fonction de la modalité choisie dans la rechercheBox
         if (rechercheBox.getSelectedItem().toString() == "Nom-Prénom-Date de naissance") {
             CardLayout card = (CardLayout) jPanel2.getLayout();
             card.show(jPanel2, "Patient");
@@ -1496,19 +1506,21 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_rechercheBoxActionPerformed
 
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+        //Recherche d'un DM à partir d'un lit
         result = (DefaultTableModel) rechercheTable.getModel();
         result.setRowCount(0);
         try {
             DM dm = connect.GetDMLit(litOccupeBox.getSelectedItem().toString());
             result.addRow(new Object[]{dm.getP().getNom(), dm.getP().getPrenom(), dm.getP().getDate(), dm.getIddm(), dm.getDate(), dm.getMedref().getNom() + " " + dm.getMedref().getPrenom(), dm.getMedref().getService(), dm.getLit().getNum()});
         } catch (SQLException ex) {
-            Logger.getLogger(InterfaceMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(InterfaceMedecinMT.class.getName()).log(Level.SEVERE, null, ex);
         }
         rechercheTable.setModel(result);
         rechercheTable.repaint();
     }//GEN-LAST:event_jButton21ActionPerformed
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
+        //Recherche d'un DM à partir du de l'ID du DM
         result = (DefaultTableModel) rechercheTable.getModel();
         result.setRowCount(0);
         DM dm = connect.getDM(Integer.parseInt(sejourF.getText()));
@@ -1518,7 +1530,7 @@ public class InterfaceMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton22ActionPerformed
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
-
+        //Recherche de DM à partir du médecin référent du DM
         result = (DefaultTableModel) rechercheTable.getModel();
         ArrayList<DM> ldm = new ArrayList();
         ldm = connect.getDM(lm.get(medBox.getSelectedIndex() - 1));
@@ -1547,14 +1559,17 @@ public class InterfaceMedecin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InterfaceMedecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfaceMedecinMT.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InterfaceMedecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfaceMedecinMT.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InterfaceMedecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfaceMedecinMT.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InterfaceMedecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfaceMedecinMT.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

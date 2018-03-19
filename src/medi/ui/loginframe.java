@@ -4,6 +4,8 @@ import javax.swing.JOptionPane;
 import medi.nf.BD;
 import medi.nf.Medecin;
 import medi.nf.SecretaireAdmin;
+import medi.nf.Service;
+import medi.nf.User;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -204,17 +206,106 @@ public class loginframe extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    //On identifie le type de personnel (Médecin ou SA), et s'il s'agit d'un médecin, quel type (Urgentiste, Clinique, Médico-Technique ou Anesthésiste)
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String id = jTextField1.getText();
         String mdp = jPasswordField1.getText();
-        if (connect.connection(id, mdp) == null) {
+        User user = connect.connection(id, mdp);
+        Service ser = null;
+        if (user == null) {
             javax.swing.JOptionPane.showMessageDialog(null, "Mot de passe ou identifiant incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
-        } else if (connect.connection(id, mdp) instanceof Medecin) {
-            InterfaceMedecin im = new InterfaceMedecin((Medecin) connect.connection(id,mdp));
-            im.setVisible(true);
-            this.dispose();
-        } else if (connect.connection(id, mdp) instanceof SecretaireAdmin) {
-            InterfaceSecretaireAdmin as = new InterfaceSecretaireAdmin((SecretaireAdmin) connect.connection(id,mdp));
+        } else if (user instanceof Medecin) {
+            String service = ((Medecin) user).getService();
+            if (service.equals(Service.ANAPATHOLOGIE.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            } else if (service.equals(Service.PEDIATRIE.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            } else if (service.equals(Service.SOINS_INTENSIFS.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.GENERALISTE.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.LABORATOIRE.getName())) {
+                InterfaceMedecinMT im = new InterfaceMedecinMT((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.HEMATOLOGIE.getName())) {
+                InterfaceMedecinMT im = new InterfaceMedecinMT((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.ANESTHESIE.getName())) {
+                InterfaceMedecinAnesthésiste im = new InterfaceMedecinAnesthésiste((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.IMAGERIE.getName())) {
+                InterfaceMedecinMT im = new InterfaceMedecinMT((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.RECHERCHE.getName())) {
+                InterfaceMedecinMT im = new InterfaceMedecinMT((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.SANTE_PUBLIQUE.getName())) {
+                InterfaceMedecinMT im = new InterfaceMedecinMT((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.CANCER.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.COUPLE_ENFANT.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.ENDOCRINOLOGIE.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.UROLOGIE.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.TRANSPLANTATION.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.URGENCES.getName())) {
+                InterfaceMedecinUrgence im = new InterfaceMedecinUrgence((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.GERONTOLOGIE.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.PSYCHIATRIE.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.NEUROLOGIE.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }else if (service.equals(Service.CARDIOLOGIE.getName())) {
+                InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
+                im.setVisible(true);
+                this.dispose();
+            }
+            
+            
+            
+            
+            
+            
+            
+        } else if (user instanceof SecretaireAdmin) {
+            InterfaceSecretaireAdmin as = new InterfaceSecretaireAdmin((SecretaireAdmin) connect.connection(id, mdp));
             as.setVisible(true);
             this.dispose();
         }

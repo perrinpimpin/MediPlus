@@ -1,0 +1,183 @@
+@startuml
+abstract class medi.nf.User
+annotation java.lang.Override
+annotation java.lang.SuppressWarnings
+class com.sun.org.apache.xalan.internal.lib.ExsltDatetime
+class java.awt.CardLayout
+class java.lang.Object
+class java.sql.Connection
+class java.sql.Date
+class java.sql.ResultSet
+class java.sql.SQLException
+class java.sql.Statement
+class java.text.DateFormat
+class java.text.DecimalFormat
+class java.text.SimpleDateFormat
+class java.util.ArrayList
+class java.util.Calendar
+class java.util.logging.Level
+class java.util.logging.Logger
+class javax.swing.JFrame
+class javax.swing.JInternalFrame
+class javax.swing.JOptionPane
+class javax.swing.event.ListSelectionEvent
+class javax.swing.event.ListSelectionListener
+class javax.swing.table.DefaultTableModel
+class medi.nf.Acte
+class medi.nf.BD
+class medi.nf.DM
+class medi.nf.DPI
+class medi.nf.IdDM
+class medi.nf.LettreSortie
+class medi.nf.Lit
+class medi.nf.Medecin
+class medi.nf.Observation
+class medi.nf.OperationInfirmiere
+class medi.nf.Patient
+class medi.nf.Prescription
+class medi.nf.Resultat
+class medi.nf.SIH
+class medi.nf.SecretaireAdmin
+class medi.ui.AfficherDetailDM
+class medi.ui.AfficherListeDMPatient
+class medi.ui.Archivage_DP
+class medi.ui.EditerDM
+class medi.ui.Facturation_sejour
+class medi.ui.Informations_patient
+class medi.ui.Informations_patient_modif
+class medi.ui.InterfaceMedecin
+class medi.ui.InterfaceSecretaireAdmin
+class medi.ui.Main
+class medi.ui.login
+class medi.ui.loginframe
+enum medi.nf.Code
+medi.nf.User --|> java.lang.Object
+medi.nf.BD ..> java.sql.Date
+medi.nf.BD ..> java.text.DateFormat
+medi.nf.BD ..> java.text.SimpleDateFormat
+medi.nf.BD ..> java.util.ArrayList
+medi.nf.BD ..> java.util.Calendar
+medi.nf.BD ..> javax.swing.JOptionPane
+medi.nf.DM ..> java.sql.Date
+medi.nf.DM ..> java.util.ArrayList
+medi.nf.DPI ..> java.util.ArrayList
+medi.nf.Medecin --|> medi.nf.User
+medi.nf.Observation ..> java.sql.Date
+medi.nf.OperationInfirmiere ..> java.sql.Date
+medi.nf.Patient ..> java.sql.Date
+medi.nf.Prescription ..> java.sql.Date
+medi.nf.Resultat ..> java.sql.Date
+medi.nf.SecretaireAdmin --|> medi.nf.User
+medi.ui.AfficherDetailDM ..> java.lang.SuppressWarnings
+medi.ui.AfficherDetailDM ..> java.text.SimpleDateFormat
+medi.ui.AfficherDetailDM ..> java.util.ArrayList
+medi.ui.AfficherDetailDM --|> javax.swing.JFrame
+medi.ui.AfficherDetailDM ..> javax.swing.table.DefaultTableModel
+medi.ui.AfficherDetailDM ..> medi.nf.BD
+medi.ui.AfficherDetailDM ..> medi.nf.DM
+medi.ui.AfficherDetailDM ..> medi.nf.Observation
+medi.ui.AfficherDetailDM ..> medi.nf.OperationInfirmiere
+medi.ui.AfficherDetailDM ..> medi.nf.Patient
+medi.ui.AfficherDetailDM ..> medi.nf.Prescription
+medi.ui.AfficherDetailDM ..> medi.nf.Resultat
+medi.ui.AfficherListeDMPatient ..> java.lang.Override
+medi.ui.AfficherListeDMPatient ..> java.lang.SuppressWarnings
+medi.ui.AfficherListeDMPatient ..> java.text.SimpleDateFormat
+medi.ui.AfficherListeDMPatient ..> java.util.ArrayList
+medi.ui.AfficherListeDMPatient --|> javax.swing.JFrame
+medi.ui.AfficherListeDMPatient ..> javax.swing.JOptionPane
+medi.ui.AfficherListeDMPatient ..> javax.swing.event.ListSelectionEvent
+medi.ui.AfficherListeDMPatient ..> javax.swing.event.ListSelectionListener
+medi.ui.AfficherListeDMPatient ..> javax.swing.table.DefaultTableModel
+medi.ui.AfficherListeDMPatient ..> medi.nf.BD
+medi.ui.AfficherListeDMPatient ..> medi.nf.DM
+medi.ui.AfficherListeDMPatient ..> medi.nf.Medecin
+medi.ui.AfficherListeDMPatient ..> medi.nf.Patient
+medi.ui.Archivage_DP ..> java.lang.SuppressWarnings
+medi.ui.Archivage_DP ..> java.sql.Date
+medi.ui.Archivage_DP ..> java.text.SimpleDateFormat
+medi.ui.Archivage_DP --|> javax.swing.JFrame
+medi.ui.Archivage_DP ..> javax.swing.JOptionPane
+medi.ui.Archivage_DP ..> medi.nf.BD
+medi.ui.Archivage_DP ..> medi.nf.Patient
+medi.ui.EditerDM ..> java.lang.SuppressWarnings
+medi.ui.EditerDM ..> java.awt.CardLayout
+medi.ui.EditerDM ..> java.text.SimpleDateFormat
+medi.ui.EditerDM ..> java.util.ArrayList
+medi.ui.EditerDM ..> java.util.Calendar
+medi.ui.EditerDM --|> javax.swing.JFrame
+medi.ui.EditerDM ..> javax.swing.JOptionPane
+medi.ui.EditerDM ..> javax.swing.table.DefaultTableModel
+medi.ui.EditerDM ..> medi.nf.BD
+medi.ui.EditerDM ..> medi.nf.DM
+medi.ui.EditerDM ..> medi.nf.Medecin
+medi.ui.EditerDM ..> medi.nf.Observation
+medi.ui.EditerDM ..> medi.nf.OperationInfirmiere
+medi.ui.EditerDM ..> medi.nf.Patient
+medi.ui.EditerDM ..> medi.nf.Prescription
+medi.ui.EditerDM ..> medi.nf.Resultat
+medi.ui.Facturation_sejour ..> java.lang.SuppressWarnings
+medi.ui.Facturation_sejour --|> javax.swing.JFrame
+medi.ui.Informations_patient ..> java.lang.SuppressWarnings
+medi.ui.Informations_patient --|> javax.swing.JFrame
+medi.ui.Informations_patient ..> medi.nf.Patient
+medi.ui.Informations_patient_modif ..> java.lang.SuppressWarnings
+medi.ui.Informations_patient_modif ..> com.sun.org.apache.xalan.internal.lib.ExsltDatetime
+medi.ui.Informations_patient_modif ..> java.sql.Date
+medi.ui.Informations_patient_modif ..> java.text.DecimalFormat
+medi.ui.Informations_patient_modif --|> javax.swing.JFrame
+medi.ui.Informations_patient_modif ..> javax.swing.JOptionPane
+medi.ui.Informations_patient_modif ..> medi.nf.BD
+medi.ui.Informations_patient_modif ..> medi.nf.Patient
+medi.ui.InterfaceMedecin ..> java.lang.Override
+medi.ui.InterfaceMedecin ..> java.lang.SuppressWarnings
+medi.ui.InterfaceMedecin ..> java.awt.CardLayout
+medi.ui.InterfaceMedecin ..> java.sql.Connection
+medi.ui.InterfaceMedecin ..> java.sql.Date
+medi.ui.InterfaceMedecin ..> java.sql.ResultSet
+medi.ui.InterfaceMedecin ..> java.sql.SQLException
+medi.ui.InterfaceMedecin ..> java.sql.Statement
+medi.ui.InterfaceMedecin ..> java.text.SimpleDateFormat
+medi.ui.InterfaceMedecin ..> java.util.ArrayList
+medi.ui.InterfaceMedecin ..> java.util.Calendar
+medi.ui.InterfaceMedecin ..> java.util.logging.Level
+medi.ui.InterfaceMedecin ..> java.util.logging.Logger
+medi.ui.InterfaceMedecin --|> javax.swing.JFrame
+medi.ui.InterfaceMedecin ..> javax.swing.JOptionPane
+medi.ui.InterfaceMedecin ..> javax.swing.event.ListSelectionEvent
+medi.ui.InterfaceMedecin ..> javax.swing.event.ListSelectionListener
+medi.ui.InterfaceMedecin ..> javax.swing.table.DefaultTableModel
+medi.ui.InterfaceMedecin ..> medi.nf.BD
+medi.ui.InterfaceMedecin ..> medi.nf.DM
+medi.ui.InterfaceMedecin ..> medi.nf.Lit
+medi.ui.InterfaceMedecin ..> medi.nf.Medecin
+medi.ui.InterfaceMedecin ..> medi.nf.Patient
+medi.ui.InterfaceSecretaireAdmin ..> java.lang.Override
+medi.ui.InterfaceSecretaireAdmin ..> java.lang.SuppressWarnings
+medi.ui.InterfaceSecretaireAdmin ..> java.awt.CardLayout
+medi.ui.InterfaceSecretaireAdmin ..> java.sql.Date
+medi.ui.InterfaceSecretaireAdmin ..> java.text.DecimalFormat
+medi.ui.InterfaceSecretaireAdmin ..> java.util.ArrayList
+medi.ui.InterfaceSecretaireAdmin --|> javax.swing.JFrame
+medi.ui.InterfaceSecretaireAdmin ..> javax.swing.JOptionPane
+medi.ui.InterfaceSecretaireAdmin ..> javax.swing.event.ListSelectionEvent
+medi.ui.InterfaceSecretaireAdmin ..> javax.swing.event.ListSelectionListener
+medi.ui.InterfaceSecretaireAdmin ..> javax.swing.table.DefaultTableModel
+medi.ui.InterfaceSecretaireAdmin ..> medi.nf.BD
+medi.ui.InterfaceSecretaireAdmin ..> medi.nf.DM
+medi.ui.InterfaceSecretaireAdmin ..> medi.nf.Patient
+medi.ui.InterfaceSecretaireAdmin ..> medi.nf.SecretaireAdmin
+medi.ui.Main ..> java.util.Calendar
+medi.ui.Main ..> medi.nf.BD
+medi.ui.Main ..> medi.nf.DM
+medi.ui.Main ..> medi.nf.Medecin
+medi.ui.Main ..> medi.nf.Patient
+medi.ui.login ..> java.lang.SuppressWarnings
+medi.ui.login --|> javax.swing.JInternalFrame
+medi.ui.loginframe ..> java.lang.SuppressWarnings
+medi.ui.loginframe --|> javax.swing.JFrame
+medi.ui.loginframe ..> javax.swing.JOptionPane
+medi.ui.loginframe ..> medi.nf.BD
+medi.ui.loginframe ..> medi.nf.Medecin
+medi.ui.loginframe ..> medi.nf.SecretaireAdmin
+@enduml

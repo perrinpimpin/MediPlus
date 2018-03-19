@@ -20,7 +20,7 @@ import medi.nf.Resultat;
  *
  * @author CRISTANTE
  */
-public class AfficherDetailDM extends javax.swing.JFrame {
+public class AfficherDMAnesthésiste extends javax.swing.JFrame {
 
     /**
      * Creates new form AfficherDetailDM
@@ -33,20 +33,25 @@ public class AfficherDetailDM extends javax.swing.JFrame {
     ArrayList<Resultat> res;
     ArrayList<OperationInfirmiere> opinf;
 
-    public AfficherDetailDM(DM dm) {
+    public AfficherDMAnesthésiste(DM dm) {
         initComponents();
+        
         DefaultTableModel resultpresc = (DefaultTableModel) prescTable.getModel();
         DefaultTableModel resultobs = (DefaultTableModel) obsTable.getModel();
         DefaultTableModel resultres = (DefaultTableModel) resTable.getModel();
         DefaultTableModel resultopinf = (DefaultTableModel) opinfTable.getModel();
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        
         this.dm = dm;
         connect = new BD();
         p = dm.getP();
+        //Récupération des opérations liés aux DM
         pres = connect.getPrescription(dm.getIddm());
         obs = connect.getObservation(dm.getIddm());
         opinf = connect.getOperationInfirmiere(dm.getIddm());
         res = connect.getResultat(dm.getIddm());
+        
+        //Affichage de l'identité du patient
         if (p.getSexe().equals("Femme")) {
             idpat.setText(p.getNom() + " " + p.getPrenom() + " - Née le " + format.format(p.getDate()));
         } else {
@@ -57,7 +62,7 @@ public class AfficherDetailDM extends javax.swing.JFrame {
         iddm.setText(String.valueOf(dm.getIddm()));
 
         
-        
+        //Affichage des prescriptions liées au DM dans un tableau
         for (int i = 0; i < pres.size(); i++) {
             resultpresc.addRow(new Object[]{pres.get(i).getPrescription(), pres.get(i).getDate(), pres.get(i).getPrescripteur().getNom() + " " + pres.get(i).getPrescripteur().getPrenom() + " - " + pres.get(i).getPrescripteur().getSpecialite()});
         }
@@ -65,7 +70,7 @@ public class AfficherDetailDM extends javax.swing.JFrame {
         prescTable.repaint();
         
         
-        
+        //Affichage des résultats liés au DM dans un tableau
         for (int i = 0; i < res.size(); i++) {
             resultres.addRow(new Object[]{res.get(i).getResultat(), res.get(i).getDate(), res.get(i).getPrescripteur().getNom() + " " + res.get(i).getPrescripteur().getPrenom() + " - " + res.get(i).getPrescripteur().getSpecialite()});
         }
@@ -74,7 +79,7 @@ public class AfficherDetailDM extends javax.swing.JFrame {
 
         
         
-        
+        //Affichage des opérations infirmières liées au DM dans un tableau
         for (int i = 0; i < opinf.size(); i++) {
             resultopinf.addRow(new Object[]{opinf.get(i).getOperationInfirmiere(), opinf.get(i).getDate(), opinf.get(i).getPrescripteur().getNom() + " " + opinf.get(i).getPrescripteur().getPrenom() + " - " + opinf.get(i).getPrescripteur().getSpecialite()});
         }
@@ -83,7 +88,7 @@ public class AfficherDetailDM extends javax.swing.JFrame {
 
         
         
-        
+        //Affichage des observations liées au DM dans un tableau
         for (int i = 0; i < obs.size(); i++) {
             resultobs.addRow(new Object[]{obs.get(i).getObservation(), obs.get(i).getDate(), obs.get(i).getPrescripteur().getNom() + " " + obs.get(i).getPrescripteur().getPrenom() + " - " + obs.get(i).getPrescripteur().getSpecialite()});
         }
@@ -384,14 +389,17 @@ public class AfficherDetailDM extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AfficherDetailDM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AfficherDMAnesthésiste.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AfficherDetailDM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AfficherDMAnesthésiste.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AfficherDetailDM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AfficherDMAnesthésiste.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AfficherDetailDM.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AfficherDMAnesthésiste.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
