@@ -53,9 +53,9 @@ public class AfficherListeDMPatient extends javax.swing.JFrame {
         //Affichage des donnÃ©es sous forme de tableau et diffÃ©renciation orthographique
         //en fonction du sexe
         if (p.getSexe().equals("Femme")) {
-            nomField.setText(p.getNom() + " " + p.getPrenom() + " - NÃ©e le " + format.format(p.getDate()));
+            nomField.setText(p.getNom() + " " + p.getPrenom() + " - Née le " + format.format(p.getDate()));
         } else {
-            nomField.setText(p.getNom() + " " + p.getPrenom() + " - NÃ© le " + format.format(p.getDate()));
+            nomField.setText(p.getNom() + " " + p.getPrenom() + " - Né le " + format.format(p.getDate()));
         }
 
         

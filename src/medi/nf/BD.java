@@ -195,11 +195,43 @@ public class BD {
 
             pstmAjouterDMA.executeUpdate();
             pstmAjouterDMA.close();
-            javax.swing.JOptionPane.showMessageDialog(null, "Dossier MÃ©dico-Administratif ajoutÃ© à  la base de donnÃ©es", "Patient ajoutÃ©", JOptionPane.INFORMATION_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(null, "Dossier Médico-Administratif ajouté à  la base de données", "Patient ajouté", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             System.out.println(ex);
             javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    //Recherche dans la BD si le patient existe, et le crée avec les informations entrées si ce n'est pas le cas
+    public boolean ajouterDMAUrgences(String nom, String prenom, Date dateNaissance, String lieuNaissance, String sexe) {
+        boolean existeDeja = false;
+        String sql = "insert into d_m_a(IPP, nom, prenom, dateNaissance, lieuNaissance, sexe) values (?,?,?,?,?,?)";
+        int ipp = this.genererIPP();
+        Patient x = new Patient(null,null,null);
+        try {
+            Patient x2 = this.recherchePatientsNomPrenomDate(nom, prenom, dateNaissance);
+            if (x.getIPP() == x2.getIPP()) {
+                PreparedStatement pstmAjouterDMA = con.prepareStatement(sql);
+
+                pstmAjouterDMA.setInt(1, ipp);
+                pstmAjouterDMA.setString(2, nom);
+                pstmAjouterDMA.setString(3, prenom);
+                pstmAjouterDMA.setDate(4, dateNaissance);
+                pstmAjouterDMA.setString(5, lieuNaissance);
+                pstmAjouterDMA.setString(6, sexe);
+
+                pstmAjouterDMA.executeUpdate();
+                pstmAjouterDMA.close();
+                existeDeja=false;
+                javax.swing.JOptionPane.showMessageDialog(null, "Dossier Médico-Administratif ajouté à  la base de données", "Patient ajouté", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                existeDeja = true;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+            javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+        return existeDeja;
     }
 
     //Méthode d'ajout d'une prescrtpion à  la bdd
@@ -340,7 +372,6 @@ public class BD {
         }
     }
 
-    
     //Méthode d'archivage du patient
     //Retrait de la table d_m_a pour transférer le dossier dans la table archive_dma 
     public void archiverPatient(Patient p, Date d, String obs) {
@@ -376,8 +407,7 @@ public class BD {
             System.out.println(ex);
         }
     }
-    
-    
+
     //Méthode retournant la liste des DM qui n'ont pas de lettre de sortie
     //et qui sont donc encore en cours
     public ArrayList<DM> sejoursEnCours() {
@@ -424,17 +454,17 @@ public class BD {
         return dms;
 
     }
-    
-    //Méthode permettant d'ajouter un DM dans la base de données à partir d'un objet DM
 
+    //Méthode permettant d'ajouter un DM dans la base de données à partir d'un objet DM
     public void ajouterDM(DM d) {
 
         int ipp = d.getP().getIPP();
         String let = d.getLet();
         int idmed = d.getMedref().getId_user();
         Date date = d.getDate();
+        Lit l = d.getLit();
 
-        String sql = "insert into d_m(IPP, date, PH, lettre_Sortie, id_dm) values (?,?,?,?,?)";
+        String sql = "insert into d_m(IPP, date, PH, lettre_Sortie, id_dm,lit) values (?,?,?,?,?,?)";
         try {
             PreparedStatement pstmAjouterDM = con.prepareStatement(sql);
 
@@ -443,17 +473,17 @@ public class BD {
             pstmAjouterDM.setInt(3, idmed);
             pstmAjouterDM.setString(4, let);
             pstmAjouterDM.setInt(5, this.genererIDDM());
+            pstmAjouterDM.setString(6, l.getNum());
             pstmAjouterDM.executeUpdate();
-            javax.swing.JOptionPane.showMessageDialog(null, "Dossier MÃ©dical crÃ©à©.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+            javax.swing.JOptionPane.showMessageDialog(null, "Dossier Médical créé.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
             pstmAjouterDM.close();
         } catch (Exception ex) {
             System.out.println(ex);
         }
     }
-    
+
     //Méthode permettant de générer automatiquement un IDDM en 
     //fonction des IDDM déjà présent dans la bdd
-
     public int genererIDDM() {
         ResultSet rsGenererIDDM;
         int iddm = 0;
@@ -502,7 +532,7 @@ public class BD {
         }
         return idp;
     }
-    
+
     //méthode permettant de générer les ID des observations automatiquement pour un DM donné selon le modèle : iddmOxxx avec xxx un compteur sur 3 positions
     public String genererIDObs(DM dm) {
         ResultSet rsGenererIDObs;
@@ -600,7 +630,6 @@ public class BD {
         return idp;
     }
 
-    
     //méthode permettant de générer les ID des observations automatiquement pendant la création d'un DM
     public String genererIDObs() {
         ResultSet rsGenererIDObs;
@@ -648,8 +677,7 @@ public class BD {
         }
         return idp;
     }
-    
-    
+
     //mÃ©thode permettant de gÃ©nÃ©rer les ID des rÃ©sultats automatiquement pendant la création d'un DM
     public String genererIDRes() {
         ResultSet rsGenererIDRes;
@@ -674,7 +702,6 @@ public class BD {
         return idp;
     }
 
-    
     //MÃ©thode retournant tout les DM ayant pour mÃ©decin refÃ©rent le mÃ©decin entrÃ© en paramÃ¨tre
     public ArrayList getDM(Medecin m) {
         ResultSet rsGetDMMedecin = null, rs1, rs2 = null;
@@ -753,7 +780,6 @@ public class BD {
         return dms;
     }
 
-    
     //MÃ©thode retournant le DM dont l'iddm est celui entrÃ© en paramÃ¨tre
     public DM getDM(int iddm) {
         ResultSet rsGetDMIDDM = null, rs1 = null, rs2 = null;
@@ -847,7 +873,6 @@ public class BD {
         return prescription;
     }
 
-    
     //MÃ©thode retournant toutes les observations du DM dont l'iddm est entrÃ© en paramÃ¨tre
     public ArrayList<Observation> getObservation(int iddm) {
         ResultSet rsGetObservationiddm;
@@ -876,7 +901,6 @@ public class BD {
         return obs;
     }
 
-    
     //MÃ©thode retournant tous les resultats du DM dont l'iddm est entrÃ© en paramÃ¨tre
     public ArrayList<Resultat> getResultat(int iddm) {
         ResultSet rsGetResultatiddm;
@@ -905,7 +929,6 @@ public class BD {
         return res;
     }
 
-    
     //MÃ©thode retournant toutes les opérations InfirmiÃ¨res du DM dont l'iddm est entrÃ© en paramÃ¨tre
     public ArrayList<OperationInfirmiere> getOperationInfirmiere(int iddm) {
         ResultSet rsGetOperationInfirmiereiddm;
@@ -958,7 +981,7 @@ public class BD {
             ResultSet rs1;
             Statement st2 = con.createStatement();
             ResultSet rs2;
-            
+
             //On cherche les informations sur le patient
             String query = "select * from d_m_a WHERE IPP = " + ipp;
             rs1 = st1.executeQuery(query);
@@ -968,7 +991,7 @@ public class BD {
                 dateN = rs1.getDate("dateNaissance");
                 p = new Patient(nom, prenom, dateN);
             }
-            
+
             //On cherche les DM associés à ce patient
             query = "select * from d_m where IPP = " + ipp;
             rsGetDMPatientipp = st.executeQuery(query);
@@ -1063,9 +1086,8 @@ public class BD {
         }
         return lp;
     }
-    
-    //MÃ©thode retournant le mÃ©decin dont l'id est entrÃ© en paramÃ¨tre
 
+    //Méthode retournant le médecin dont l'id est entré en paramètre
     public Medecin rechercheMedecin(int id) {
         ResultSet rsRechercheMedecinID;
         String username = null;
@@ -1149,7 +1171,7 @@ public class BD {
         }
         return lm;
     }
-    
+
     //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom
     public ArrayList<Patient> recherchePatientsNom(String name) {
         ResultSet rsRecherchePatientsNom;
@@ -1176,7 +1198,7 @@ public class BD {
         return lp;
     }
 
-      //Methode retrouvant un patient enregistrÃ© dans la bdd par son prÃ©nom
+    //Methode retrouvant un patient enregistrÃ© dans la bdd par son prÃ©nom
     public ArrayList<Patient> recherchePatientsPrenom(String surname) {
         ResultSet rsRecherchePatientsPrenom;
         lp = new ArrayList<Patient>();
@@ -1202,7 +1224,7 @@ public class BD {
         return lp;
     }
 
-      //Methode retrouvant un patient enregistrÃ© dans la bdd par son ipp
+    //Methode retrouvant un patient enregistrÃ© dans la bdd par son ipp
     public Patient recherchePatientsIPP(int id) {
         ResultSet rsRecherchePAtientIPP;
         int identifiant = id;
@@ -1227,7 +1249,7 @@ public class BD {
         return p;
     }
 
-      //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom et son prÃ©nom
+    //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom et son prÃ©nom
     public ArrayList<Patient> recherchePatientsNomPrenom(String name, String surname) {
         ResultSet rsrecherchePatientsNomPrenom;
         lp = new ArrayList<Patient>();
@@ -1253,7 +1275,7 @@ public class BD {
         return lp;
     }
 
-      //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom, son prÃ©nom et son ipp
+    //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom, son prÃ©nom et son ipp
     public ArrayList<Patient> recherchePatientsNomPrenomIPP(String name, String surname, int identifiant) {
         ResultSet rsrecherchePatientsNomPrenomIPP;
         lp = new ArrayList<Patient>();
@@ -1280,7 +1302,7 @@ public class BD {
         return lp;
     }
 
-      //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom et son ipp
+    //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom et son ipp
     public ArrayList<Patient> recherchePatientsNomIPP(String name, int identifiant) {
         ResultSet rsrecherchePatientsNomIPP;
         lp = new ArrayList<Patient>();
@@ -1307,7 +1329,7 @@ public class BD {
         return lp;
     }
 
-      //Methode retrouvant un patient enregistrÃ© dans la bdd par son prÃ©nom et son ipp
+    //Methode retrouvant un patient enregistrÃ© dans la bdd par son prÃ©nom et son ipp
     public ArrayList<Patient> recherchePatientsPrenomIPP(String surname, int identifiant) {
         ResultSet rsrecherchePatientsPrenomIPP;
         lp = new ArrayList<Patient>();
@@ -1341,9 +1363,8 @@ public class BD {
         }
         return lp;
     }
-    
-    
-      //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom, son prÃ©nom et sa date de naissance
+
+    //Methode retrouvant un patient enregistrÃ© dans la bdd par son nom, son prÃ©nom et sa date de naissance
     public Patient recherchePatientsNomPrenomDate(String name, String surname, Date date) {
         ResultSet rsrecherchePatientsNomPrenomDate;
         p = new Patient(null, null, null);
@@ -1509,7 +1530,6 @@ public class BD {
         }
     }
 
-    
     //MÃ©thode retournant tout les lits d'un DM en cours
     public ArrayList<Lit> litDesDms() throws SQLException {
         ArrayList<DM> dms = new ArrayList();

@@ -228,82 +228,76 @@ public class loginframe extends javax.swing.JFrame {
                 InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.GENERALISTE.getName())) {
+            } else if (service.equals(Service.GENERALISTE.getName())) {
                 InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.LABORATOIRE.getName())) {
+            } else if (service.equals(Service.LABORATOIRE.getName())) {
                 InterfaceMedecinMT im = new InterfaceMedecinMT((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.HEMATOLOGIE.getName())) {
+            } else if (service.equals(Service.HEMATOLOGIE.getName())) {
                 InterfaceMedecinMT im = new InterfaceMedecinMT((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.ANESTHESIE.getName())) {
+            } else if (service.equals(Service.ANESTHESIE.getName())) {
                 InterfaceMedecinAnesthésiste im = new InterfaceMedecinAnesthésiste((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.IMAGERIE.getName())) {
+            } else if (service.equals(Service.IMAGERIE.getName())) {
                 InterfaceMedecinMT im = new InterfaceMedecinMT((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.RECHERCHE.getName())) {
+            } else if (service.equals(Service.RECHERCHE.getName())) {
                 InterfaceMedecinMT im = new InterfaceMedecinMT((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.SANTE_PUBLIQUE.getName())) {
+            } else if (service.equals(Service.SANTE_PUBLIQUE.getName())) {
                 InterfaceMedecinMT im = new InterfaceMedecinMT((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.CANCER.getName())) {
+            } else if (service.equals(Service.CANCER.getName())) {
                 InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.COUPLE_ENFANT.getName())) {
+            } else if (service.equals(Service.COUPLE_ENFANT.getName())) {
                 InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.ENDOCRINOLOGIE.getName())) {
+            } else if (service.equals(Service.ENDOCRINOLOGIE.getName())) {
                 InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.UROLOGIE.getName())) {
+            } else if (service.equals(Service.UROLOGIE.getName())) {
                 InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.TRANSPLANTATION.getName())) {
+            } else if (service.equals(Service.TRANSPLANTATION.getName())) {
                 InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.URGENCES.getName())) {
+            } else if (service.equals(Service.URGENCES.getName())) {
                 InterfaceMedecinUrgence im = new InterfaceMedecinUrgence((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.GERONTOLOGIE.getName())) {
+            } else if (service.equals(Service.GERONTOLOGIE.getName())) {
                 InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.PSYCHIATRIE.getName())) {
+            } else if (service.equals(Service.PSYCHIATRIE.getName())) {
                 InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.NEUROLOGIE.getName())) {
+            } else if (service.equals(Service.NEUROLOGIE.getName())) {
                 InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
-            }else if (service.equals(Service.CARDIOLOGIE.getName())) {
+            } else if (service.equals(Service.CARDIOLOGIE.getName())) {
                 InterfaceMedecinClinique im = new InterfaceMedecinClinique((Medecin) connect.connection(id, mdp));
                 im.setVisible(true);
                 this.dispose();
             }
-            
-            
-            
-            
-            
-            
-            
+
         } else if (user instanceof SecretaireAdmin) {
             InterfaceSecretaireAdmin as = new InterfaceSecretaireAdmin((SecretaireAdmin) connect.connection(id, mdp));
             as.setVisible(true);

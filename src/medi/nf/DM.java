@@ -32,9 +32,9 @@ public class DM {
         this.lettre = lettre;
         this.iddm = iddm;
         this.date = date;
-        this.l = l;
-        
+        this.l = l;        
     }
+    
     public void setDate(Date date) {
         this.date = date;
     }

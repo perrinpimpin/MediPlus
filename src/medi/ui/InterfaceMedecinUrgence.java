@@ -108,19 +108,6 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
             }
         });
 
-        //On ajoute un listener pour surveiller le patient sélectionné dans la liste des patients sur la page de création de DM
-        resultatsTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent event) {
-                if (resultatsTable1.getSelectedRow() > -1) {
-                    if (event.getValueIsAdjusting() == false) {
-                        String s = resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 3).toString();
-                        pc = connect.recherchePatientsNomPrenomDate(resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 0).toString(), resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 1).toString(), (Date) resultatsTable1.getValueAt(resultatsTable1.getSelectedRow(), 3));
-                    }
-                }
-            }
-        });
-
         //On ajoute un listener pour surveiller le patient sélectionné dans la liste des patients sur la page de recherche de DM
         rechercheTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -240,13 +227,13 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
         opinf = new javax.swing.JTextArea();
         jScrollPane7 = new javax.swing.JScrollPane();
         observation = new javax.swing.JTextArea();
-        jButton20 = new javax.swing.JButton();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        resultatsTable1 = new javax.swing.JTable();
-        jLabel19 = new javax.swing.JLabel();
         creer = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         litBox = new javax.swing.JComboBox<>();
+        jLabel11 = new javax.swing.JLabel();
+        lieuField = new javax.swing.JTextField();
+        sexeBox = new javax.swing.JComboBox<>();
+        jLabel19 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -994,36 +981,6 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
         observation.setRows(5);
         jScrollPane7.setViewportView(observation);
 
-        jButton20.setText("Rechercher");
-        jButton20.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton20ActionPerformed(evt);
-            }
-        });
-
-        jScrollPane10.setPreferredSize(new java.awt.Dimension(100, 100));
-
-        resultatsTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Nom", "Prénom", "IPP", "Date de naissance", "Lieu de naissance", "Sexe"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane10.setViewportView(resultatsTable1);
-
-        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel19.setText("Sélectionnez le patient :");
-
         creer.setText("Créer DM");
         creer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1040,6 +997,14 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
             }
         });
 
+        jLabel11.setText("Lieu de naissance");
+
+        sexeBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Homme", "Femme" }));
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel19.setText("Sexe");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1047,18 +1012,22 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel17)
                         .addGap(18, 18, 18)
                         .addComponent(litBox, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 686, Short.MAX_VALUE)
                         .addComponent(creer))
                     .addComponent(jScrollPane4)
                     .addComponent(jScrollPane5)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel18)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
@@ -1069,22 +1038,16 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
                             .addComponent(jLabel8))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 301, Short.MAX_VALUE)
-                                .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addComponent(jLabel9)
+                            .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel19)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel18))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jLabel11)
+                            .addComponent(lieuField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sexeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel19))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -1095,19 +1058,19 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel8)
-                        .addComponent(jLabel9)))
+                        .addComponent(jLabel9)
+                        .addComponent(jLabel11)
+                        .addComponent(jLabel19)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(nomField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(prenomField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton20))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel19)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lieuField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(sexeBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(21, 21, 21)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1127,16 +1090,12 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
                 .addComponent(jLabel18)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(creer))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel17)
-                            .addComponent(litBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(creer)
+                    .addComponent(jLabel17)
+                    .addComponent(litBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(127, Short.MAX_VALUE))
         );
 
         creerDM.add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -1289,48 +1248,13 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton18ActionPerformed
 
-    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
-        //On utilise les différentes méthodes de la classe BD pour rechercher un patient à partir des champs renseignés
-        DefaultTableModel resultRecherche = (DefaultTableModel) resultatsTable1.getModel();
-        ArrayList<Patient> lp = null;
-        resultRecherche.setRowCount(0);
-        Date d = (Date) dateField.getDate();
-
-        if (!nomField.getText().isEmpty() && prenomField.getText().isEmpty() && dateField.getDate() == null) {
-            lp = connect.recherchePatientsNom(nomField.getText());
-            for (int i = 0; i < lp.size(); i++) {
-                lp.get(i);
-                resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
-            }
-        } else if (!nomField.getText().isEmpty() && !prenomField.getText().isEmpty() && dateField.getDate() == null) {
-            lp = connect.recherchePatientsNomPrenom(nomField.getText(), prenomField.getText());
-            for (int i = 0; i < lp.size(); i++) {
-                lp.get(i);
-                resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
-            }
-        } else if (nomField.getText().isEmpty() && !prenomField.getText().isEmpty() && dateField.getDate() == null) {
-            lp = connect.recherchePatientsPrenom(prenomField.getText());
-            for (int i = 0; i < lp.size(); i++) {
-                lp.get(i);
-                resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
-            }
-        } else if (!nomField.getText().isEmpty() && prenomField.getText().isEmpty() && dateField.getDate() != null) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new Date(dateField.getDate().getYear(), dateField.getDate().getMonth(), dateField.getDate().getDate());
-            Patient patient = connect.recherchePatientsNomPrenomDate(nomField.getText(), prenomField.getText(), date);
-            resultRecherche.addRow(new Object[]{p.getNom(), p.getPrenom(), p.getIPP(), p.getDate(), p.getLieuNaissance(), p.getSexe(),});
-        } else if (nomField.getText().isEmpty() && prenomField.getText().isEmpty() && dateField.getDate() == null) {
-            javax.swing.JOptionPane.showMessageDialog(null, "Aucun champ de recherche renseigné.", "Erreur", JOptionPane.ERROR_MESSAGE);
-        }
-
-        resultatsTable1.setModel(resultRecherche);
-        resultatsTable1.repaint();
-
-
-    }//GEN-LAST:event_jButton20ActionPerformed
-
     private void creerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creerActionPerformed
-        //Création de DM
+        //Création de DM        
+        java.util.Date utilDate = dateField.getDate();
+        java.sql.Date d = new java.sql.Date(utilDate.getTime());
+        if(!nomField.getText().isEmpty() && !prenomField.getText().isEmpty() && d != null && !lieuField.getText().isEmpty() && litBox.getSelectedItem()!= " "){
+        connect.ajouterDMAUrgences(nomField.getText(), prenomField.getText(), d, lieuField.getText(),sexeBox.getSelectedItem().toString());
+        pc = connect.recherchePatientsNomPrenomDate(nomField.getText(), prenomField.getText(), d);
         int ph = m.getId_user();
         int iddm = connect.genererIDDM();
         String let = null;
@@ -1398,7 +1322,13 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
 
         resultatsTable.setModel(result);
         resultatsTable.repaint();
+    
+        }
+        else{
+            javax.swing.JOptionPane.showMessageDialog(null, "Veuillez compléter tous les champs de création du patient et lui attribuer un lit.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_creerActionPerformed
+
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         //Déconnection de la session ouverte
@@ -1512,8 +1442,11 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
         try {
             DM dm = connect.GetDMLit(litOccupeBox.getSelectedItem().toString());
             result.addRow(new Object[]{dm.getP().getNom(), dm.getP().getPrenom(), dm.getP().getDate(), dm.getIddm(), dm.getDate(), dm.getMedref().getNom() + " " + dm.getMedref().getPrenom(), dm.getMedref().getService(), dm.getLit().getNum()});
-        } catch (SQLException ex) {
-            Logger.getLogger(InterfaceMedecinUrgence.class.getName()).log(Level.SEVERE, null, ex);
+        
+
+} catch (SQLException ex) {
+            Logger.getLogger(InterfaceMedecinUrgence.class
+.getName()).log(Level.SEVERE, null, ex);
         }
         rechercheTable.setModel(result);
         rechercheTable.repaint();
@@ -1536,8 +1469,8 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
         ldm = connect.getDM(lm.get(medBox.getSelectedIndex() - 1));
         result.setRowCount(0);
         for (int i = 0; i < ldm.size(); i++) {
-                result.addRow(new Object[]{ldm.get(i).getP().getNom(), ldm.get(i).getP().getPrenom(), ldm.get(i).getP().getDate(), ldm.get(i).getIddm(), ldm.get(i).getDate(), ldm.get(i).getMedref().getNom() + " " + ldm.get(i).getMedref().getPrenom(), ldm.get(i).getMedref().getService(), ldm.get(i).getLit().getNum()});
-            }
+            result.addRow(new Object[]{ldm.get(i).getP().getNom(), ldm.get(i).getP().getPrenom(), ldm.get(i).getP().getDate(), ldm.get(i).getIddm(), ldm.get(i).getDate(), ldm.get(i).getMedref().getNom() + " " + ldm.get(i).getMedref().getPrenom(), ldm.get(i).getMedref().getService(), ldm.get(i).getLit().getNum()});
+        }
         rechercheTable.setModel(result);
         rechercheTable.repaint();
     }//GEN-LAST:event_jButton24ActionPerformed
@@ -1556,16 +1489,28 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+                
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InterfaceMedecinUrgence.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InterfaceMedecinUrgence.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InterfaceMedecinUrgence.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InterfaceMedecinUrgence.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InterfaceMedecinUrgence.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(InterfaceMedecinUrgence.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(InterfaceMedecinUrgence.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(InterfaceMedecinUrgence.class
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -1598,7 +1543,6 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton24;
@@ -1607,6 +1551,7 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -1632,7 +1577,6 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -1640,6 +1584,7 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTextArea lettre;
+    private javax.swing.JTextField lieuField;
     private javax.swing.JPanel listePatients;
     private javax.swing.JComboBox<String> litBox;
     private javax.swing.JComboBox<String> litOccupeBox;
@@ -1667,9 +1612,9 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
     private javax.swing.JTable rechercheTable;
     private javax.swing.JTextArea resultat;
     private javax.swing.JTable resultatsTable;
-    private javax.swing.JTable resultatsTable1;
     private javax.swing.JButton rr;
     private javax.swing.JTextField sejourF;
     private javax.swing.JLabel serviceLabel;
+    private javax.swing.JComboBox<String> sexeBox;
     // End of variables declaration//GEN-END:variables
 }
