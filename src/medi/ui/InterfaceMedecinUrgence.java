@@ -239,6 +239,7 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
         jButton8 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
+        jButton20 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -1158,6 +1159,16 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medi/ui/images/LogoLogicielPetit.png"))); // NOI18N
         jPanel1.add(jLabel22, java.awt.BorderLayout.CENTER);
 
+        jButton20.setBackground(new java.awt.Color(255, 153, 0));
+        jButton20.setForeground(new java.awt.Color(255, 153, 0));
+        jButton20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medi/ui/images/preferences-parametres-icone-9540-32.png"))); // NOI18N
+        jButton20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton20ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton20, java.awt.BorderLayout.LINE_END);
+
         getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
 
         pack();
@@ -1475,6 +1486,11 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
         rechercheTable.repaint();
     }//GEN-LAST:event_jButton24ActionPerformed
 
+    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
+        ChangerMotDePasse mdp = new ChangerMotDePasse(m);
+        mdp.setVisible(true);
+    }//GEN-LAST:event_jButton20ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1543,6 +1559,7 @@ public class InterfaceMedecinUrgence extends javax.swing.JFrame {
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
+    private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton24;

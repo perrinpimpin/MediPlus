@@ -4,17 +4,17 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/AfficherListeDMPatient.java</file>
+            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/InterfaceMedecinClinique.java</file>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/InterfaceSecretaireAdmin.java</file>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/BD.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/Lit.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/AfficherDMMT.java</file>
+            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/LancerServeurHL7.java</file>
+            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/InterfaceMedecinMT.java</file>
+            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/Medecin.java</file>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/loginframe.java</file>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/Archivage_DP.java</file>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/User.java</file>
             <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/Patient.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/EditerDMMT.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/Service.java</file>
-            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/ui/InterfaceMedecinUrgence.java</file>
+            <file>file:/C:/Users/CRISTANTE/Desktop/MediPlus/MediPlus/src/medi/nf/DM.java</file>
         </group>
     </open-files>
 </project-private>

@@ -129,6 +129,21 @@ public class BD {
         }
     }
 
+    //Modifie le mot de passe d'un utilisateur
+    public void modifierMotDePasse(int id_user, String password) {
+        String sql = "update users set password = ? where id_user = ?";
+        try {
+            PreparedStatement pstmChangerMDP = con.prepareStatement(sql);
+            pstmChangerMDP.setString(1, password);
+            pstmChangerMDP.setInt(2, id_user);
+            pstmChangerMDP.executeUpdate();
+            pstmChangerMDP.close();
+            javax.swing.JOptionPane.showMessageDialog(null, "Mot de passe modifié.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
     //On crée un nouveau médecin dans la BD
     public void ajouterMedecin(int ID_user, String nom, String prenom, int telephone, String specialite, String service) {
         String sql = "insert into praticien(ID_user,nom,prenom,telephone,specialite,service) values (?,?,?,?,?,?)";
@@ -163,7 +178,6 @@ public class BD {
             pstmAjouterSA.setInt(4, telephone);
             pstmAjouterSA.executeUpdate();
             pstmAjouterSA.close();
-
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -207,7 +221,7 @@ public class BD {
         boolean existeDeja = false;
         String sql = "insert into d_m_a(IPP, nom, prenom, dateNaissance, lieuNaissance, sexe) values (?,?,?,?,?,?)";
         int ipp = this.genererIPP();
-        Patient x = new Patient(null,null,null);
+        Patient x = new Patient(null, null, null);
         try {
             Patient x2 = this.recherchePatientsNomPrenomDate(nom, prenom, dateNaissance);
             if (x.getIPP() == x2.getIPP()) {
@@ -222,7 +236,7 @@ public class BD {
 
                 pstmAjouterDMA.executeUpdate();
                 pstmAjouterDMA.close();
-                existeDeja=false;
+                existeDeja = false;
                 javax.swing.JOptionPane.showMessageDialog(null, "Dossier Médico-Administratif ajouté à  la base de données", "Patient ajouté", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 existeDeja = true;
@@ -724,6 +738,84 @@ public class BD {
             Statement st2 = con.createStatement();
 
             String query = "select * from praticien WHERE service = '" + ser + "'";
+            rs1 = st1.executeQuery(query);
+            while (rs1.next()) {
+                nom = rs1.getString("nom");
+                prenom = rs1.getString("prenom");
+                int tel = rs1.getInt("telephone");
+                String spe = rs1.getString("specialite");
+                int id = rs1.getInt("id_user");
+
+                query = "select * from d_m where PH = " + id;
+                rsGetDMMedecin = st.executeQuery(query);
+                while (rsGetDMMedecin.next()) {
+                    ipp = rsGetDMMedecin.getInt("IPP");
+                    ph = rsGetDMMedecin.getInt("PH");
+                    date = rsGetDMMedecin.getDate("date");
+                    lettre = rsGetDMMedecin.getString("lettre_Sortie");
+                    iddm = rsGetDMMedecin.getInt("id_dm");
+                    lit = rsGetDMMedecin.getString("lit");
+                    l = this.rechercherLit(lit);
+
+                    String query2 = "select * from users WHERE ID_user = " + ph;
+                    rs2 = st2.executeQuery(query2);
+                    while (rs2.next()) {
+                        String username = rs2.getString("username");
+                        String mdp = rs2.getString("password");
+                        m = new Medecin(nom, prenom, ph, username, mdp, tel, spe, ser);
+
+                    }
+                    rs2.close();
+
+                    p = this.recherchePatientsIPP(ipp);
+                    DM dm = new DM(p, m, lettre, iddm, date, l);
+                    dms.add(dm);
+                    /*query = "select * from d_m_a WHERE IPP = " + ipp;
+                    rs1 = st1.executeQuery(query);
+                    while (rs1.next()) {
+                        nom = rs1.getString("nom");
+                        prenom = rs1.getString("prenom");
+                        dateN = rs1.getDate("dateNaissance");
+                        DM dm = new DM(new Patient(nom, prenom, dateN, ipp), m, lettre, iddm, date, l);
+                        dms.add(dm);
+                    }*/
+
+                }
+
+            }
+            rsGetDMMedecin.close();
+            st.close();
+            rs1.close();
+            st1.close();
+            st2.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        return dms;
+    }
+
+    //Méthode pour récupérer la totalité des DM
+    public ArrayList getDM() {
+        ResultSet rsGetDMMedecin = null, rs1, rs2 = null;
+        int ipp = 0;
+        int ph = 0;
+        String lettre = null;
+        int iddm = 0;
+        String nom;
+        String prenom;
+        Date dateN;
+        Date date = null;
+        ArrayList<DM> dms = new ArrayList();
+        String ser = m.getService();
+        Lit l;
+        String lit;
+
+        try {
+            Statement st = con.createStatement();
+            Statement st1 = con.createStatement();
+            Statement st2 = con.createStatement();
+
+            String query = "select * from praticien";
             rs1 = st1.executeQuery(query);
             while (rs1.next()) {
                 nom = rs1.getString("nom");
@@ -1657,4 +1749,73 @@ public class BD {
 
     }
 
+    public int getAge(Date d) {
+        Calendar curr = Calendar.getInstance();
+        Calendar birth = Calendar.getInstance();
+        birth.setTime(d);
+        int yeardiff = curr.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+        curr.add(Calendar.YEAR, -yeardiff);
+        if (birth.after(curr)) {
+            yeardiff = yeardiff - 1;
+        }
+        return yeardiff;
+    }
+
+    //Recherche une pathologie dans les lettres de sortie des DM, les observations et les résultats
+    public boolean getPatho(String patho, int ipp) {
+        ArrayList<Observation> obs = new ArrayList();
+        ArrayList<Resultat> res = new ArrayList();
+        ArrayList<DM> dm = this.getDM();
+        boolean pathoPresente = false;
+        for (int i = 0; i < dm.size(); i++) {
+            if (dm.get(i).getP().getIPP() == ipp && dm.get(i).getLet() != null) {
+                String ls = dm.get(i).getLet();
+                int pos = ls.indexOf(patho);
+                if (pos >= 0) {
+                    pathoPresente = true;
+                    
+                }
+            }
+        }
+        if (!pathoPresente) {
+            for (int i = 0; i < dm.size(); i++) {
+                if (dm.get(i).getP().getIPP() == ipp) {
+                    obs = this.getObservation(dm.get(i).getIddm());
+                    for (int j = 0; j < obs.size(); j++) {
+                        String s = obs.get(j).getObservation();
+                        int pos = s.indexOf(patho);
+                        if (pos >= 0) {
+                            pathoPresente = true;
+                        }
+                    }
+                }
+            }
+            if (!pathoPresente) {
+                for (int i = 0; i < dm.size(); i++) {
+                    if (dm.get(i).getP().getIPP() == ipp) {
+                        res = this.getResultat(dm.get(i).getIddm());
+                        for (int j = 0; j < res.size(); j++) {
+                            String s = res.get(j).getResultat();
+                            int pos = s.indexOf(patho);
+                            if (pos >= 0) {
+                                pathoPresente = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return pathoPresente;
+    }
+
+    public boolean isSain(Patient p){
+        boolean sain = true;
+        ArrayList<DM> ldm = this.getDMPatient(p.getIPP());
+        for(int i =0;i<ldm.size();i++){
+            if(ldm.get(i).getLet()==null){
+                sain=false;
+            }
+        }
+        return sain;
+    }
 }

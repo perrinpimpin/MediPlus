@@ -15,6 +15,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import medi.nf.BD;
 import medi.nf.DM;
+import medi.nf.LancerServeurHL7;
 import medi.nf.Patient;
 import medi.nf.SecretaireAdmin;
 
@@ -130,6 +131,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
+        jButton16 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
@@ -240,6 +242,16 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medi/ui/images/LogoLogicielPetit.png"))); // NOI18N
         jPanel1.add(jLabel22, java.awt.BorderLayout.CENTER);
+
+        jButton16.setBackground(new java.awt.Color(255, 153, 0));
+        jButton16.setForeground(new java.awt.Color(255, 153, 0));
+        jButton16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medi/ui/images/preferences-parametres-icone-9540-32.png"))); // NOI18N
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton16, java.awt.BorderLayout.LINE_END);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
 
@@ -1196,19 +1208,19 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(nomLabel)
                         .addGap(230, 230, 230)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(384, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(4, 4, 4)
+                .addGap(13, 13, 13)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(nomLabel))
@@ -1761,7 +1773,12 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
             Patient patient = connect.recherchePatientsNomPrenomDate(nom, sexe, date);
             if (patient.getNom() == null && patient.getPrenom() == null && patient.getDate() == null) {
                 connect.ajouterDMA(nom.toUpperCase(), prenom, date, lieu.toUpperCase(), sexe, numeroVoie, typeVoie, complement, (int) codePostal, ville.toUpperCase(), pays.toUpperCase(), portable, fixe, mail);
-
+                java.util.Date d = new java.util.Date();
+                java.util.Date d1 = (java.util.Date) date;
+                
+                LancerServeurHL7 l = new LancerServeurHL7();
+                l.admiPatientHL7(p.getIPP(), nom, prenom, sexe, d1, d1);
+                
                 lp = connect.getPatients();
                 for (int i = 0; i < lp.size(); i++) {
                     lp.get(i);
@@ -1893,6 +1910,11 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
         adp.setVisible(true);
     }//GEN-LAST:event_archiver2ActionPerformed
 
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        ChangerMotDePasse mdp = new ChangerMotDePasse(sa);
+        mdp.setVisible(true);
+    }//GEN-LAST:event_jButton16ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1959,6 +1981,7 @@ public class InterfaceSecretaireAdmin extends javax.swing.JFrame {
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

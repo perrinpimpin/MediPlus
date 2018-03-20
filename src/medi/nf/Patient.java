@@ -38,7 +38,7 @@ public class Patient {
         this.prenom = prenom;
     }
         
-                public Patient(String nom, String prenom, Date date, int ipp) {
+        public Patient(String nom, String prenom, Date date, int ipp) {
         this.dateNaissance = date;
         this.nom = nom;
         this.prenom = prenom;

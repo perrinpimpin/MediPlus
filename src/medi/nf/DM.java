@@ -16,7 +16,7 @@ public class DM {
 
     /**
      * @param date the date to set
-     */    private int ipp;
+     */
     private int iddm;
     private Medecin medref;
     private String lettre;

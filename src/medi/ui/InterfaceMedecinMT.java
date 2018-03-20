@@ -25,6 +25,7 @@ import medi.nf.DM;
 import medi.nf.Lit;
 import medi.nf.Medecin;
 import medi.nf.Patient;
+import medi.nf.Service;
 
 /**
  *
@@ -134,18 +135,36 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
             }
         });
 
-        centrePanel.add(listePatients, "Accueil");
-        centrePanel.add(rechercheDM, "RechercherDM");
-        centrePanel.add(creerDM, "CreerDM");
-        menuPanel.add(menuAccueil, "Accueil");
-        menuPanel.add(menuCreerDM, "CreerDM");
-        menuPanel.add(menuRechercherDM, "RechercherDM");
-        jPanel2.add(patient, "Patient");
-        jPanel2.add(medrefPanel, "Medref");
-        jPanel2.add(litPanel, "Lit");
-        jPanel2.add(iddmPanel, "Sejour");
         CardLayout card = (CardLayout) jPanel2.getLayout();
         card.show(jPanel2, "Patient");
+        if (m.getService().equals(Service.RECHERCHE.getName())) {
+            menuPanel.add(menuAccueilRecherche, "Accueil");
+            menuPanel.add(menuCreerRecherche, "CreerDM");
+            menuPanel.add(menuRechercherDMRecherche, "RechercherDM");
+            menuPanel.add(menuRechercherCandidat, "Candidat");
+            card = (CardLayout) menuPanel.getLayout();
+            card.show(menuPanel, "Accueil");
+            centrePanel.add(listePatients, "Accueil");
+            centrePanel.add(rechercheDM, "RechercherDM");
+            centrePanel.add(creerDM, "CreerDM");
+            centrePanel.add(rechercheCandidat, "Candidat");
+            jPanel2.add(patient, "Patient");
+            jPanel2.add(medrefPanel, "Medref");
+            jPanel2.add(litPanel, "Lit");
+            jPanel2.add(iddmPanel, "Sejour");
+            repaint();
+        } else {
+            menuPanel.add(menuAccueil, "Accueil");
+            menuPanel.add(menuCreerDM, "CreerDM");
+            menuPanel.add(menuRechercherDM, "RechercherDM");
+            centrePanel.add(listePatients, "Accueil");
+            centrePanel.add(rechercheDM, "RechercherDM");
+            centrePanel.add(creerDM, "CreerDM");
+            jPanel2.add(patient, "Patient");
+            jPanel2.add(medrefPanel, "Medref");
+            jPanel2.add(litPanel, "Lit");
+            jPanel2.add(iddmPanel, "Sejour");
+        }
 
         for (int i = 0; i < lm.size(); i++) {
             medBox.addItem(lm.get(i).getNom() + " " + lm.get(i).getPrenom() + " - " + lm.get(i).getSpecialite());
@@ -177,6 +196,26 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         ra = new javax.swing.JButton();
         rc = new javax.swing.JButton();
         rr = new javax.swing.JButton();
+        menuAccueilRecherche = new javax.swing.JPanel();
+        aa1 = new javax.swing.JButton();
+        ac1 = new javax.swing.JButton();
+        ar1 = new javax.swing.JButton();
+        ra6 = new javax.swing.JButton();
+        menuCreerRecherche = new javax.swing.JPanel();
+        ca1 = new javax.swing.JButton();
+        cc1 = new javax.swing.JButton();
+        cr1 = new javax.swing.JButton();
+        ra5 = new javax.swing.JButton();
+        menuRechercherDMRecherche = new javax.swing.JPanel();
+        ra1 = new javax.swing.JButton();
+        rc1 = new javax.swing.JButton();
+        rr1 = new javax.swing.JButton();
+        ra4 = new javax.swing.JButton();
+        menuRechercherCandidat = new javax.swing.JPanel();
+        ra2 = new javax.swing.JButton();
+        rc2 = new javax.swing.JButton();
+        rr2 = new javax.swing.JButton();
+        ra3 = new javax.swing.JButton();
         header = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         nomLabel = new javax.swing.JLabel();
@@ -247,11 +286,29 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         creer = new javax.swing.JButton();
         jLabel17 = new javax.swing.JLabel();
         litBox = new javax.swing.JComboBox<>();
+        rechercheCandidat = new javax.swing.JPanel();
+        jLabel25 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        resultatsTable2 = new javax.swing.JTable();
+        jButton9 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        sexeBoxRecherche = new javax.swing.JComboBox<>();
+        jLabel23 = new javax.swing.JLabel();
+        agemin = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        agemax = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        pathologie = new javax.swing.JTextField();
+        sainBox = new javax.swing.JCheckBox();
         jPanel9 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
+        jButton23 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -484,10 +541,358 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
                 .addComponent(rc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
                 .addComponent(rr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(561, Short.MAX_VALUE))
+                .addContainerGap(574, Short.MAX_VALUE))
         );
 
         menuPanel.add(menuRechercherDM, "card2");
+
+        menuAccueilRecherche.setBackground(new java.awt.Color(255, 255, 255));
+
+        aa1.setBackground(new java.awt.Color(102, 102, 102));
+        aa1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        aa1.setForeground(new java.awt.Color(255, 255, 255));
+        aa1.setText("Accueil");
+        aa1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        aa1.setMaximumSize(new java.awt.Dimension(160, 25));
+        aa1.setMinimumSize(new java.awt.Dimension(160, 25));
+        aa1.setPreferredSize(new java.awt.Dimension(160, 25));
+        aa1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aa1ActionPerformed(evt);
+            }
+        });
+
+        ac1.setBackground(new java.awt.Color(255, 153, 0));
+        ac1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ac1.setForeground(new java.awt.Color(102, 102, 102));
+        ac1.setText("Créer un DM");
+        ac1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ac1.setMaximumSize(new java.awt.Dimension(160, 25));
+        ac1.setMinimumSize(new java.awt.Dimension(160, 25));
+        ac1.setPreferredSize(new java.awt.Dimension(160, 25));
+        ac1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ac1ActionPerformed(evt);
+            }
+        });
+
+        ar1.setBackground(new java.awt.Color(255, 153, 0));
+        ar1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ar1.setForeground(new java.awt.Color(102, 102, 102));
+        ar1.setText("Rechercher un DM");
+        ar1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ar1.setMaximumSize(new java.awt.Dimension(160, 25));
+        ar1.setMinimumSize(new java.awt.Dimension(160, 25));
+        ar1.setPreferredSize(new java.awt.Dimension(160, 25));
+        ar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ar1ActionPerformed(evt);
+            }
+        });
+
+        ra6.setBackground(new java.awt.Color(255, 153, 0));
+        ra6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ra6.setForeground(new java.awt.Color(102, 102, 102));
+        ra6.setText("Rechercher candidat");
+        ra6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ra6.setMaximumSize(new java.awt.Dimension(160, 25));
+        ra6.setMinimumSize(new java.awt.Dimension(160, 25));
+        ra6.setPreferredSize(new java.awt.Dimension(160, 25));
+        ra6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ra6ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout menuAccueilRechercheLayout = new javax.swing.GroupLayout(menuAccueilRecherche);
+        menuAccueilRecherche.setLayout(menuAccueilRechercheLayout);
+        menuAccueilRechercheLayout.setHorizontalGroup(
+            menuAccueilRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuAccueilRechercheLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(menuAccueilRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(aa1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ac1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ra6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        menuAccueilRechercheLayout.setVerticalGroup(
+            menuAccueilRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuAccueilRechercheLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(aa1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ac1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ra6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(540, Short.MAX_VALUE))
+        );
+
+        menuPanel.add(menuAccueilRecherche, "card2");
+
+        menuCreerRecherche.setBackground(new java.awt.Color(255, 255, 255));
+
+        ca1.setBackground(new java.awt.Color(255, 153, 0));
+        ca1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ca1.setForeground(new java.awt.Color(102, 102, 102));
+        ca1.setText("Accueil");
+        ca1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ca1.setMaximumSize(new java.awt.Dimension(160, 25));
+        ca1.setMinimumSize(new java.awt.Dimension(160, 25));
+        ca1.setPreferredSize(new java.awt.Dimension(160, 25));
+        ca1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ca1ActionPerformed(evt);
+            }
+        });
+
+        cc1.setBackground(new java.awt.Color(102, 102, 102));
+        cc1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cc1.setForeground(new java.awt.Color(255, 255, 255));
+        cc1.setText("Créer un DM");
+        cc1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        cc1.setMaximumSize(new java.awt.Dimension(160, 25));
+        cc1.setMinimumSize(new java.awt.Dimension(160, 25));
+        cc1.setPreferredSize(new java.awt.Dimension(160, 25));
+        cc1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cc1ActionPerformed(evt);
+            }
+        });
+
+        cr1.setBackground(new java.awt.Color(255, 153, 0));
+        cr1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cr1.setForeground(new java.awt.Color(102, 102, 102));
+        cr1.setText("Rechercher un DMA");
+        cr1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        cr1.setMaximumSize(new java.awt.Dimension(160, 25));
+        cr1.setMinimumSize(new java.awt.Dimension(160, 25));
+        cr1.setPreferredSize(new java.awt.Dimension(160, 25));
+        cr1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cr1ActionPerformed(evt);
+            }
+        });
+
+        ra5.setBackground(new java.awt.Color(255, 153, 0));
+        ra5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ra5.setForeground(new java.awt.Color(102, 102, 102));
+        ra5.setText("Rechercher candidat");
+        ra5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ra5.setMaximumSize(new java.awt.Dimension(160, 25));
+        ra5.setMinimumSize(new java.awt.Dimension(160, 25));
+        ra5.setPreferredSize(new java.awt.Dimension(160, 25));
+        ra5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ra5ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout menuCreerRechercheLayout = new javax.swing.GroupLayout(menuCreerRecherche);
+        menuCreerRecherche.setLayout(menuCreerRechercheLayout);
+        menuCreerRechercheLayout.setHorizontalGroup(
+            menuCreerRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuCreerRechercheLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(menuCreerRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ca1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cc1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cr1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ra5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        menuCreerRechercheLayout.setVerticalGroup(
+            menuCreerRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuCreerRechercheLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ca1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cc1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(cr1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ra5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(542, Short.MAX_VALUE))
+        );
+
+        menuPanel.add(menuCreerRecherche, "card2");
+
+        menuRechercherDMRecherche.setBackground(new java.awt.Color(255, 255, 255));
+
+        ra1.setBackground(new java.awt.Color(255, 153, 0));
+        ra1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ra1.setForeground(new java.awt.Color(102, 102, 102));
+        ra1.setText("Accueil");
+        ra1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ra1.setMaximumSize(new java.awt.Dimension(160, 25));
+        ra1.setMinimumSize(new java.awt.Dimension(160, 25));
+        ra1.setPreferredSize(new java.awt.Dimension(160, 25));
+        ra1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ra1ActionPerformed(evt);
+            }
+        });
+
+        rc1.setBackground(new java.awt.Color(255, 153, 0));
+        rc1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rc1.setForeground(new java.awt.Color(102, 102, 102));
+        rc1.setText("Créer un DM");
+        rc1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        rc1.setMaximumSize(new java.awt.Dimension(160, 25));
+        rc1.setMinimumSize(new java.awt.Dimension(160, 25));
+        rc1.setPreferredSize(new java.awt.Dimension(160, 25));
+        rc1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rc1ActionPerformed(evt);
+            }
+        });
+
+        rr1.setBackground(new java.awt.Color(102, 102, 102));
+        rr1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rr1.setForeground(new java.awt.Color(255, 255, 255));
+        rr1.setText("Rechercher un DM");
+        rr1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        rr1.setMaximumSize(new java.awt.Dimension(160, 25));
+        rr1.setMinimumSize(new java.awt.Dimension(160, 25));
+        rr1.setPreferredSize(new java.awt.Dimension(160, 25));
+        rr1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rr1ActionPerformed(evt);
+            }
+        });
+
+        ra4.setBackground(new java.awt.Color(255, 153, 0));
+        ra4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ra4.setForeground(new java.awt.Color(102, 102, 102));
+        ra4.setText("Rechercher candidat");
+        ra4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ra4.setMaximumSize(new java.awt.Dimension(160, 25));
+        ra4.setMinimumSize(new java.awt.Dimension(160, 25));
+        ra4.setPreferredSize(new java.awt.Dimension(160, 25));
+        ra4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ra4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout menuRechercherDMRechercheLayout = new javax.swing.GroupLayout(menuRechercherDMRecherche);
+        menuRechercherDMRecherche.setLayout(menuRechercherDMRechercheLayout);
+        menuRechercherDMRechercheLayout.setHorizontalGroup(
+            menuRechercherDMRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuRechercherDMRechercheLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(menuRechercherDMRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ra1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rc1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rr1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ra4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        menuRechercherDMRechercheLayout.setVerticalGroup(
+            menuRechercherDMRechercheLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuRechercherDMRechercheLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ra1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rc1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(rr1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ra4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(542, Short.MAX_VALUE))
+        );
+
+        menuPanel.add(menuRechercherDMRecherche, "card2");
+
+        menuRechercherCandidat.setBackground(new java.awt.Color(255, 255, 255));
+
+        ra2.setBackground(new java.awt.Color(255, 153, 0));
+        ra2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ra2.setForeground(new java.awt.Color(102, 102, 102));
+        ra2.setText("Accueil");
+        ra2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ra2.setMaximumSize(new java.awt.Dimension(160, 25));
+        ra2.setMinimumSize(new java.awt.Dimension(160, 25));
+        ra2.setPreferredSize(new java.awt.Dimension(160, 25));
+        ra2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ra2ActionPerformed(evt);
+            }
+        });
+
+        rc2.setBackground(new java.awt.Color(255, 153, 0));
+        rc2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rc2.setForeground(new java.awt.Color(102, 102, 102));
+        rc2.setText("Créer un DM");
+        rc2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        rc2.setMaximumSize(new java.awt.Dimension(160, 25));
+        rc2.setMinimumSize(new java.awt.Dimension(160, 25));
+        rc2.setPreferredSize(new java.awt.Dimension(160, 25));
+        rc2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rc2ActionPerformed(evt);
+            }
+        });
+
+        rr2.setBackground(new java.awt.Color(255, 153, 0));
+        rr2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        rr2.setForeground(new java.awt.Color(102, 102, 102));
+        rr2.setText("Rechercher un DM");
+        rr2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        rr2.setMaximumSize(new java.awt.Dimension(160, 25));
+        rr2.setMinimumSize(new java.awt.Dimension(160, 25));
+        rr2.setPreferredSize(new java.awt.Dimension(160, 25));
+        rr2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rr2ActionPerformed(evt);
+            }
+        });
+
+        ra3.setBackground(new java.awt.Color(102, 102, 102));
+        ra3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ra3.setForeground(new java.awt.Color(255, 255, 255));
+        ra3.setText("Rechercher candidat");
+        ra3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ra3.setMaximumSize(new java.awt.Dimension(160, 25));
+        ra3.setMinimumSize(new java.awt.Dimension(160, 25));
+        ra3.setPreferredSize(new java.awt.Dimension(160, 25));
+        ra3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ra3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout menuRechercherCandidatLayout = new javax.swing.GroupLayout(menuRechercherCandidat);
+        menuRechercherCandidat.setLayout(menuRechercherCandidatLayout);
+        menuRechercherCandidatLayout.setHorizontalGroup(
+            menuRechercherCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuRechercherCandidatLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(menuRechercherCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ra2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rc2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rr2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ra3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        menuRechercherCandidatLayout.setVerticalGroup(
+            menuRechercherCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(menuRechercherCandidatLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ra2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rc2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(rr2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ra3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(542, Short.MAX_VALUE))
+        );
+
+        menuPanel.add(menuRechercherCandidat, "card2");
 
         menu.add(menuPanel, java.awt.BorderLayout.CENTER);
 
@@ -598,7 +1003,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -937,7 +1342,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
                 .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton16)
                     .addComponent(jButton19))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 261, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
                 .addGroup(rechercheDMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1136,12 +1541,156 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel17)
                             .addComponent(litBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         creerDM.add(jPanel3, java.awt.BorderLayout.CENTER);
 
         centrePanel.add(creerDM, "card4");
+
+        rechercheCandidat.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        rechercheCandidat.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+
+        jLabel25.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel25.setText("Résultats");
+
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(100, 100));
+
+        resultatsTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nom", "Prénom", "IPP", "Date de naissance", "Lieu de naissance", "Sexe"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(resultatsTable2);
+
+        jButton9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton9.setForeground(new java.awt.Color(255, 153, 0));
+        jButton9.setText("Rechercher");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        jButton11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton11.setForeground(new java.awt.Color(255, 153, 0));
+        jButton11.setText("Annuler");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+
+        jLabel26.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel26.setText("Rechercher grâce à 1 ou plusieurs champs un candidat à une étude :");
+
+        jLabel11.setText("Sexe");
+
+        sexeBoxRecherche.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "","Homme", "Femme" }));
+
+        jLabel23.setText("Âge entre");
+
+        jLabel24.setText("et");
+
+        jLabel27.setText("ans");
+
+        jLabel28.setText("Ayant présenté la pathologie");
+
+        pathologie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pathologieActionPerformed(evt);
+            }
+        });
+
+        sainBox.setText("Sujet sain");
+
+        javax.swing.GroupLayout rechercheCandidatLayout = new javax.swing.GroupLayout(rechercheCandidat);
+        rechercheCandidat.setLayout(rechercheCandidatLayout);
+        rechercheCandidatLayout.setHorizontalGroup(
+            rechercheCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rechercheCandidatLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(rechercheCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rechercheCandidatLayout.createSequentialGroup()
+                        .addGroup(rechercheCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel25)
+                            .addComponent(sexeBoxRecherche, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(rechercheCandidatLayout.createSequentialGroup()
+                        .addGroup(rechercheCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel26)
+                            .addGroup(rechercheCandidatLayout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(91, 91, 91)
+                                .addGroup(rechercheCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel23)
+                                    .addGroup(rechercheCandidatLayout.createSequentialGroup()
+                                        .addComponent(agemin, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel24)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(agemax, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel27)))
+                                .addGap(40, 40, 40)
+                                .addGroup(rechercheCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel28)
+                                    .addComponent(pathologie, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(50, 50, 50)
+                                .addComponent(sainBox)))
+                        .addGap(0, 384, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        rechercheCandidatLayout.setVerticalGroup(
+            rechercheCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rechercheCandidatLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel26)
+                .addGroup(rechercheCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(rechercheCandidatLayout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addGroup(rechercheCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(rechercheCandidatLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(rechercheCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel23)
+                            .addComponent(jLabel28))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(rechercheCandidatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(sexeBoxRecherche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(agemin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel24)
+                            .addComponent(agemax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel27)
+                            .addComponent(pathologie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(sainBox))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addComponent(jLabel25)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        centrePanel.add(rechercheCandidat, "card3");
 
         jPanel4.add(centrePanel, java.awt.BorderLayout.CENTER);
 
@@ -1181,7 +1730,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addContainerGap(614, Short.MAX_VALUE)
+                .addContainerGap(627, Short.MAX_VALUE)
                 .addComponent(jButton8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1198,6 +1747,16 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medi/ui/images/LogoLogicielPetit.png"))); // NOI18N
         jPanel1.add(jLabel22, java.awt.BorderLayout.CENTER);
+
+        jButton23.setBackground(new java.awt.Color(255, 153, 0));
+        jButton23.setForeground(new java.awt.Color(255, 153, 0));
+        jButton23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medi/ui/images/preferences-parametres-icone-9540-32.png"))); // NOI18N
+        jButton23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton23ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton23, java.awt.BorderLayout.LINE_END);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.NORTH);
 
@@ -1536,11 +2095,497 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         ldm = connect.getDM(lm.get(medBox.getSelectedIndex() - 1));
         result.setRowCount(0);
         for (int i = 0; i < ldm.size(); i++) {
-                result.addRow(new Object[]{ldm.get(i).getP().getNom(), ldm.get(i).getP().getPrenom(), ldm.get(i).getP().getDate(), ldm.get(i).getIddm(), ldm.get(i).getDate(), ldm.get(i).getMedref().getNom() + " " + ldm.get(i).getMedref().getPrenom(), ldm.get(i).getMedref().getService(), ldm.get(i).getLit().getNum()});
-            }
+            result.addRow(new Object[]{ldm.get(i).getP().getNom(), ldm.get(i).getP().getPrenom(), ldm.get(i).getP().getDate(), ldm.get(i).getIddm(), ldm.get(i).getDate(), ldm.get(i).getMedref().getNom() + " " + ldm.get(i).getMedref().getPrenom(), ldm.get(i).getMedref().getService(), ldm.get(i).getLit().getNum()});
+        }
         rechercheTable.setModel(result);
         rechercheTable.repaint();
     }//GEN-LAST:event_jButton24ActionPerformed
+
+    private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
+        ChangerMotDePasse mdp = new ChangerMotDePasse(m);
+        mdp.setVisible(true);
+    }//GEN-LAST:event_jButton23ActionPerformed
+
+    private void aa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aa1ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Accueil");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Accueil");
+    }//GEN-LAST:event_aa1ActionPerformed
+
+    private void ac1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ac1ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "CreerDM");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "CreerDM");
+    }//GEN-LAST:event_ac1ActionPerformed
+
+    private void ar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ar1ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "RechercherDM");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "RechercherDM");
+    }//GEN-LAST:event_ar1ActionPerformed
+
+    private void ca1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ca1ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Accueil");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Accueil");
+    }//GEN-LAST:event_ca1ActionPerformed
+
+    private void cc1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cc1ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "CreerDM");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "CreerDM");
+    }//GEN-LAST:event_cc1ActionPerformed
+
+    private void cr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr1ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "RechercherDM");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "RechercherDM");
+    }//GEN-LAST:event_cr1ActionPerformed
+
+    private void ra1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ra1ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Accueil");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Accueil");
+    }//GEN-LAST:event_ra1ActionPerformed
+
+    private void rc1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rc1ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "CreerDM");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "CreerDM");
+    }//GEN-LAST:event_rc1ActionPerformed
+
+    private void rr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rr1ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "RechercherDM");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "RechercherDM");
+    }//GEN-LAST:event_rr1ActionPerformed
+
+    private void ra2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ra2ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Accueil");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Accueil");
+    }//GEN-LAST:event_ra2ActionPerformed
+
+    private void rc2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rc2ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "CreerDM");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "CreerDM");
+    }//GEN-LAST:event_rc2ActionPerformed
+
+    private void rr2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rr2ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "RechercherDM");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "RechercherDM");
+    }//GEN-LAST:event_rr2ActionPerformed
+
+    private void ra4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ra4ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Candidat");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Candidat");
+    }//GEN-LAST:event_ra4ActionPerformed
+
+    private void ra3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ra3ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Candidat");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Candidat");
+    }//GEN-LAST:event_ra3ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        DefaultTableModel resultRecherche = (DefaultTableModel) resultatsTable2.getModel();
+        ArrayList<Patient> lp = null;
+        resultRecherche.setRowCount(0);
+        if (sexeBoxRecherche.getSelectedItem() == "Femme" && agemin.getText().isEmpty() && agemax.getText().isEmpty() && pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme")) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && agemin.getText().isEmpty() && agemax.getText().isEmpty() && pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme")) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+            
+            
+            
+            
+            
+            
+            
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && agemin.getText().isEmpty() && agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && agemin.getText().isEmpty() && agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getPatho(pathologie.getText(),lp.get(i).getIPP()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getPatho(pathologie.getText(),lp.get(i).getIPP()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && !sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && agemin.getText().isEmpty() && agemax.getText().isEmpty() && pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && agemin.getText().isEmpty() && agemax.getText().isEmpty() && pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.isSain(lp.get(i)) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.isSain(lp.get(i)) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+            
+            
+            
+            
+            
+            
+            
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && agemin.getText().isEmpty() && agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getPatho(pathologie.getText(),lp.get(i).getIPP()) && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && agemin.getText().isEmpty() && agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getPatho(pathologie.getText(),lp.get(i).getIPP()) && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getPatho(pathologie.getText(),lp.get(i).getIPP()) && connect.isSain(lp.get(i)) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getPatho(pathologie.getText(),lp.get(i).getIPP()) && connect.isSain(lp.get(i)) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && !agemin.getText().isEmpty() && agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.isSain(lp.get(i)) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.isSain(lp.get(i)) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.isSain(lp.get(i)) && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.isSain(lp.get(i)) && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.isSain(lp.get(i)) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP())) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Femme" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Femme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP()) && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } else if (sexeBoxRecherche.getSelectedItem() == "Homme" && !agemin.getText().isEmpty() && !agemax.getText().isEmpty() && !pathologie.getText().isEmpty() && sainBox.isSelected()) {
+            lp = connect.getPatients();
+            for (int i = 0; i < lp.size(); i++) {
+                if (lp.get(i).getSexe().equals("Homme") && connect.getAge(lp.get(i).getDate()) <= Integer.parseInt(agemax.getText()) && connect.getAge(lp.get(i).getDate()) >= Integer.parseInt(agemin.getText()) && connect.getPatho(pathologie.getText(),lp.get(i).getIPP()) && connect.isSain(lp.get(i))) {
+                    resultRecherche.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+                }
+            }
+        } 
+        resultatsTable2.setModel(resultRecherche);
+        resultatsTable2.repaint();
+
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        JOptionPane d = new JOptionPane();
+        int retour = d.showConfirmDialog(null, "Êtes-vous sûr de vouloir vider le formulaire ?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+        if (retour == JOptionPane.OK_OPTION) {
+            sexeBoxRecherche.setSelectedItem("");
+            agemin.setText(null);
+            agemax.setText(null);
+            lp = connect.getPatients();
+            result.setRowCount(0);
+            resultatsTable1.setModel(result);
+            for (int i = 0; i < lp.size(); i++) {
+                lp.get(i);
+                result.addRow(new Object[]{lp.get(i).getNom(), lp.get(i).getPrenom(), lp.get(i).getIPP(), lp.get(i).getDate(), lp.get(i).getLieuNaissance(), lp.get(i).getSexe(),});
+            }
+
+            resultatsTable1.setModel(result);
+            resultatsTable1.repaint();
+        }
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void ra6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ra6ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Candidat");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Candidat");
+    }//GEN-LAST:event_ra6ActionPerformed
+
+    private void ra5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ra5ActionPerformed
+        CardLayout cardLayout = (CardLayout) menuPanel.getLayout();
+        cardLayout.show(menuPanel, "Candidat");
+        CardLayout card = (CardLayout) centrePanel.getLayout();
+        card.show(centrePanel, "Candidat");
+    }//GEN-LAST:event_ra5ActionPerformed
+
+    private void pathologieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pathologieActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pathologieActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1581,18 +2626,27 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aa;
+    private javax.swing.JButton aa1;
     private javax.swing.JButton ac;
+    private javax.swing.JButton ac1;
+    private javax.swing.JTextField agemax;
+    private javax.swing.JTextField agemin;
     private javax.swing.JButton ar;
+    private javax.swing.JButton ar1;
     private javax.swing.JButton ca;
+    private javax.swing.JButton ca1;
     private javax.swing.JButton cc;
+    private javax.swing.JButton cc1;
     private javax.swing.JPanel centrePanel;
     private javax.swing.JButton cr;
+    private javax.swing.JButton cr1;
     private javax.swing.JButton creer;
     private javax.swing.JPanel creerDM;
     private com.toedter.calendar.JDateChooser dateF;
     private com.toedter.calendar.JDateChooser dateField;
     private javax.swing.JPanel header;
     private javax.swing.JPanel iddmPanel;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
@@ -1601,12 +2655,15 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
     private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton22;
+    private javax.swing.JButton jButton23;
     private javax.swing.JButton jButton24;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -1619,6 +2676,12 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1633,6 +2696,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
@@ -1648,28 +2712,47 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
     private javax.swing.JPanel medrefPanel;
     private javax.swing.JPanel menu;
     private javax.swing.JPanel menuAccueil;
+    private javax.swing.JPanel menuAccueilRecherche;
     private javax.swing.JPanel menuCreerDM;
+    private javax.swing.JPanel menuCreerRecherche;
     private javax.swing.JPanel menuPanel;
+    private javax.swing.JPanel menuRechercherCandidat;
     private javax.swing.JPanel menuRechercherDM;
+    private javax.swing.JPanel menuRechercherDMRecherche;
     private javax.swing.JTextField nomF;
     private javax.swing.JTextField nomField;
     private javax.swing.JLabel nomLabel;
     private javax.swing.JTextArea observation;
     private javax.swing.JTextArea opinf;
+    private javax.swing.JTextField pathologie;
     private javax.swing.JPanel patient;
     private javax.swing.JTextField prenomF;
     private javax.swing.JTextField prenomField;
     private javax.swing.JTextArea prescriptions;
     private javax.swing.JButton ra;
+    private javax.swing.JButton ra1;
+    private javax.swing.JButton ra2;
+    private javax.swing.JButton ra3;
+    private javax.swing.JButton ra4;
+    private javax.swing.JButton ra5;
+    private javax.swing.JButton ra6;
     private javax.swing.JButton rc;
+    private javax.swing.JButton rc1;
+    private javax.swing.JButton rc2;
     private javax.swing.JComboBox<String> rechercheBox;
+    private javax.swing.JPanel rechercheCandidat;
     private javax.swing.JPanel rechercheDM;
     private javax.swing.JTable rechercheTable;
     private javax.swing.JTextArea resultat;
     private javax.swing.JTable resultatsTable;
     private javax.swing.JTable resultatsTable1;
+    private javax.swing.JTable resultatsTable2;
     private javax.swing.JButton rr;
+    private javax.swing.JButton rr1;
+    private javax.swing.JButton rr2;
+    private javax.swing.JCheckBox sainBox;
     private javax.swing.JTextField sejourF;
     private javax.swing.JLabel serviceLabel;
+    private javax.swing.JComboBox<String> sexeBoxRecherche;
     // End of variables declaration//GEN-END:variables
 }
