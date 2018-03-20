@@ -226,8 +226,6 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         jScrollPane8 = new javax.swing.JScrollPane();
         lettre = new javax.swing.JTextArea();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        resultat = new javax.swing.JTextArea();
         prenomField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -235,7 +233,6 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
         prescriptions = new javax.swing.JTextArea();
         jLabel7 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         opinf = new javax.swing.JTextArea();
         jScrollPane7 = new javax.swing.JScrollPane();
@@ -345,7 +342,7 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
                 .addComponent(ac, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(559, 559, 559))
         );
 
         menuPanel.add(menuAccueil, "card2");
@@ -963,10 +960,6 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
         lettre.setRows(5);
         jScrollPane8.setViewportView(lettre);
 
-        resultat.setColumns(20);
-        resultat.setRows(5);
-        jScrollPane5.setViewportView(resultat);
-
         jLabel9.setText("Date de naissance");
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -982,10 +975,6 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(102, 102, 102));
         jLabel16.setText("Observations");
-
-        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel12.setText("Résultat");
 
         opinf.setColumns(20);
         opinf.setRows(5);
@@ -1056,7 +1045,6 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(creer))
                     .addComponent(jScrollPane4)
-                    .addComponent(jScrollPane5)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1081,7 +1069,6 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel19)
                             .addComponent(jLabel10)
-                            .addComponent(jLabel12)
                             .addComponent(jLabel13)
                             .addComponent(jLabel16)
                             .addComponent(jLabel18))
@@ -1112,11 +1099,7 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1367,16 +1350,6 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
             }
         }
 
-        if (resultat.getText().length() != 0) {
-            ArrayList<String> res = new ArrayList<String>();
-            for (String s : resultat.getText().split("\n")) {
-                res.add(s);
-            }
-            for (int i = 0; i < res.size(); i++) {
-                connect.ajouterResultat(connect.genererIDRes(), ph, res.get(i), iddm);
-            }
-        }
-
         if (opinf.getText().length() != 0) {
             ArrayList<String> op = new ArrayList<String>();
             for (String s : opinf.getText().split("\n")) {
@@ -1622,7 +1595,6 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1650,7 +1622,6 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
@@ -1680,7 +1651,6 @@ public class InterfaceMedecinClinique extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> rechercheBox;
     private javax.swing.JPanel rechercheDM;
     private javax.swing.JTable rechercheTable;
-    private javax.swing.JTextArea resultat;
     private javax.swing.JTable resultatsTable;
     private javax.swing.JTable resultatsTable1;
     private javax.swing.JButton rr;

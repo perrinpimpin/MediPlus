@@ -44,7 +44,7 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
         
         DefaultTableModel resultpresc = (DefaultTableModel) presTable.getModel();
         DefaultTableModel resultobs = (DefaultTableModel) addobsTable.getModel();
-        DefaultTableModel resultres = (DefaultTableModel) addresTable.getModel();
+        DefaultTableModel resultres = (DefaultTableModel) resTable.getModel();
         DefaultTableModel resultopinf = (DefaultTableModel) opinfTable.getModel();
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         
@@ -78,10 +78,8 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
 
         //Affichage des résultats liés au DM dans deux tableaux
         for (int i = 0; i < res.size(); i++) {
-            resultres.addRow(new Object[]{res.get(i).getResultat(), res.get(i).getDate(), res.get(i).getPrescripteur().getNom() + " " + res.get(i).getPrescripteur().getPrenom() + " - " + res.get(i).getPrescripteur().getSpecialite()});
+            resultres.addRow(new Object[]{res.get(i).getDemande(),res.get(i).getDateDemande(),res.get(i).getMt().getNom() + " " + res.get(i).getMt().getPrenom() + " - " + res.get(i).getMt().getSpecialite(),res.get(i).getResultat(), res.get(i).getDateResultat(), res.get(i).getPrescripteur().getNom() + " " + res.get(i).getPrescripteur().getPrenom() + " - " + res.get(i).getPrescripteur().getSpecialite()});
         }
-        addresTable.setModel(resultres);
-        addresTable.repaint();
 
         resTable.setModel(resultres);
         resTable.repaint();
@@ -140,12 +138,6 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
         noaddpres = new javax.swing.JPanel();
         jScrollPane14 = new javax.swing.JScrollPane();
         presTable = new javax.swing.JTable();
-        addres = new javax.swing.JPanel();
-        jScrollPane15 = new javax.swing.JScrollPane();
-        addresTable = new javax.swing.JTable();
-        jScrollPane16 = new javax.swing.JScrollPane();
-        resArea = new javax.swing.JTextArea();
-        jButton6 = new javax.swing.JButton();
         noaddres = new javax.swing.JPanel();
         jScrollPane17 = new javax.swing.JScrollPane();
         resTable = new javax.swing.JTable();
@@ -182,7 +174,6 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
         jToggleButton1 = new javax.swing.JToggleButton();
         jToggleButton2 = new javax.swing.JToggleButton();
         jToggleButton3 = new javax.swing.JToggleButton();
-        jToggleButton4 = new javax.swing.JToggleButton();
         obsPanel = new javax.swing.JPanel();
         presPanel = new javax.swing.JPanel();
         resPanel = new javax.swing.JPanel();
@@ -190,6 +181,7 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
         Résultats1 = new javax.swing.JLabel();
         jToggleButton5 = new javax.swing.JToggleButton();
         lettrePanel = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
 
         addobsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -345,64 +337,16 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
             .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        addresTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Résultat", "Date", "Médecin prescripteur"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane15.setViewportView(addresTable);
-
-        resArea.setColumns(20);
-        resArea.setRows(5);
-        jScrollPane16.setViewportView(resArea);
-
-        jButton6.setText("Ajouter le résultat");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout addresLayout = new javax.swing.GroupLayout(addres);
-        addres.setLayout(addresLayout);
-        addresLayout.setHorizontalGroup(
-            addresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jScrollPane16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        addresLayout.setVerticalGroup(
-            addresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(addresLayout.createSequentialGroup()
-                .addComponent(jScrollPane16, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
         resTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Résultat", "Date", "Médecin prescripteur"
+                "Demande", "Date de demande", "Médecin demandeur", "Résultat", "Date de résultat", "Médecin MT"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                true, true, true, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -664,13 +608,6 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
             }
         });
 
-        jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medi/ui/images/ajouter-icone-5107-16.png"))); // NOI18N
-        jToggleButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton4ActionPerformed(evt);
-            }
-        });
-
         obsPanel.setLayout(new java.awt.CardLayout());
 
         presPanel.setLayout(new java.awt.CardLayout());
@@ -694,6 +631,13 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
         lettrePanel.setPreferredSize(new java.awt.Dimension(747, 159));
         lettrePanel.setLayout(new java.awt.CardLayout());
 
+        jButton4.setText("Faire une demande de résultat");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -709,22 +653,6 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
                     .addComponent(resPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(opinfPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(iddm1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(Résultats)
-                        .addGap(18, 18, 18)
-                        .addComponent(jToggleButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(iddm3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jToggleButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(iddm2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(Résultats1)
@@ -732,7 +660,26 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
                                 .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(lettrePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(34, 34, 34)))
+                        .addGap(34, 34, 34))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(iddm1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(iddm3)
+                                .addGap(18, 18, 18)
+                                .addComponent(jToggleButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(iddm2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(Résultats)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton4)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -762,11 +709,11 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
                     .addComponent(jToggleButton3, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(presPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Résultats)
-                    .addComponent(jToggleButton4))
-                .addGap(2, 2, 2)
+                    .addComponent(Résultats, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(5, 5, 5)
                 .addComponent(resPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jButton1)
@@ -792,10 +739,6 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //Ajouter une nouvelle observation au DM
@@ -839,22 +782,6 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        if (jToggleButton1.isSelected()) {
-            obsPanel.remove(noaddobs);
-            obsPanel.add(addobs, "Ajouter");
-            CardLayout cardLayout = (CardLayout) obsPanel.getLayout();
-            cardLayout.show(obsPanel, "Ajouter");
-            pack();
-        } else {
-            obsPanel.remove(addobs);
-            obsPanel.add(noaddobs, "PasAjouter");
-            CardLayout cardLayout = (CardLayout) obsPanel.getLayout();
-            cardLayout.show(obsPanel, "PasAjouter");
-            pack();
-        }
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
-
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         //Ajouter une nouvelle prescription au DM
         int ph = m.getId_user();
@@ -896,49 +823,6 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-       //Ajouter un nouveau résultat au DM
-        int ph = m.getId_user();
-        int iddm = dm.getIddm();
-        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-
-        try {
-            if (resArea.getText().length() != 0) {
-                ArrayList<String> res = new ArrayList<String>();
-                for (String s : resArea.getText().split("\n")) {
-                    res.add(s);
-                }
-                for (int i = 0; i < res.size(); i++) {
-                    connect.ajouterResultat(connect.genererIDRes(dm), ph, res.get(i), iddm);
-                }
-            }
-            
-            //Mettre les tableaux à jour
-            DefaultTableModel resultres = (DefaultTableModel) addresTable.getModel();
-            resultres.setRowCount(0);
-            res = connect.getResultat(dm.getIddm());
-            for (int i = 0; i < res.size(); i++) {
-                resultres.addRow(new Object[]{res.get(i).getResultat(), res.get(i).getDate(), res.get(i).getPrescripteur().getNom() + " " + res.get(i).getPrescripteur().getPrenom() + " - " + res.get(i).getPrescripteur().getSpecialite()});
-            }
-            addresTable.setModel(resultres);
-            addresTable.repaint();
-
-            resTable.setModel(resultres);
-            resTable.repaint();
-
-            resPanel.remove(addres);
-            resPanel.add(noaddres, "PasAjouter");
-            CardLayout cardLayout = (CardLayout) resPanel.getLayout();
-            cardLayout.show(resPanel, "PasAjouter");
-            jToggleButton3.setSelected(false);
-            opinfArea.setText(null);
-            javax.swing.JOptionPane.showMessageDialog(null, "Résultat ajouté au DM.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
-            System.out.println(ex);
-            javax.swing.JOptionPane.showMessageDialog(null, "Erreur : ce résultat n'a pas pu être ajouté au DM.", "Erreur", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         ////Ajouter une nouvelle opération infirmière au DM
         int ph = m.getId_user();
@@ -972,7 +856,7 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
             opinfPanel.add(noaddopinf, "PasAjouter");
             CardLayout cardLayout = (CardLayout) opinfPanel.getLayout();
             cardLayout.show(opinfPanel, "PasAjouter");
-            jToggleButton4.setSelected(false);
+            jToggleButton2.setSelected(false);
             opinfArea.setText(null);
             javax.swing.JOptionPane.showMessageDialog(null, "Opération infirmière ajoutée au DM.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
@@ -980,6 +864,50 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(null, "Erreur : cette opération infirmière n'a pas pu être ajoutée au DM.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        //Ajouter une lettre de sortie au DM
+        try {
+            connect.ajouterLettreSortie(lettreArea.getText(), dm.getIddm());
+            javax.swing.JOptionPane.showMessageDialog(null, "Lettre de sortie ajoutée au DM.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            javax.swing.JOptionPane.showMessageDialog(null, "Erreur : cette opération infirmière n'a pas pu être ajoutée au DM.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
+        if (dm.getMedref().getId_user() == m.getId_user()) {
+            if (jToggleButton5.isSelected()) {
+                lettrePanel.add(addlettresortie, "Ajouter");
+                CardLayout cardLayout = (CardLayout) resPanel.getLayout();
+                cardLayout.show(resPanel, "Ajouter");
+                lettrePanel.setSize(747, 159);
+            } else {
+                lettrePanel.remove(addlettresortie);
+                lettrePanel.setSize(747, 0);
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "Vous n'êtes pas autorisé à ajouter une lettre de sortie car vous n'êtes pas le PH référent sur ce DM.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            jToggleButton5.setSelected(false);
+        }
+    }//GEN-LAST:event_jToggleButton5ActionPerformed
+
+    private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
+        if (jToggleButton3.isSelected()) {
+            presPanel.remove(noaddpres);
+            presPanel.add(addpres, "Ajouter");
+            CardLayout cardLayout = (CardLayout) presPanel.getLayout();
+            cardLayout.show(presPanel, "Ajouter");
+            pack();
+        } else {
+            presPanel.remove(addpres);
+            presPanel.add(noaddpres, "PasAjouter");
+            CardLayout cardLayout = (CardLayout) presPanel.getLayout();
+            cardLayout.show(presPanel, "PasAjouter");
+            pack();
+        }
+    }//GEN-LAST:event_jToggleButton3ActionPerformed
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
         if (jToggleButton2.isSelected()) {
@@ -999,65 +927,30 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
-    private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
-        if (jToggleButton3.isSelected()) {
-            presPanel.remove(noaddpres);
-            presPanel.add(addpres, "Ajouter");
-            CardLayout cardLayout = (CardLayout) presPanel.getLayout();
-            cardLayout.show(presPanel, "Ajouter");
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        if (jToggleButton1.isSelected()) {
+            obsPanel.remove(noaddobs);
+            obsPanel.add(addobs, "Ajouter");
+            CardLayout cardLayout = (CardLayout) obsPanel.getLayout();
+            cardLayout.show(obsPanel, "Ajouter");
             pack();
         } else {
-            presPanel.remove(addpres);
-            presPanel.add(noaddpres, "PasAjouter");
-            CardLayout cardLayout = (CardLayout) presPanel.getLayout();
-            cardLayout.show(presPanel, "PasAjouter");
+            obsPanel.remove(addobs);
+            obsPanel.add(noaddobs, "PasAjouter");
+            CardLayout cardLayout = (CardLayout) obsPanel.getLayout();
+            cardLayout.show(obsPanel, "PasAjouter");
             pack();
         }
-    }//GEN-LAST:event_jToggleButton3ActionPerformed
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
-    private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
-        if (jToggleButton4.isSelected()) {
-            resPanel.remove(noaddres);
-            resPanel.add(addres, "Ajouter");
-            CardLayout cardLayout = (CardLayout) resPanel.getLayout();
-            cardLayout.show(resPanel, "Ajouter");
-            pack();
-        } else {
-            resPanel.remove(addres);
-            resPanel.add(noaddres, "PasAjouter");
-            CardLayout cardLayout = (CardLayout) resPanel.getLayout();
-            cardLayout.show(resPanel, "PasAjouter");
-            pack();
-        }
-    }//GEN-LAST:event_jToggleButton4ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
-        if (dm.getMedref().getId_user() == m.getId_user()) {
-            if (jToggleButton5.isSelected()) {
-                lettrePanel.add(addlettresortie, "Ajouter");
-                CardLayout cardLayout = (CardLayout) resPanel.getLayout();
-                cardLayout.show(resPanel, "Ajouter");
-                lettrePanel.setSize(747, 159);
-            } else {
-                lettrePanel.remove(addlettresortie);
-                lettrePanel.setSize(747, 0);
-            }
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(null, "Vous n'êtes pas autorisé à ajouter une lettre de sortie car vous n'êtes pas le PH référent sur ce DM.", "Erreur", JOptionPane.ERROR_MESSAGE);
-            jToggleButton5.setSelected(false);
-        }
-    }//GEN-LAST:event_jToggleButton5ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //Ajouter une lettre de sortie au DM
-        try {
-            connect.ajouterLettreSortie(lettreArea.getText(), dm.getIddm());
-            javax.swing.JOptionPane.showMessageDialog(null, "Lettre de sortie ajoutée au DM.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
-            System.out.println(ex);
-            javax.swing.JOptionPane.showMessageDialog(null, "Erreur : cette opération infirmière n'a pas pu être ajoutée au DM.", "Erreur", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        DemandeResultat dr = new DemandeResultat(m,dm);
+        dr.setVisible(rootPaneCheckingEnabled);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1110,8 +1003,6 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
     private javax.swing.JTable addopinfTable;
     private javax.swing.JPanel addpres;
     private javax.swing.JTable addpresTable;
-    private javax.swing.JPanel addres;
-    private javax.swing.JTable addresTable;
     private javax.swing.JLabel date;
     private javax.swing.JLabel iddm;
     private javax.swing.JLabel iddm1;
@@ -1122,8 +1013,8 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -1131,8 +1022,6 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane14;
-    private javax.swing.JScrollPane jScrollPane15;
-    private javax.swing.JScrollPane jScrollPane16;
     private javax.swing.JScrollPane jScrollPane17;
     private javax.swing.JScrollPane jScrollPane18;
     private javax.swing.JScrollPane jScrollPane19;
@@ -1144,7 +1033,6 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JToggleButton jToggleButton3;
-    private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JToggleButton jToggleButton5;
     private javax.swing.JTextArea lettreArea;
     private javax.swing.JPanel lettrePanel;
@@ -1166,7 +1054,6 @@ public class EditerDMAnesthésiste extends javax.swing.JFrame {
     private javax.swing.JTextArea presArea;
     private javax.swing.JPanel presPanel;
     private javax.swing.JTable presTable;
-    private javax.swing.JTextArea resArea;
     private javax.swing.JPanel resPanel;
     private javax.swing.JTable resTable;
     // End of variables declaration//GEN-END:variables

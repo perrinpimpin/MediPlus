@@ -311,24 +311,44 @@ public class BD {
     }
 
     //Méthode d'ajout d'un résultat dans un DM d'id : iddm 
-    public void ajouterResultat(String id, int PH, String resultat, int iddm) {
+    public void ajouterResultat(int PH, String resultat, String idres) {
 
-        String sql = "insert into resultats(id_res, date, id_dm, PH, resultat) values (?,?,?,?,?)";
+        String sql = "update resultats set date = ?, PH = ?, resultat = ? where id_res='"+idres +"'";
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         try {
             PreparedStatement pstmAjouterResultat = con.prepareStatement(sql);
 
-            pstmAjouterResultat.setString(1, id);
-            pstmAjouterResultat.setDate(2, date);
-            pstmAjouterResultat.setInt(3, iddm);
-            pstmAjouterResultat.setInt(4, PH);
-            pstmAjouterResultat.setString(5, resultat);
+            pstmAjouterResultat.setDate(1, date);
+            pstmAjouterResultat.setInt(2, PH);
+            pstmAjouterResultat.setString(3, resultat);
 
             pstmAjouterResultat.executeUpdate();
             pstmAjouterResultat.close();
         } catch (Exception ex) {
             System.out.println(ex);
             javax.swing.JOptionPane.showMessageDialog(null, "Informations incorrectes", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
+        public void demandeExamenMT(String demande, int PH, DM dm) {
+
+        String sql = "insert into resultats(demande, dateDemande, PH_demande, id_dm, id_res) values (?,?,?,?,?)";
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());        
+        try {
+            PreparedStatement pstmAjouterResultat = con.prepareStatement(sql);
+
+            pstmAjouterResultat.setString(1, demande);
+            pstmAjouterResultat.setDate(2, date);
+            pstmAjouterResultat.setInt(3, PH);
+            pstmAjouterResultat.setInt(4, dm.getIddm());
+            pstmAjouterResultat.setString(5, this.genererIDRes(dm));
+            
+
+            pstmAjouterResultat.executeUpdate();
+            pstmAjouterResultat.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
     }
 
@@ -793,6 +813,8 @@ public class BD {
         }
         return dms;
     }
+    
+    
 
     //Méthode pour récupérer la totalité des DM
     public ArrayList getDM() {
@@ -998,8 +1020,12 @@ public class BD {
         ResultSet rsGetResultatiddm;
         ArrayList<Resultat> res = new ArrayList<>();
         int ph = 0;
+        String idres = null;
         String resultat = null;
         Date date = null;
+        int mt = 0;
+        String demande = null;
+        Date dd = null;
         try {
             Statement st = con.createStatement();
             String query = "select * from resultats where id_dm = " + iddm;
@@ -1009,8 +1035,51 @@ public class BD {
                 date = rsGetResultatiddm.getDate("date");
                 iddm = rsGetResultatiddm.getInt("id_dm");
                 resultat = rsGetResultatiddm.getString("resultat");
+                mt = rsGetResultatiddm.getInt("PH_demande");
+                demande = rsGetResultatiddm.getString("demande");
+                dd = rsGetResultatiddm.getDate("dateDemande");
+                idres = rsGetResultatiddm.getString("id_res");
+                
                 Medecin m = this.rechercheMedecin(ph);
-                res.add(new Resultat(date, m, iddm, resultat));
+                Medecin m2 = this.rechercheMedecin(mt);
+                res.add(new Resultat(date, m, iddm, resultat,dd,m2,demande,idres));
+            }
+            rsGetResultatiddm.close();
+            st.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        return res;
+    }
+    
+        public ArrayList<Resultat> getDemandesResultat() {
+        ResultSet rsGetResultatiddm;
+        ArrayList<Resultat> res = new ArrayList<>();
+        int ph = 0;
+        int iddm = 0;
+        String idres;
+        String resultat = null;
+        Date date = null;
+        int mt = 0;
+        String demande = null;
+        Date dd = null;
+        try {
+            Statement st = con.createStatement();
+            String query = "select * from resultats where resultat IS NULL";
+            rsGetResultatiddm = st.executeQuery(query);
+            while (rsGetResultatiddm.next()) {
+                ph = rsGetResultatiddm.getInt("PH_demande");
+                date = rsGetResultatiddm.getDate("date");
+                iddm = rsGetResultatiddm.getInt("id_dm");
+                resultat = rsGetResultatiddm.getString("resultat");
+                mt = rsGetResultatiddm.getInt("PH");
+                demande = rsGetResultatiddm.getString("demande");
+                dd = rsGetResultatiddm.getDate("dateDemande");
+                idres = rsGetResultatiddm.getString("id_res");
+                
+                Medecin m = this.rechercheMedecin(ph);
+                res.add(new Resultat(date, m, iddm, resultat,dd,null,demande,idres));
             }
             rsGetResultatiddm.close();
             st.close();

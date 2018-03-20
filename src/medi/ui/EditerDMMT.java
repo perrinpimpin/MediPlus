@@ -43,7 +43,7 @@ public class EditerDMMT extends javax.swing.JFrame {
         initComponents();
         
         DefaultTableModel resultobs = (DefaultTableModel) addobsTable.getModel();
-        DefaultTableModel resultres = (DefaultTableModel) addresTable.getModel();
+        DefaultTableModel resultres = (DefaultTableModel) resTable.getModel();
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         
         this.dm = dm;
@@ -67,10 +67,8 @@ public class EditerDMMT extends javax.swing.JFrame {
 
         //Affichage des résultats liés au DM dans deux tableaux
         for (int i = 0; i < res.size(); i++) {
-            resultres.addRow(new Object[]{res.get(i).getResultat(), res.get(i).getDate(), res.get(i).getPrescripteur().getNom() + " " + res.get(i).getPrescripteur().getPrenom() + " - " + res.get(i).getPrescripteur().getSpecialite()});
+            resultres.addRow(new Object[]{res.get(i).getDemande(),res.get(i).getDateDemande(),res.get(i).getMt().getNom() + " " + res.get(i).getMt().getPrenom() + " - " + res.get(i).getMt().getSpecialite(),res.get(i).getResultat(), res.get(i).getDateResultat(), res.get(i).getPrescripteur().getNom() + " " + res.get(i).getPrescripteur().getPrenom() + " - " + res.get(i).getPrescripteur().getSpecialite()});
         }
-        addresTable.setModel(resultres);
-        addresTable.repaint();
 
         resTable.setModel(resultres);
         resTable.repaint();
@@ -111,12 +109,6 @@ public class EditerDMMT extends javax.swing.JFrame {
         noaddobs = new javax.swing.JPanel();
         jScrollPane9 = new javax.swing.JScrollPane();
         obsTable = new javax.swing.JTable();
-        addres = new javax.swing.JPanel();
-        jScrollPane15 = new javax.swing.JScrollPane();
-        addresTable = new javax.swing.JTable();
-        jScrollPane16 = new javax.swing.JScrollPane();
-        resArea = new javax.swing.JTextArea();
-        jButton6 = new javax.swing.JButton();
         noaddres = new javax.swing.JPanel();
         jScrollPane17 = new javax.swing.JScrollPane();
         resTable = new javax.swing.JTable();
@@ -136,7 +128,6 @@ public class EditerDMMT extends javax.swing.JFrame {
         Résultats = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
-        jToggleButton4 = new javax.swing.JToggleButton();
         obsPanel = new javax.swing.JPanel();
         resPanel = new javax.swing.JPanel();
 
@@ -217,64 +208,16 @@ public class EditerDMMT extends javax.swing.JFrame {
             .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        addresTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Résultat", "Date", "Médecin prescripteur"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane15.setViewportView(addresTable);
-
-        resArea.setColumns(20);
-        resArea.setRows(5);
-        jScrollPane16.setViewportView(resArea);
-
-        jButton6.setText("Ajouter le résultat");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout addresLayout = new javax.swing.GroupLayout(addres);
-        addres.setLayout(addresLayout);
-        addresLayout.setHorizontalGroup(
-            addresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jScrollPane16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        addresLayout.setVerticalGroup(
-            addresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(addresLayout.createSequentialGroup()
-                .addComponent(jScrollPane16, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
         resTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Résultat", "Date", "Médecin prescripteur"
+                "Demande", "Date de demande", "Médecin demandeur", "Résultat", "Date de résultat", "Médecin MT"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                true, true, true, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -409,13 +352,6 @@ public class EditerDMMT extends javax.swing.JFrame {
             }
         });
 
-        jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/medi/ui/images/ajouter-icone-5107-16.png"))); // NOI18N
-        jToggleButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton4ActionPerformed(evt);
-            }
-        });
-
         obsPanel.setLayout(new java.awt.CardLayout());
 
         resPanel.setLayout(new java.awt.CardLayout());
@@ -438,10 +374,7 @@ public class EditerDMMT extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(obsPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(Résultats)
-                                .addGap(18, 18, 18)
-                                .addComponent(jToggleButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(Résultats, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -455,12 +388,10 @@ public class EditerDMMT extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(obsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Résultats)
-                    .addComponent(jToggleButton4))
-                .addGap(2, 2, 2)
+                .addComponent(Résultats)
+                .addGap(5, 5, 5)
                 .addComponent(resPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 11, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -548,65 +479,6 @@ public class EditerDMMT extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-       //Ajouter un nouveau résultat au DM
-        int ph = m.getId_user();
-        int iddm = dm.getIddm();
-        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-
-        try {
-            if (resArea.getText().length() != 0) {
-                ArrayList<String> res = new ArrayList<String>();
-                for (String s : resArea.getText().split("\n")) {
-                    res.add(s);
-                }
-                for (int i = 0; i < res.size(); i++) {
-                    connect.ajouterResultat(connect.genererIDRes(dm), ph, res.get(i), iddm);
-                }
-            }
-            
-            //Mettre les tableaux à jour
-            DefaultTableModel resultres = (DefaultTableModel) addresTable.getModel();
-            resultres.setRowCount(0);
-            res = connect.getResultat(dm.getIddm());
-            for (int i = 0; i < res.size(); i++) {
-                resultres.addRow(new Object[]{res.get(i).getResultat(), res.get(i).getDate(), res.get(i).getPrescripteur().getNom() + " " + res.get(i).getPrescripteur().getPrenom() + " - " + res.get(i).getPrescripteur().getSpecialite()});
-            }
-            addresTable.setModel(resultres);
-            addresTable.repaint();
-
-            resTable.setModel(resultres);
-            resTable.repaint();
-
-            resPanel.remove(addres);
-            resPanel.add(noaddres, "PasAjouter");
-            CardLayout cardLayout = (CardLayout) resPanel.getLayout();
-            cardLayout.show(resPanel, "PasAjouter");
-            jToggleButton4.setSelected(false);
-            resArea.setText(null);
-            javax.swing.JOptionPane.showMessageDialog(null, "Résultat ajouté au DM.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-        } catch (Exception ex) {
-            System.out.println(ex);
-            javax.swing.JOptionPane.showMessageDialog(null, "Erreur : ce résultat n'a pas pu être ajouté au DM.", "Erreur", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jToggleButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton4ActionPerformed
-        if (jToggleButton4.isSelected()) {
-            resPanel.remove(noaddres);
-            resPanel.add(addres, "Ajouter");
-            CardLayout cardLayout = (CardLayout) resPanel.getLayout();
-            cardLayout.show(resPanel, "Ajouter");
-            pack();
-        } else {
-            resPanel.remove(addres);
-            resPanel.add(noaddres, "PasAjouter");
-            CardLayout cardLayout = (CardLayout) resPanel.getLayout();
-            cardLayout.show(resPanel, "PasAjouter");
-            pack();
-        }
-    }//GEN-LAST:event_jToggleButton4ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -652,27 +524,21 @@ public class EditerDMMT extends javax.swing.JFrame {
     private javax.swing.JLabel Résultats;
     private javax.swing.JPanel addobs;
     private javax.swing.JTable addobsTable;
-    private javax.swing.JPanel addres;
-    private javax.swing.JTable addresTable;
     private javax.swing.JLabel date;
     private javax.swing.JLabel iddm;
     private javax.swing.JLabel iddm1;
     private javax.swing.JLabel idpat;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane15;
-    private javax.swing.JScrollPane jScrollPane16;
     private javax.swing.JScrollPane jScrollPane17;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JLabel medref;
     private javax.swing.JPanel noaddobs;
     private javax.swing.JPanel noaddres;
@@ -683,7 +549,6 @@ public class EditerDMMT extends javax.swing.JFrame {
     private javax.swing.JTextArea obsArea;
     private javax.swing.JPanel obsPanel;
     private javax.swing.JTable obsTable;
-    private javax.swing.JTextArea resArea;
     private javax.swing.JPanel resPanel;
     private javax.swing.JTable resTable;
     // End of variables declaration//GEN-END:variables

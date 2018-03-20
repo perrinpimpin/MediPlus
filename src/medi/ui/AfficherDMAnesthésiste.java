@@ -72,7 +72,7 @@ public class AfficherDMAnesthésiste extends javax.swing.JFrame {
         
         //Affichage des résultats liés au DM dans un tableau
         for (int i = 0; i < res.size(); i++) {
-            resultres.addRow(new Object[]{res.get(i).getResultat(), res.get(i).getDate(), res.get(i).getPrescripteur().getNom() + " " + res.get(i).getPrescripteur().getPrenom() + " - " + res.get(i).getPrescripteur().getSpecialite()});
+            resultres.addRow(new Object[]{res.get(i).getDemande(),res.get(i).getDateDemande(),res.get(i).getMt().getNom() + " " + res.get(i).getMt().getPrenom() + " - " + res.get(i).getMt().getSpecialite(),res.get(i).getResultat(), res.get(i).getDateResultat(), res.get(i).getPrescripteur().getNom() + " " + res.get(i).getPrescripteur().getPrenom() + " - " + res.get(i).getPrescripteur().getSpecialite()});
         }
         resTable.setModel(resultres);
         resTable.repaint();

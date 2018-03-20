@@ -25,6 +25,7 @@ import medi.nf.DM;
 import medi.nf.Lit;
 import medi.nf.Medecin;
 import medi.nf.Patient;
+import medi.nf.Resultat;
 import medi.nf.Service;
 
 /**
@@ -51,6 +52,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
     ArrayList<Medecin> lm;
     DM dm;
     ArrayList<Lit> lit = new ArrayList();
+    String idres;
 
     public InterfaceMedecinMT(Medecin m) {
         initComponents();
@@ -58,12 +60,13 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         this.m = m;
         nomLabel.setText(m.getPrenom() + " " + m.getNom());
         serviceLabel.setText(m.getService());
-        result = (DefaultTableModel) resultatsTable.getModel();
+        result = (DefaultTableModel) resultatsTable2.getModel();
         result1 = (DefaultTableModel) resultatsTable.getModel();
         ldm = connect.getDM(m);
         dmencours = new ArrayList();
         lp = connect.getPatients();
         lm = connect.getMedecins();
+        ArrayList<Resultat> lr = connect.getDemandesResultat();
         //On récupère les lits vacants pour l'attribution des lits lors de la création des DM
         try {
             lit = connect.rechercheLitVacant();
@@ -93,8 +96,13 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
                 result.addRow(new Object[]{ldm.get(i).getP().getNom(), ldm.get(i).getP().getPrenom(), ldm.get(i).getP().getDate(), ldm.get(i).getDate(), ldm.get(i).getLit().getNum()});
             }
         }
+        
+        for (int i = 0;i<lr.size();i++){
+            Medecin r = lr.get(i).getPrescripteur();
+            result1.addRow(new Object[]{lr.get(i).getDemande(),lr.get(i).getDateDemande(),lr.get(i).getPrescripteur().getNom() + " " + lr.get(i).getPrescripteur().getPrenom() + " - " + lr.get(i).getPrescripteur().getSpecialite(),lr.get(i).getIdres(),lr.get(i).getIddm()});
+            }
 
-        resultatsTable.setModel(result);
+        resultatsTable.setModel(result1);
         resultatsTable.repaint();
 
         //On ajoute un listener pour surveiller le patient sélectionné dans la liste des patients sur la page d'accueil
@@ -103,7 +111,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
             public void valueChanged(ListSelectionEvent event) {
                 if (resultatsTable.getSelectedRow() > -1) {
                     if (event.getValueIsAdjusting() == false) {
-                        p = connect.recherchePatientsNomPrenomDate(resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 0).toString(), resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 1).toString(), (Date) resultatsTable.getValueAt(resultatsTable.getSelectedRow(), 2));
+                        idres = (String) resultatsTable.getValueAt(resultatsTable.getSelectedRow(),3);
                     }
                 }
             }
@@ -144,7 +152,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
             menuPanel.add(menuRechercherCandidat, "Candidat");
             card = (CardLayout) menuPanel.getLayout();
             card.show(menuPanel, "Accueil");
-            centrePanel.add(listePatients, "Accueil");
+            centrePanel.add(listeResultats, "Accueil");
             centrePanel.add(rechercheDM, "RechercherDM");
             centrePanel.add(creerDM, "CreerDM");
             centrePanel.add(rechercheCandidat, "Candidat");
@@ -152,18 +160,22 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
             jPanel2.add(medrefPanel, "Medref");
             jPanel2.add(litPanel, "Lit");
             jPanel2.add(iddmPanel, "Sejour");
+            jPanel9.add(jPanel14,"Resultat");
+            jPanel9.add(jPanel13,"DM");
             repaint();
         } else {
             menuPanel.add(menuAccueil, "Accueil");
             menuPanel.add(menuCreerDM, "CreerDM");
             menuPanel.add(menuRechercherDM, "RechercherDM");
-            centrePanel.add(listePatients, "Accueil");
+            centrePanel.add(listeResultats, "Accueil");
             centrePanel.add(rechercheDM, "RechercherDM");
             centrePanel.add(creerDM, "CreerDM");
             jPanel2.add(patient, "Patient");
             jPanel2.add(medrefPanel, "Medref");
             jPanel2.add(litPanel, "Lit");
             jPanel2.add(iddmPanel, "Sejour");
+            jPanel9.add(jPanel14,"Resultat");
+            jPanel9.add(jPanel13,"DM");
         }
 
         for (int i = 0; i < lm.size(); i++) {
@@ -222,7 +234,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         serviceLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         centrePanel = new javax.swing.JPanel();
-        listePatients = new javax.swing.JPanel();
+        listeResultats = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         resultatsTable = new javax.swing.JTable();
@@ -265,8 +277,6 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         jScrollPane8 = new javax.swing.JScrollPane();
         lettre = new javax.swing.JTextArea();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        resultat = new javax.swing.JTextArea();
         prenomField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -274,7 +284,6 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         prescriptions = new javax.swing.JTextArea();
         jLabel7 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         opinf = new javax.swing.JTextArea();
         jScrollPane7 = new javax.swing.JScrollPane();
@@ -304,8 +313,12 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         pathologie = new javax.swing.JTextField();
         sainBox = new javax.swing.JCheckBox();
         jPanel9 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        jPanel13 = new javax.swing.JPanel();
+        jButton14 = new javax.swing.JButton();
+        jButton25 = new javax.swing.JButton();
+        jPanel14 = new javax.swing.JPanel();
+        jButton26 = new javax.swing.JButton();
+        jButton27 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         jButton23 = new javax.swing.JButton();
@@ -955,12 +968,12 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
 
         centrePanel.setLayout(new java.awt.CardLayout());
 
-        listePatients.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
-        listePatients.setPreferredSize(new java.awt.Dimension(0, 0));
+        listeResultats.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        listeResultats.setPreferredSize(new java.awt.Dimension(0, 0));
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel15.setText("Liste des patients présents dans le service :");
+        jLabel15.setText("Demandes de résultats :");
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(100, 100));
 
@@ -970,36 +983,28 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nom", "Prénom", "Date de naissance", "Date du DM", "Lit"
+                "Demande", "Date demande", "PH référent", "ID demande", "ID DM"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         resultatsTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(resultatsTable);
 
-        javax.swing.GroupLayout listePatientsLayout = new javax.swing.GroupLayout(listePatients);
-        listePatients.setLayout(listePatientsLayout);
-        listePatientsLayout.setHorizontalGroup(
-            listePatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(listePatientsLayout.createSequentialGroup()
+        javax.swing.GroupLayout listeResultatsLayout = new javax.swing.GroupLayout(listeResultats);
+        listeResultats.setLayout(listeResultatsLayout);
+        listeResultatsLayout.setHorizontalGroup(
+            listeResultatsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(listeResultatsLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(jLabel15)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(listePatientsLayout.createSequentialGroup()
+            .addGroup(listeResultatsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        listePatientsLayout.setVerticalGroup(
-            listePatientsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(listePatientsLayout.createSequentialGroup()
+        listeResultatsLayout.setVerticalGroup(
+            listeResultatsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(listeResultatsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1007,7 +1012,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        centrePanel.add(listePatients, "card2");
+        centrePanel.add(listeResultats, "card2");
 
         rechercheDM.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -1367,10 +1372,6 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         lettre.setRows(5);
         jScrollPane8.setViewportView(lettre);
 
-        resultat.setColumns(20);
-        resultat.setRows(5);
-        jScrollPane5.setViewportView(resultat);
-
         jLabel9.setText("Date de naissance");
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -1386,10 +1387,6 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(102, 102, 102));
         jLabel16.setText("Observations");
-
-        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel12.setText("Résultat");
 
         opinf.setColumns(20);
         opinf.setRows(5);
@@ -1460,7 +1457,6 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(creer))
                     .addComponent(jScrollPane4)
-                    .addComponent(jScrollPane5)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1485,7 +1481,6 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel19)
                             .addComponent(jLabel10)
-                            .addComponent(jLabel12)
                             .addComponent(jLabel13)
                             .addComponent(jLabel16)
                             .addComponent(jLabel18))
@@ -1508,7 +1503,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
                         .addComponent(nomField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(prenomField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton20))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1516,11 +1511,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1695,47 +1686,97 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         jPanel4.add(centrePanel, java.awt.BorderLayout.CENTER);
 
         jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel9.setLayout(new java.awt.CardLayout());
 
-        jButton3.setBackground(new java.awt.Color(255, 153, 0));
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(102, 102, 102));
-        jButton3.setText("Envoi par HL7");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
+
+        jButton14.setBackground(new java.awt.Color(255, 153, 0));
+        jButton14.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton14.setForeground(new java.awt.Color(102, 102, 102));
+        jButton14.setText("Envoi par HL7");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButton14ActionPerformed(evt);
             }
         });
 
-        jButton8.setBackground(new java.awt.Color(255, 153, 0));
-        jButton8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(102, 102, 102));
-        jButton8.setText("Consulter le DMA");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        jButton25.setBackground(new java.awt.Color(255, 153, 0));
+        jButton25.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton25.setForeground(new java.awt.Color(102, 102, 102));
+        jButton25.setText("Consulter le DMA");
+        jButton25.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                jButton25ActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton8, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton25, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
                 .addContainerGap(627, Short.MAX_VALUE)
-                .addComponent(jButton8)
+                .addComponent(jButton25)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jPanel9.add(jPanel13, "card2");
+
+        jPanel14.setBackground(new java.awt.Color(255, 255, 255));
+
+        jButton26.setBackground(new java.awt.Color(255, 153, 0));
+        jButton26.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton26.setForeground(new java.awt.Color(102, 102, 102));
+        jButton26.setText("Envoi par HL7");
+        jButton26.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton26ActionPerformed(evt);
+            }
+        });
+
+        jButton27.setBackground(new java.awt.Color(255, 153, 0));
+        jButton27.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButton27.setForeground(new java.awt.Color(102, 102, 102));
+        jButton27.setText("Ajouter résultat");
+        jButton27.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton27ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton27, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel14Layout.createSequentialGroup()
+                .addContainerGap(627, Short.MAX_VALUE)
+                .addComponent(jButton27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton26, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel9.add(jPanel14, "card3");
 
         jPanel4.add(jPanel9, java.awt.BorderLayout.EAST);
 
@@ -1762,15 +1803,6 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        AfficherListeDMPatient adm = new AfficherListeDMPatient(p, m);
-        adm.setVisible(true);
-    }//GEN-LAST:event_jButton8ActionPerformed
 
     private void prenomFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prenomFActionPerformed
         // TODO add your handling code here:
@@ -1915,15 +1947,6 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
             }
         }
 
-        if (resultat.getText().length() != 0) {
-            ArrayList<String> res = new ArrayList<String>();
-            for (String s : resultat.getText().split("\n")) {
-                res.add(s);
-            }
-            for (int i = 0; i < res.size(); i++) {
-                connect.ajouterResultat(connect.genererIDRes(), ph, res.get(i), iddm);
-            }
-        }
 
         if (opinf.getText().length() != 0) {
             ArrayList<String> op = new ArrayList<String>();
@@ -1975,6 +1998,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Accueil");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "Resultat");
     }//GEN-LAST:event_aaActionPerformed
 
     private void acActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acActionPerformed
@@ -1982,6 +2007,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "CreerDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "CreerDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_acActionPerformed
 
     private void arActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arActionPerformed
@@ -1989,6 +2016,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "RechercherDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "RechercherDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_arActionPerformed
 
     private void caActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caActionPerformed
@@ -1996,6 +2025,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Accueil");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "Resultat");
     }//GEN-LAST:event_caActionPerformed
 
     private void ccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ccActionPerformed
@@ -2003,6 +2034,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "CreerDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "CreerDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_ccActionPerformed
 
     private void crActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crActionPerformed
@@ -2010,6 +2043,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "RechercherDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "RechercherDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_crActionPerformed
 
     private void raActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_raActionPerformed
@@ -2017,6 +2052,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Accueil");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "Resultat");
     }//GEN-LAST:event_raActionPerformed
 
     private void rcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rcActionPerformed
@@ -2024,6 +2061,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "CreerDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "CreerDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_rcActionPerformed
 
     private void rrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rrActionPerformed
@@ -2031,6 +2070,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "RechercherDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "RechercherDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_rrActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
@@ -2111,6 +2152,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Accueil");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "Resultat");
     }//GEN-LAST:event_aa1ActionPerformed
 
     private void ac1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ac1ActionPerformed
@@ -2118,6 +2161,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "CreerDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "CreerDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_ac1ActionPerformed
 
     private void ar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ar1ActionPerformed
@@ -2125,6 +2170,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "RechercherDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "RechercherDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_ar1ActionPerformed
 
     private void ca1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ca1ActionPerformed
@@ -2132,6 +2179,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Accueil");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "Resultat");
     }//GEN-LAST:event_ca1ActionPerformed
 
     private void cc1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cc1ActionPerformed
@@ -2139,6 +2188,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "CreerDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "CreerDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_cc1ActionPerformed
 
     private void cr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr1ActionPerformed
@@ -2146,6 +2197,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "RechercherDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "RechercherDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_cr1ActionPerformed
 
     private void ra1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ra1ActionPerformed
@@ -2153,6 +2206,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Accueil");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "Resultat");
     }//GEN-LAST:event_ra1ActionPerformed
 
     private void rc1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rc1ActionPerformed
@@ -2160,6 +2215,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "CreerDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "CreerDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_rc1ActionPerformed
 
     private void rr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rr1ActionPerformed
@@ -2167,6 +2224,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "RechercherDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "RechercherDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_rr1ActionPerformed
 
     private void ra2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ra2ActionPerformed
@@ -2174,6 +2233,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Accueil");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Accueil");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "Resultat");
     }//GEN-LAST:event_ra2ActionPerformed
 
     private void rc2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rc2ActionPerformed
@@ -2181,6 +2242,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "CreerDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "CreerDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_rc2ActionPerformed
 
     private void rr2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rr2ActionPerformed
@@ -2188,6 +2251,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "RechercherDM");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "RechercherDM");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_rr2ActionPerformed
 
     private void ra4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ra4ActionPerformed
@@ -2195,6 +2260,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Candidat");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Candidat");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_ra4ActionPerformed
 
     private void ra3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ra3ActionPerformed
@@ -2202,6 +2269,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Candidat");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Candidat");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_ra3ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -2574,6 +2643,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Candidat");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Candidat");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_ra6ActionPerformed
 
     private void ra5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ra5ActionPerformed
@@ -2581,11 +2652,31 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
         cardLayout.show(menuPanel, "Candidat");
         CardLayout card = (CardLayout) centrePanel.getLayout();
         card.show(centrePanel, "Candidat");
+        CardLayout card2 = (CardLayout) jPanel9.getLayout();
+        card2.show(jPanel9, "DM");
     }//GEN-LAST:event_ra5ActionPerformed
 
     private void pathologieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pathologieActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_pathologieActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
+        AfficherListeDMPatient adm = new AfficherListeDMPatient(p, m);
+        adm.setVisible(true);
+    }//GEN-LAST:event_jButton25ActionPerformed
+
+    private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton26ActionPerformed
+
+    private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
+    AjouterResultat ar = new AjouterResultat(idres,m);
+    ar.setVisible(true);
+    }//GEN-LAST:event_jButton27ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2647,6 +2738,7 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
     private javax.swing.JPanel header;
     private javax.swing.JPanel iddmPanel;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
@@ -2657,14 +2749,14 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
     private javax.swing.JButton jButton22;
     private javax.swing.JButton jButton23;
     private javax.swing.JButton jButton24;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton25;
+    private javax.swing.JButton jButton26;
+    private javax.swing.JButton jButton27;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -2690,6 +2782,8 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -2699,12 +2793,11 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTextArea lettre;
-    private javax.swing.JPanel listePatients;
+    private javax.swing.JPanel listeResultats;
     private javax.swing.JComboBox<String> litBox;
     private javax.swing.JComboBox<String> litOccupeBox;
     private javax.swing.JPanel litPanel;
@@ -2743,7 +2836,6 @@ public class InterfaceMedecinMT extends javax.swing.JFrame {
     private javax.swing.JPanel rechercheCandidat;
     private javax.swing.JPanel rechercheDM;
     private javax.swing.JTable rechercheTable;
-    private javax.swing.JTextArea resultat;
     private javax.swing.JTable resultatsTable;
     private javax.swing.JTable resultatsTable1;
     private javax.swing.JTable resultatsTable2;
